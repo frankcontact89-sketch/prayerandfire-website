@@ -2,309 +2,188 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#ff6a00" />
-  <title>Prayer & Fire</title>
-  <meta name="description" content="Prayer & Fire — A global movement of prayer, discipleship, and mission." />
+
+  <title>Prayer & Fire – Global Prayer & Discipleship Movement</title>
+  <meta name="description" content="Prayer & Fire is a global Christian movement focused on prayer, discipleship, and mission work across the nations." />
+  <meta name="keywords" content="Prayer and Fire, Christian prayer, discipleship, global missions" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" />
 
   <style>
-    :root{
-      --bg:#0b0b0f;
-      --card:#121218;
-      --text:#f3f3f7;
-      --muted:#b8b8c7;
-      --line:#232330;
-      --accent:#ff6a00;
-      --accent2:#ff8a3d;
-      --shadow: 0 20px 50px rgba(0,0,0,.55);
-      --radius: 18px;
-      --max: 1100px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
-      background: radial-gradient(900px 500px at 20% 10%, rgba(255,106,0,.18), transparent 55%),
-                  radial-gradient(900px 500px at 80% 15%, rgba(255,138,61,.12), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      line-height:1.5;
+      background:#0b0b0f;
+      color:#f3f3f7;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height:1.6;
     }
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:22px 18px 70px;}
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px; position:sticky; top:0; backdrop-filter: blur(14px);
-      padding:14px 0; z-index:10;
+    .wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px}
+    header{text-align:center;padding:40px 0}
+    header img{max-width:180px;margin-bottom:16px}
+    header h1{margin:0;font-size:28px}
+    header p{margin:6px 0 0;color:#b8b8c7;font-size:14px}
+    nav{margin-top:24px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    nav a{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid #232330;
+      background:#121218;
+      font-size:14px;
     }
-    .brand{display:flex; align-items:center; gap:10px;}
-    .logo{
-      width:40px; height:40px; border-radius:12px;
-      background: linear-gradient(135deg, rgba(255,106,0,.22), rgba(255,138,61,.10));
-      border:1px solid rgba(255,106,0,.35);
-      display:grid; place-items:center;
-      box-shadow: 0 10px 30px rgba(255,106,0,.12);
-      overflow:hidden;
-    }
-    .logo img{width:100%; height:100%; object-fit:cover; display:block;}
-    .brand h1{font-size:14px; margin:0; letter-spacing:.3px;}
-    .brand p{margin:0; font-size:12px; color:var(--muted);}
-    .links{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
-    .pill{
-      padding:9px 12px; border:1px solid var(--line); border-radius:999px;
-      background: rgba(18,18,24,.65);
-      font-size:13px; color:var(--muted);
-      transition:.2s transform, .2s border, .2s color;
-    }
-    .pill:hover{transform: translateY(-1px); border-color: rgba(255,106,0,.45); color:var(--text);}
     .cta{
-      padding:10px 14px; border-radius:999px; border:1px solid rgba(255,106,0,.55);
-      background: linear-gradient(135deg, rgba(255,106,0,.22), rgba(255,138,61,.10));
-      box-shadow: 0 12px 35px rgba(255,106,0,.12);
-      color:var(--text); font-weight:600; font-size:13px;
+      border-color:#ff6a00;
+      background:#ff6a001a;
+      font-weight:600;
     }
-    .cta:hover{border-color: rgba(255,106,0,.9);}
-    .hero{
-      margin-top:26px;
+    section{
+      margin-top:60px;
+      background:#121218;
+      border:1px solid #232330;
+      border-radius:18px;
+      padding:26px;
+    }
+    section h2{margin-top:0;font-size:22px}
+    .muted{color:#b8b8c7;font-size:14px}
+    .grid{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    .card{
-      background: rgba(18,18,24,.75);
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      padding:22px;
-      box-shadow: var(--shadow);
-    }
-    .hero h2{margin:0 0 10px; font-size:38px; line-height:1.1; letter-spacing:-.6px;}
-    .hero .sub{color:var(--muted); margin:0 0 16px; font-size:15px;}
-    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
-    .btn{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:12px 14px; border-radius:14px;
-      border:1px solid var(--line);
-      background: rgba(10,10,14,.55);
-      color:var(--text);
-      font-weight:600; font-size:14px;
-      transition:.2s transform, .2s border;
-    }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(255,106,0,.45);}
-    .btn.primary{
-      border-color: rgba(255,106,0,.65);
-      background: linear-gradient(135deg, rgba(255,106,0,.28), rgba(255,138,61,.10));
-    }
-    .mini{display:grid; gap:10px; grid-template-columns: 1fr;}
-    .stat{
-      padding:14px; border-radius:16px;
-      border:1px solid var(--line);
-      background: rgba(10,10,14,.5);
-    }
-    .stat b{display:block; font-size:14px;}
-    .stat span{display:block; font-size:12px; color:var(--muted); margin-top:4px;}
-    .section{margin-top:18px;}
-    .section h3{margin:0 0 10px; font-size:16px; letter-spacing:.2px;}
-    .grid{display:grid; gap:12px; grid-template-columns: repeat(3, 1fr);}
-    .tile{
-      padding:16px; border-radius:16px; border:1px solid var(--line);
-      background: rgba(10,10,14,.5); min-height:120px;
-    }
-    .tile b{display:block; margin-bottom:6px;}
-    .tile p{margin:0; color:var(--muted); font-size:13px;}
-    .store{display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;}
-    .product{
-      padding:16px; border-radius:16px; border:1px solid var(--line);
-      background: rgba(10,10,14,.5);
-      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
-    }
-    .product small{color:var(--muted); display:block; margin-top:2px;}
-    .buy{
-      white-space:nowrap; padding:10px 12px; border-radius:12px;
-      border:1px solid rgba(255,106,0,.55); background: rgba(255,106,0,.12);
-      font-weight:700; font-size:13px;
-    }
-    .buy:hover{border-color: rgba(255,106,0,.95);}
-    .footer{
+      gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
       margin-top:18px;
-      display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center;
-      color:var(--muted); font-size:12px; padding:16px 4px;
     }
-    .hr{height:1px; background: var(--line); margin:14px 0 0;}
-    .note{font-size:12px; color:var(--muted); margin:10px 0 0;}
-    @media (max-width: 920px){
-      .hero{grid-template-columns: 1fr;}
-      .grid{grid-template-columns: 1fr;}
-      .store{grid-template-columns: 1fr;}
-      .hero h2{font-size:32px;}
+    .box{
+      background:#0b0b0f;
+      border:1px solid #232330;
+      border-radius:16px;
+      padding:18px;
+    }
+    .box b{display:block;margin-bottom:6px}
+    .buy{
+      display:inline-block;
+      margin-top:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid #ff6a00;
+      background:#ff6a001a;
+      font-weight:600;
+      font-size:14px;
+    }
+    footer{
+      margin-top:60px;
+      text-align:center;
+      color:#b8b8c7;
+      font-size:13px;
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header class="nav">
-      <div class="brand">
-        <div class="logo" aria-label="Prayer & Fire logo">🔥</div>
-        <div>
-          <h1>Prayer & Fire</h1>
-          <p>Global Movement</p>
-        </div>
-      </div>
 
-      <nav class="links">
-        <a class="pill" href="#mission">Mission</a>
-        <a class="pill" href="#resources">Resources</a>
-        <a class="pill" href="#store">Store</a>
-        <a class="pill" href="#contact">Contact</a>
+    <header>
+      <img src="logo.png" alt="Prayer & Fire logo" />
+      <h1>Prayer & Fire</h1>
+      <p>Global Prayer & Discipleship Movement</p>
+
+      <nav>
+        <a href="#mission">Mission</a>
+        <a href="#resources">Resources</a>
+        <a href="#store">Store</a>
+        <a href="#contact">Contact</a>
         <a class="cta" href="#store">Buy on Amazon</a>
       </nav>
     </header>
 
-    <main class="hero">
-      <section class="card">
-        <h2>Order. Prayer. Fire.</h2>
-        <p class="sub">
-          Prayer & Fire exists to strengthen believers, build discipleship, and serve mission work globally—starting with simple, high-quality resources and a clear path to action.
-        </p>
-
-        <div class="row">
-          <a class="btn primary" href="#resources">Explore Resources</a>
-          <a class="btn" href="#store">See Featured Products</a>
-          <a class="btn" href="#contact">Request a Call</a>
-        </div>
-
-        <p class="note">
-          *This site stays simple: no checkout here—products redirect to Amazon for payment, shipping, and support.*
-        </p>
-      </section>
-
-      <aside class="card mini">
-        <div class="stat">
-          <b>Weekly Devotion</b>
-          <span>Short word + prayer in English/Spanish.</span>
-        </div>
-        <div class="stat">
-          <b>Global Focus</b>
-          <span>Mission & discipleship support for Africa and Asia.</span>
-        </div>
-        <div class="stat">
-          <b>Mobile App</b>
-          <span>Prayer & Fire app in progress for iOS/Android.</span>
-        </div>
-      </aside>
-    </main>
-
-    <section class="section card" id="mission">
-      <h3>Mission</h3>
-      <div class="grid">
-        <div class="tile">
-          <b>Prayer</b>
-          <p>We cultivate a disciplined prayer life that produces clarity, strength, and spiritual order.</p>
-        </div>
-        <div class="tile">
-          <b>Discipleship</b>
-          <p>Simple teachings that help believers grow with intention and remain consistent.</p>
-        </div>
-        <div class="tile">
-          <b>Mission</b>
-          <p>Support and partnership for kingdom work—especially in Africa and Asia.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section card" id="resources">
-      <h3>Resources</h3>
-      <div class="grid">
-        <div class="tile">
-          <b>Short Devotionals</b>
-          <p>Weekly encouragement (English/Spanish) for prayer and daily order.</p>
-        </div>
-        <div class="tile">
-          <b>Teaching Series</b>
-          <p>“Return to God’s Order” — foundations to grow, advance, and remain.</p>
-        </div>
-        <div class="tile">
-          <b>Prayer Audio</b>
-          <p>Guided prayer prompts to help you stay consistent (coming soon).</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section card" id="store">
-      <h3>Featured Store (Amazon)</h3>
-      <div class="store">
-        <div class="product">
-          <div>
-            <b>Book: La Voz Interior</b>
-            <small>Featured product — available on Amazon.</small>
-          </div>
-          <a class="buy" href="https://www.amazon.com/" target="_blank" rel="noopener">Buy on Amazon</a>
-        </div>
-
-        <div class="product">
-          <div>
-            <b>Prayer & Fire Mug</b>
-            <small>Matte black + orange design (flagship).</small>
-          </div>
-          <a class="buy" href="https://www.amazon.com/" target="_blank" rel="noopener">Buy on Amazon</a>
-        </div>
-
-        <div class="product">
-          <div>
-            <b>Prayer & Fire T-Shirt</b>
-            <small>Premium look — simple and bold.</small>
-          </div>
-          <a class="buy" href="https://www.amazon.com/" target="_blank" rel="noopener">Buy on Amazon</a>
-        </div>
-
-        <div class="product">
-          <div>
-            <b>Prayer & Fire Cap</b>
-            <small>Optional — curated selection.</small>
-          </div>
-          <a class="buy" href="https://www.amazon.com/" target="_blank" rel="noopener">Buy on Amazon</a>
-        </div>
-      </div>
-
-      <p class="note">Replace the Amazon links above with your real product links when you have them.</p>
-    </section>
-
-    <section class="section card" id="contact">
-      <h3>Contact</h3>
-      <p class="sub" style="margin-top:0">
-        Want to connect, partner, or request prayer? Send a message and we’ll follow up.
+    <section>
+      <h2>Order. Prayer. Fire.</h2>
+      <p class="muted">
+        Prayer & Fire exists to strengthen believers, build discipleship,
+        and support mission work globally through simple, intentional resources.
       </p>
+    </section>
 
+    <section id="mission">
+      <h2>Mission</h2>
       <div class="grid">
-        <div class="tile">
-          <b>Email</b>
-          <p><a class="pill" href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a></p>
+        <div class="box">
+          <b>Prayer</b>
+          <p class="muted">Cultivating a disciplined prayer life that brings clarity and spiritual order.</p>
         </div>
-        <div class="tile">
-          <b>Partnership</b>
-          <p>For mission support, grants, or ministry collaboration, contact us by email.</p>
+        <div class="box">
+          <b>Discipleship</b>
+          <p class="muted">Helping believers grow with intention and consistency.</p>
         </div>
-        <div class="tile">
-          <b>Support</b>
-          <p>Need help? Visit the Support page or contact us directly.</p>
-        </div>
-      </div>
-
-      <div class="hr"></div>
-      <div class="footer">
-        <div>© <span id="y"></span> Prayer & Fire. All rights reserved.</div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <a class="pill" href="privacy.html">Privacy</a>
-          <a class="pill" href="support.html">Support</a>
+        <div class="box">
+          <b>Mission</b>
+          <p class="muted">Supporting kingdom work, especially in Africa and Asia.</p>
         </div>
       </div>
     </section>
+
+    <section id="resources">
+      <h2>Resources</h2>
+      <div class="grid">
+        <div class="box">
+          <b>Weekly Devotions</b>
+          <p class="muted">Short teachings and prayer in English and Spanish.</p>
+        </div>
+        <div class="box">
+          <b>Teaching Series</b>
+          <p class="muted">“Return to God’s Order” — foundations to grow and remain.</p>
+        </div>
+        <div class="box">
+          <b>Prayer Audio</b>
+          <p class="muted">Guided prayer prompts (coming soon).</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="store">
+      <h2>Featured Store (Amazon)</h2>
+      <div class="grid">
+        <div class="box">
+          <b>Book: La Voz Interior</b>
+          <p class="muted">Available on Amazon.</p>
+          <a class="buy" href="https://www.amazon.com/" target="_blank">Buy on Amazon</a>
+        </div>
+        <div class="box">
+          <b>Prayer & Fire Mug</b>
+          <p class="muted">Matte black + orange (flagship).</p>
+          <a class="buy" href="https://www.amazon.com/" target="_blank">Buy on Amazon</a>
+        </div>
+        <div class="box">
+          <b>Prayer & Fire T-Shirt</b>
+          <p class="muted">Premium look.</p>
+          <a class="buy" href="https://www.amazon.com/" target="_blank">Buy on Amazon</a>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:12px">
+        Products redirect to Amazon for payment, shipping, and support.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="muted">For prayer requests, partnership, or mission collaboration:</p>
+      <p>
+        <a class="buy" href="mailto:prayerandfireglobal@gmail.com">
+          prayerandfireglobal@gmail.com
+        </a>
+      </p>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Prayer & Fire. All rights reserved.
+    </footer>
+
   </div>
 
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
