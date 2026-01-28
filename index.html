@@ -9,9 +9,11 @@
 
   <title>Prayer & Fire – Global Movement</title>
   <meta name="description" content="Prayer & Fire is a global Christian movement focused on prayer, discipleship, and faith-based resources." />
-  <meta name="keywords" content="Prayer and Fire, global movement, prayer, discipleship, christian ministry, donations" />
+  <meta name="keywords" content="Prayer and Fire, global movement, prayer, discipleship, christian ministry, giving, donations" />
 
-  <link rel="icon" href="logo.png" />
+  <!-- FAVICON (cambia el “mundito”) -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
 
   <style>
     body{
@@ -68,6 +70,48 @@
     .section{display:none;}
     .section.show{display:block;margin-top:40px;}
 
+    .list{
+      margin:14px 0 0;
+      padding:0;
+      list-style:none;
+    }
+    .list li{
+      padding:12px 0;
+      border-top:1px solid #232330;
+    }
+    .list li:first-child{border-top:none}
+    .label{
+      display:inline-block;
+      font-size:12px;
+      color:#b8b8c7;
+      border:1px solid #232330;
+      padding:4px 10px;
+      border-radius:999px;
+      margin-bottom:8px;
+    }
+    .title{
+      font-weight:700;
+      margin:2px 0 6px;
+    }
+
+    .contact-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    .icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+    }
+    .icon svg{
+      width:18px;height:18px;
+      fill:#ff6a00;
+      display:block;
+    }
+
     footer{
       margin-top:40px;
       text-align:center;
@@ -87,12 +131,13 @@
       <nav>
         <!-- Internal tabs -->
         <a href="#mission" data-tab="mission">Mission</a>
+        <a href="#events" data-tab="events">Events</a>
         <a href="#support" data-tab="support">Support</a>
         <a href="#contact" data-tab="contact">Contact</a>
 
-        <!-- External actions (NO mencionar Stripe) -->
+        <!-- External actions -->
         <a class="cta" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
-          Donate
+          Giving
         </a>
 
         <a class="cta" href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">
@@ -108,39 +153,69 @@
         Prayer &amp; Fire is a global Christian movement where believers unite in prayer,
         discipleship, and faith-centered resources with a global vision.
         <br><br>
-        We are represented in <strong>more than 30 countries</strong>, and our community
-        prays in <strong>different languages</strong>.
+        Our community prays in <strong>different languages</strong> and connects across nations through faith,
+        prayer, and discipleship.
       </p>
     </section>
 
-    <!-- SUPPORT (sin botón Donate adentro) -->
+    <!-- EVENTS -->
+    <section id="events" class="section">
+      <h2>Events</h2>
+      <p class="muted">
+        Stay connected with what God is doing through Prayer &amp; Fire. Here you’ll find upcoming gatherings,
+        prayer moments, and special updates.
+      </p>
+
+      <!-- Puedes editar estas líneas cuando tengas fechas reales -->
+      <ul class="list">
+        <li>
+          <span class="label">Upcoming</span>
+          <div class="title">Online Prayer Gathering</div>
+          <div class="muted">Time &amp; details coming soon.</div>
+        </li>
+        <li>
+          <span class="label">Update</span>
+          <div class="title">Discipleship Resource Release</div>
+          <div class="muted">New content will be shared soon.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- SUPPORT (sin frase de “use the Donate button above”) -->
     <section id="support" class="section">
       <h2>Support the Movement</h2>
       <p class="muted">
         Your generosity helps support prayer initiatives, discipleship,
         and global outreach around the world.
-        <br><br>
-        To support the mission, please use the <strong>Donate</strong> button above.
       </p>
     </section>
 
-    <!-- CONTACT (aquí van los idiomas) -->
+    <!-- CONTACT (pastoral + idiomas + icono moderno) -->
     <section id="contact" class="section">
       <h2>Contact</h2>
       <p class="muted">
-        Contact us to connect with the Prayer &amp; Fire movement, share prayer requests,
+        We would love to hear from you. Contact us to share prayer requests, connect with the Prayer &amp; Fire movement,
         or receive more information about our mission.
         <br><br>
         We can communicate in <strong>English, Spanish, and Portuguese</strong>.
-        <br><br>
-        📧 <a href="mailto:prayerandfireglobal@gmail.com">
+      </p>
+
+      <div class="contact-row">
+        <span class="icon" aria-hidden="true">
+          <!-- Modern mail icon (SVG) -->
+          <svg viewBox="0 0 24 24">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </span>
+
+        <a href="mailto:prayerandfireglobal@gmail.com">
           prayerandfireglobal@gmail.com
         </a>
-      </p>
+      </div>
     </section>
 
     <footer>
-      © <span id="year"></span> Prayer & Fire
+      © <span id="year"></span> Prayer &amp; Fire
     </footer>
 
   </div>
