@@ -8,204 +8,828 @@
   <link rel="canonical" href="https://prayerandfire.org/" />
 
   <title>Prayer & Fire – Global Movement</title>
-  <meta name="description" content="Prayer & Fire is a global Christian movement focused on prayer, discipleship, and faith-based resources." />
-  <meta name="keywords" content="Prayer and Fire, global movement, prayer, discipleship, christian ministry, donations" />
+  <meta name="description" content="Prayer & Fire is a global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
+  <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, donations" />
 
-  <!-- FAVICON -->
+  <!-- FAVICON (upload favicon.png in the same folder as index.html) -->
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
   <style>
     :root{
-      --bg:#0b0b0f;--card:#121218;--border:#232330;
-      --text:#f3f3f7;--muted:#b8b8c7;
-      --accent:#ff6a00;--accentSoft:#ff6a001a;
+      --bg:#0b0b0f;
+      --panel:#101018;
+      --card:#141422;
+      --border:#25253a;
+      --text:#f4f4fb;
+      --muted:#b8b8cc;
+      --accent:#ff6a00;
+      --accentSoft:rgba(255,106,0,.14);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 24px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0;background:var(--bg);color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      line-height:1.6;
+      margin:0;
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(255,106,0,.10), transparent 60%),
+                  radial-gradient(1000px 700px at 90% 10%, rgba(120,80,255,.08), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height:1.55;
     }
-    a{color:var(--accent);text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px}
-    header{text-align:center;padding:40px 0}
-    header img{max-width:180px;margin-bottom:14px}
-    header p{margin:0;color:var(--muted);font-size:15px}
-    nav{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    nav a{
-      padding:10px 16px;border-radius:999px;
-      border:1px solid var(--border);
-      background:var(--card);color:var(--text);font-size:14px;
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .app{
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
     }
-    .cta{border-color:var(--accent);background:var(--accentSoft);font-weight:700}
-    section{
-      margin-top:40px;background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;padding:28px;
+
+    /* Top Bar */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(11,11,15,.65);
+      border-bottom:1px solid rgba(37,37,58,.65);
     }
-    h2{margin-top:0}
-    .muted{color:var(--muted)}
-    .grid{display:grid;gap:16px}
-    @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    .topbarInner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 210px;
+    }
+    .brandLogo{
+      width:34px;height:34px;border-radius:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .brandLogo img{width:100%;height:100%;object-fit:cover}
+    .brandTitle{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .brandTitle strong{font-size:14px; letter-spacing:.2px}
+    .brandTitle span{font-size:12px;color:var(--muted)}
+    .spacer{flex:1}
+
+    /* Search */
+    .search{
+      flex:1;
+      max-width:520px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid rgba(37,37,58,.85);
+      background: rgba(16,16,24,.7);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.20);
+    }
+    .search input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:14px;
+    }
+    .chip{
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid rgba(37,37,58,.85);
+      background: rgba(20,20,34,.55);
+      padding:8px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+
+    /* Nav */
+    .nav{
+      max-width:1200px;
+      margin:0 auto;
+      padding:10px 16px 14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .nav button, .nav a.navLink{
+      appearance:none;
+      border:1px solid rgba(37,37,58,.9);
+      background: rgba(16,16,24,.65);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+    }
+    .nav button:hover, .nav a.navLink:hover{
+      border-color: rgba(255,255,255,.18);
+      background: rgba(20,20,34,.7);
+      transform: translateY(-1px);
+      text-decoration:none;
+    }
+    .nav button.active{
+      border-color: rgba(255,106,0,.6);
+      background: rgba(255,106,0,.12);
+    }
+    .nav .cta{
+      border-color: rgba(255,106,0,.55);
+      background: rgba(255,106,0,.14);
+      font-weight:700;
+    }
+
+    /* Main */
+    .main{
+      max-width:1200px;
+      width:100%;
+      margin:0 auto;
+      padding:18px 16px 70px;
+      display:flex;
+      gap:16px;
+    }
+
+    /* Pages container */
+    .pages{
+      flex:1;
+      min-width:0;
+    }
+    .page{
+      display:none;
+      background: rgba(16,16,24,.75);
+      border:1px solid rgba(37,37,58,.9);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      animation: fadeIn .18s ease;
+    }
+    .page.active{display:block}
+    @keyframes fadeIn{
+      from{opacity:.65; transform: translateY(6px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+
+    .pageHeader{
+      padding:22px 22px 16px;
+      border-bottom: 1px solid rgba(37,37,58,.75);
+      background: linear-gradient(180deg, rgba(255,106,0,.10), transparent 55%);
+    }
+    .pageHeader h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:.2px;
+    }
+    .pageHeader p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      max-width: 78ch;
+    }
+
+    .content{
+      padding:18px 22px 24px;
+    }
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 920px){
+      .grid{grid-template-columns: 1fr 1fr}
+    }
     .card{
-      background:#0f0f15;border:1px solid var(--border);
-      border-radius:16px;padding:18px;
+      background: rgba(20,20,34,.65);
+      border:1px solid rgba(37,37,58,.85);
+      border-radius: var(--radius);
+      padding:16px;
     }
-    footer{margin-top:60px;text-align:center;color:var(--muted);font-size:13px}
-    .footerLinks{margin-top:10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-    input,textarea,select{
-      width:100%;padding:12px;border-radius:12px;
-      border:1px solid var(--border);
-      background:#0b0b10;color:var(--text);
+    .card h3{
+      margin:0 0 8px;
+      font-size:15px;
+      letter-spacing:.2px;
     }
-    textarea{min-height:110px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    .list{
+      margin:10px 0 0 18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .list li{margin:7px 0}
+
+    .btnRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
     .btn{
-      display:inline-block;margin-top:10px;
-      padding:10px 14px;border-radius:12px;
-      border:1px solid var(--accent);
-      background:var(--accentSoft);
-      color:var(--text);font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:11px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(37,37,58,.9);
+      background: rgba(20,20,34,.65);
+      color:var(--text);
+      font-weight:650;
+      font-size:14px;
+      cursor:pointer;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+    }
+    .btn:hover{
+      border-color: rgba(255,255,255,.18);
+      background: rgba(26,26,44,.70);
+      transform: translateY(-1px);
+      text-decoration:none;
+    }
+    .btnPrimary{
+      border-color: rgba(255,106,0,.55);
+      background: rgba(255,106,0,.14);
+    }
+
+    .form{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+    }
+    .row{
+      display:grid;
+      gap:10px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 920px){
+      .row{grid-template-columns: 1fr 1fr}
+    }
+    label{font-size:12px;color:var(--muted)}
+    input, textarea, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(37,37,58,.9);
+      background: rgba(11,11,16,.7);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height:120px; resize:vertical}
+    .note{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius: 16px;
+      border:1px dashed rgba(37,37,58,.95);
+      color:var(--muted);
+      background: rgba(11,11,16,.55);
+      font-size:13px;
+    }
+
+    footer{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 16px 30px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+    .footerLinks{
+      margin-top:10px;
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    /* Search hide */
+    .searchHide{display:none !important;}
+
+    /* Small screens */
+    @media(max-width: 720px){
+      .brand{min-width:auto}
+      .search{max-width:none}
+      .nav{gap:8px}
+      .nav button, .nav a.navLink{padding:10px 11px}
+      .main{padding-top:14px}
     }
   </style>
 </head>
 
 <body>
-<div class="wrap">
+<div class="app">
 
-<header>
-  <img src="logo.png" alt="Prayer & Fire logo">
-  <p>Global Movement</p>
+  <div class="topbar">
+    <div class="topbarInner">
+      <div class="brand" role="banner">
+        <div class="brandLogo" aria-hidden="true">
+          <img src="logo.png" alt="">
+        </div>
+        <div class="brandTitle">
+          <strong>Prayer & Fire</strong>
+          <span>Global Movement</span>
+        </div>
+      </div>
 
-  <nav>
-    <a href="#mission">Mission</a>
-    <a href="#about">About</a>
-    <a href="#beliefs">Beliefs</a>
-    <a href="#app">App</a>
-    <a href="#sources">Sources</a>
-    <a href="#groups">Groups</a>
-    <a href="#volunteers">Volunteers</a>
-    <a href="#salvation">Salvation</a>
-    <a href="#feedback">Feedback</a>
-    <a href="#contact">Contact</a>
-    <a class="cta" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank">Donate</a>
-  </nav>
-</header>
+      <div class="search" title="Search content">
+        <span class="chip">Search</span>
+        <input id="searchInput" type="search" placeholder="Type to find: app, volunteers, salvation, groups, donate..." />
+        <span class="chip" id="searchStatus">Ready</span>
+      </div>
 
-<section id="mission">
-  <h2>Mission</h2>
-  <p class="muted">
-    Prayer & Fire exists to strengthen believers through prayer,
-    discipleship, and faith-centered resources with a global vision.
-  </p>
-</section>
+      <div class="spacer"></div>
 
-<section id="about">
-  <h2>About Prayer & Fire</h2>
-  <p class="muted">
-    Prayer & Fire was founded on <strong>September 13, 2024</strong>,
-    through a word directed by the Lord to establish a global movement
-    of prayer, discipleship, and spiritual growth.
-  </p>
-</section>
+      <a class="btn btnPrimary navLink" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
+        Donate
+      </a>
+    </div>
 
-<section id="beliefs">
-  <h2>Beliefs & Values</h2>
-  <ul class="muted">
-    <li>Jesus Christ is Lord and Savior</li>
-    <li>The Bible is the Word of God</li>
-    <li>Salvation by grace through faith</li>
-    <li>Prayer transforms lives</li>
-    <li>Love, integrity, and unity</li>
-  </ul>
-</section>
-
-<section id="app">
-  <h2>Download the App</h2>
-  <p class="muted">Download Prayer & Fire Mobile on iPhone & iPad.</p>
-  <a class="btn" href="https://apps.apple.com/us/app/prayerandfire-mobile/id6757282653" target="_blank">
-    📱 Download on the App Store
-  </a>
-  <p class="muted">Android version coming soon.</p>
-</section>
-
-<section id="sources">
-  <h2>Sources</h2>
-  <p class="muted">📘 Book: <a href="https://a.co/d/3fluyhQ" target="_blank">La Voz Interior (Amazon)</a></p>
-  <p class="muted">👕 Apparel & ☕ Mug available on Amazon</p>
-</section>
-
-<section id="groups">
-  <h2>Prayer & Fire Groups</h2>
-  <ul class="muted">
-    <li>Prayer & Fire (Principal)</li>
-    <li>Prayer & Fire – English / Global</li>
-    <li>Global Prayer</li>
-    <li>Prayer & Fire Men / Hombres</li>
-  </ul>
-  <p class="muted">
-    Instagram:
-    <a href="https://www.instagram.com/prayerandfire" target="_blank">@prayerandfire</a> |
-    <a href="https://www.instagram.com/seloprayerandfire" target="_blank">@seloprayerandfire</a>
-  </p>
-</section>
-
-<section id="volunteers">
-  <h2>Volunteers</h2>
-  <p class="muted">Want to serve? Fill out and we will contact you.</p>
-  <form action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
-    <input name="Name" placeholder="Full Name" required>
-    <input name="Email" type="email" placeholder="Email" required>
-    <textarea name="Message" placeholder="How would you like to serve?"></textarea>
-    <button class="btn">Send</button>
-  </form>
-</section>
-
-<section id="salvation">
-  <h2>Salvation</h2>
-  <p class="muted">
-    If you decided to accept Christ, we want to pray with you and help you.
-  </p>
-  <p class="muted">
-    “Lord Jesus, I receive You as my Savior. Forgive my sins and lead my life. Amen.”
-  </p>
-  <form action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
-    <input name="Name" placeholder="Full Name" required>
-    <input name="Email" type="email" placeholder="Email" required>
-    <textarea name="Message" placeholder="Tell us your decision"></textarea>
-    <button class="btn">I Want to Follow Jesus</button>
-  </form>
-</section>
-
-<section id="feedback">
-  <h2>Notice an issue? Tell us</h2>
-  <form action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
-    <input name="Name" placeholder="Name">
-    <input name="Email" type="email" placeholder="Email">
-    <textarea name="Feedback" placeholder="Describe the issue or feedback"></textarea>
-    <button class="btn">Send Feedback</button>
-  </form>
-</section>
-
-<section id="contact">
-  <h2>Contact</h2>
-  <p class="muted">
-    Email: <a href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a>
-  </p>
-</section>
-
-<footer>
-  © <span id="year"></span> Prayer & Fire
-  <div class="footerLinks">
-    <a href="/privacy.html">Privacy Policy</a>
-    <a href="/terms.html">Terms</a>
+    <div class="nav" role="navigation" aria-label="Primary">
+      <button class="navBtn active" data-go="home">Home</button>
+      <button class="navBtn" data-go="about">About</button>
+      <button class="navBtn" data-go="beliefs">Beliefs & Values</button>
+      <button class="navBtn" data-go="app">Download App</button>
+      <button class="navBtn" data-go="sources">Sources</button>
+      <button class="navBtn" data-go="groups">Groups</button>
+      <button class="navBtn" data-go="volunteers">Volunteers</button>
+      <button class="navBtn" data-go="salvation">Salvation</button>
+      <button class="navBtn" data-go="support">Support</button>
+      <button class="navBtn" data-go="feedback">Feedback</button>
+      <button class="navBtn" data-go="contact">Contact</button>
+      <button class="navBtn" data-go="login">Login (Optional)</button>
+    </div>
   </div>
-</footer>
+
+  <div class="main">
+    <div class="pages" id="pages">
+
+      <!-- HOME -->
+      <section class="page active" data-page="home" data-searchable>
+        <div class="pageHeader">
+          <h1>Prayer & Fire – Global Movement</h1>
+          <p>
+            A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.
+          </p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" href="https://apps.apple.com/us/app/prayerandfire-mobile/id6757282653" target="_blank" rel="noopener">
+              Download on the App Store
+            </a>
+            <a class="btn" href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">
+              Monthly Support ($6.99)
+            </a>
+          </div>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>Mission</h3>
+              <p>
+                Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Get connected</h3>
+              <p>
+                Join a group, connect on Instagram, or reach out directly by email.
+              </p>
+            </div>
+          </div>
+          <div class="note">
+            Tip: Use the menu to open each section as its own screen.
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="page" data-page="about" data-searchable>
+        <div class="pageHeader">
+          <h1>About</h1>
+          <p>
+            Prayer & Fire was founded on <strong>September 13, 2024</strong> — a word directed by the Lord to raise a global movement of prayer and faith.
+          </p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>What we are</h3>
+              <p>
+                A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.
+              </p>
+            </div>
+            <div class="card">
+              <h3>What we do</h3>
+              <ul class="list">
+                <li>Prayer gatherings and intercession</li>
+                <li>Community building and support</li>
+                <li>Faith-based resources and outreach</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BELIEFS -->
+      <section class="page" data-page="beliefs" data-searchable>
+        <div class="pageHeader">
+          <h1>Beliefs & Values</h1>
+          <p>Our foundation is Jesus Christ and the Word of God.</p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>Beliefs</h3>
+              <ul class="list">
+                <li>Jesus Christ is Lord and Savior.</li>
+                <li>The Bible is the Word of God.</li>
+                <li>Salvation is by grace through faith in Christ.</li>
+                <li>Prayer transforms lives and aligns us with God’s will.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Values</h3>
+              <ul class="list">
+                <li>Faith and obedience</li>
+                <li>Integrity and humility</li>
+                <li>Love, compassion, unity</li>
+                <li>Excellence in service</li>
+                <li>Global vision</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP -->
+      <section class="page" data-page="app" data-searchable>
+        <div class="pageHeader">
+          <h1>Download the App</h1>
+          <p>Get Prayer & Fire Mobile on iPhone and iPad.</p>
+        </div>
+        <div class="content">
+          <div class="card">
+            <h3>Prayer & Fire Mobile</h3>
+            <p>Download from the Apple App Store.</p>
+            <div class="btnRow">
+              <a class="btn btnPrimary" href="https://apps.apple.com/us/app/prayerandfire-mobile/id6757282653" target="_blank" rel="noopener">
+                Download on the App Store
+              </a>
+            </div>
+          </div>
+          <div class="note">Android version coming soon.</div>
+        </div>
+      </section>
+
+      <!-- SOURCES -->
+      <section class="page" data-page="sources" data-searchable>
+        <div class="pageHeader">
+          <h1>Sources</h1>
+          <p>Curated resources available on Amazon.</p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>Book – La Voz Interior</h3>
+              <p>Available on Amazon.</p>
+              <div class="btnRow">
+                <a class="btn btnPrimary" href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">View on Amazon</a>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Prayer & Fire Merchandise</h3>
+              <p>Browse available items on Amazon.</p>
+              <div class="btnRow">
+                <a class="btn" href="https://www.amazon.com/s?k=prayer+and+fire+shirt" target="_blank" rel="noopener">Search Apparel</a>
+                <a class="btn" href="https://www.amazon.com/s?k=prayer+and+fire+mug" target="_blank" rel="noopener">Search Mugs</a>
+              </div>
+              <div class="note">
+                Note: This page uses clean links (no icons/images) to keep the design modern.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GROUPS -->
+      <section class="page" data-page="groups" data-searchable>
+        <div class="pageHeader">
+          <h1>Groups</h1>
+          <p>Connect by language and community focus.</p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>Group list</h3>
+              <ul class="list">
+                <li>Prayer & Fire (Principal)</li>
+                <li>Prayer & Fire (English)</li>
+                <li>Global Prayer</li>
+                <li>Prayer & Fire Men</li>
+                <li>Prayer & Fire Hombres</li>
+              </ul>
+              <div class="note">
+                When you have the exact join links (WhatsApp/Telegram/Facebook), I’ll add “Join” buttons for each group.
+              </div>
+            </div>
+            <div class="card">
+              <h3>Instagram</h3>
+              <div class="btnRow">
+                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Open @prayerandfire</a>
+                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Open @seloprayerandfire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VOLUNTEERS -->
+      <section class="page" data-page="volunteers" data-searchable>
+        <div class="pageHeader">
+          <h1>Volunteers</h1>
+          <p>Serve with Prayer & Fire. Send your request and we will contact you.</p>
+        </div>
+        <div class="content">
+          <form class="form" action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
+            <div class="row">
+              <div>
+                <label>Full Name</label>
+                <input name="Volunteer Name" required placeholder="Your name" />
+              </div>
+              <div>
+                <label>Email</label>
+                <input name="Volunteer Email" type="email" required placeholder="you@example.com" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>Phone (optional)</label>
+                <input name="Volunteer Phone" placeholder="+1 (___) ___-____" />
+              </div>
+              <div>
+                <label>Area</label>
+                <select name="Volunteer Area" required>
+                  <option value="">Select one</option>
+                  <option>Prayer Team</option>
+                  <option>Media / Design</option>
+                  <option>Community / Groups</option>
+                  <option>Outreach</option>
+                  <option>Administration</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label>Message</label>
+              <textarea name="Volunteer Message" placeholder="Availability, gifts, and location."></textarea>
+            </div>
+
+            <button class="btn btnPrimary" type="submit">Send Volunteer Request</button>
+
+            <div class="note">
+              This is a static site. The form opens your email app. If you want a “real submit form” without email, we can connect Supabase later.
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- SALVATION -->
+      <section class="page" data-page="salvation" data-searchable>
+        <div class="pageHeader">
+          <h1>Salvation</h1>
+          <p>If you decided to accept Christ, we want to pray with you and help you take the next step.</p>
+        </div>
+        <div class="content">
+          <div class="card">
+            <h3>Prayer</h3>
+            <p>
+              Lord Jesus, I believe You died and rose again. Forgive my sins. I receive You as my Savior and Lord.
+              Lead my life and make me new. Amen.
+            </p>
+          </div>
+
+          <form class="form" action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
+            <div class="row">
+              <div>
+                <label>Full Name</label>
+                <input name="Salvation Name" required placeholder="Your name" />
+              </div>
+              <div>
+                <label>Email</label>
+                <input name="Salvation Email" type="email" required placeholder="you@example.com" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>City / Country</label>
+                <input name="Salvation Location" placeholder="City, Country" />
+              </div>
+              <div>
+                <label>Request</label>
+                <select name="Salvation Request" required>
+                  <option value="">Select one</option>
+                  <option>I want to be saved</option>
+                  <option>I need prayer</option>
+                  <option>I want to join a group</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label>Message</label>
+              <textarea name="Salvation Message" placeholder="Tell us what happened and how we can help you."></textarea>
+            </div>
+
+            <button class="btn btnPrimary" type="submit">I Want to Follow Jesus</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- SUPPORT -->
+      <section class="page" data-page="support" data-searchable>
+        <div class="pageHeader">
+          <h1>Support</h1>
+          <p>Your generosity helps support prayer initiatives and global outreach.</p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>One-time donation</h3>
+              <p>Give securely via Stripe.</p>
+              <div class="btnRow">
+                <a class="btn btnPrimary" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">Donate</a>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Monthly support ($6.99)</h3>
+              <p>Become a monthly supporter.</p>
+              <div class="btnRow">
+                <a class="btn" href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">Start Monthly Support</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEEDBACK -->
+      <section class="page" data-page="feedback" data-searchable>
+        <div class="pageHeader">
+          <h1>Feedback</h1>
+          <p>Notice an issue? Tell us so we can fix it.</p>
+        </div>
+        <div class="content">
+          <form class="form" action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
+            <div class="row">
+              <div>
+                <label>Name</label>
+                <input name="Feedback Name" placeholder="Your name" />
+              </div>
+              <div>
+                <label>Email</label>
+                <input name="Feedback Email" type="email" placeholder="you@example.com" />
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label>Type</label>
+                <select name="Feedback Type" required>
+                  <option value="">Select one</option>
+                  <option>Bug / Issue</option>
+                  <option>Suggestion</option>
+                  <option>Content correction</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label>Where?</label>
+                <input name="Feedback Where" placeholder="Example: Download App page" />
+              </div>
+            </div>
+            <div>
+              <label>Details</label>
+              <textarea name="Feedback Message" required placeholder="Describe the issue or your suggestion."></textarea>
+            </div>
+
+            <button class="btn btnPrimary" type="submit">Send Feedback</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="page" data-page="contact" data-searchable>
+        <div class="pageHeader">
+          <h1>Contact</h1>
+          <p>Reach us directly.</p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3>Email</h3>
+              <p><a href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a></p>
+            </div>
+            <div class="card">
+              <h3>Instagram</h3>
+              <div class="btnRow">
+                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
+                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOGIN OPTIONAL -->
+      <section class="page" data-page="login" data-searchable>
+        <div class="pageHeader">
+          <h1>Login (Optional)</h1>
+          <p>Login is not required to use Prayer & Fire. This is reserved for future member features.</p>
+        </div>
+        <div class="content">
+          <div class="card">
+            <h3>Future feature</h3>
+            <p>
+              When you’re ready, we can connect login with Supabase (Apple / Google / Email).
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Prayer & Fire
+    <div class="footerLinks">
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </footer>
 
 </div>
 
 <script>
+  // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Page navigation (each button opens its own screen)
+  const buttons = Array.from(document.querySelectorAll('.navBtn'));
+  const pages = Array.from(document.querySelectorAll('.page'));
+
+  function showPage(key){
+    pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.go === key));
+    history.replaceState(null, "", "#" + key);
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=> showPage(b.dataset.go));
+  });
+
+  // Load from hash if present
+  const initial = (location.hash || "#home").replace("#","");
+  const exists = pages.some(p=>p.dataset.page === initial);
+  showPage(exists ? initial : "home");
+
+  // Search: filters cards/pages by text (does not change layout)
+  const searchInput = document.getElementById('searchInput');
+  const searchStatus = document.getElementById('searchStatus');
+  const searchablePages = Array.from(document.querySelectorAll('[data-searchable]'));
+
+  function runSearch(){
+    const q = (searchInput.value || "").trim().toLowerCase();
+    if(!q){
+      searchablePages.forEach(p=>p.classList.remove('searchHide'));
+      searchStatus.textContent = "Ready";
+      return;
+    }
+
+    let hits = 0;
+    searchablePages.forEach(p=>{
+      const text = p.innerText.toLowerCase();
+      const ok = text.includes(q);
+      p.classList.toggle('searchHide', !ok);
+      if(ok) hits++;
+    });
+    searchStatus.textContent = hits + " match";
+  }
+
+  searchInput.addEventListener('input', runSearch);
 </script>
 </body>
 </html>
