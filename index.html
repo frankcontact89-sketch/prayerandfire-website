@@ -56,7 +56,6 @@
     }
 
     section{
-      margin-top:60px;
       background:#121218;
       border:1px solid #232330;
       border-radius:18px;
@@ -65,9 +64,9 @@
     section h2{margin-top:0;font-size:22px}
     .muted{color:#b8b8c7;font-size:15px}
 
-    /* ✅ TAB MODE: only one section visible */
-    .section { display:none; }
-    .section.show { display:block; margin-top:40px; } /* tighter spacing in tab mode */
+    /* Tabs */
+    .section{display:none;}
+    .section.show{display:block;margin-top:40px;}
 
     footer{
       margin-top:40px;
@@ -86,82 +85,60 @@
       <p>Global Movement</p>
 
       <nav>
-        <!-- Tabs -->
+        <!-- Internal tabs -->
         <a href="#mission" data-tab="mission">Mission</a>
-        <a href="#sources" data-tab="sources">Sources</a>
         <a href="#support" data-tab="support">Support</a>
         <a href="#contact" data-tab="contact">Contact</a>
 
-        <!-- External CTA stays external -->
-        <a class="cta" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
+        <!-- External actions -->
+        <a class="cta" href="PASTE_IGIVE_LINK_HERE" target="_blank" rel="noopener">
           Donate
         </a>
 
-        <!-- ✅ Make Amazon button show ONLY the Sources tab (selling) -->
-        <a href="#sources" data-tab="sources">Buy on Amazon</a>
+        <a class="cta" href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">
+          Buy on Amazon
+        </a>
       </nav>
     </header>
 
+    <!-- MISSION -->
     <section id="mission" class="section">
       <h2>Mission</h2>
       <p class="muted">
-        Prayer & Fire exists to strengthen believers through prayer,
+        Prayer &amp; Fire is a global Christian movement where believers unite in prayer,
         discipleship, and faith-centered resources with a global vision.
+        <br><br>
+        We are represented in <strong>more than 30 countries</strong>, and our community
+        prays in <strong>different languages</strong>.
+        <br><br>
+        The ministry is led in <strong>English, Spanish, and Portuguese</strong>.
       </p>
     </section>
 
-    <section id="sources" class="section">
-      <h2>Sources</h2>
-
-      <p class="muted">
-        📘 <strong>Book – La Voz Interior</strong><br>
-        <a href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">
-          View on Amazon
-        </a>
-      </p>
-
-      <p class="muted">
-        👕 <strong>Prayer & Fire Apparel</strong><br>
-        <a href="https://www.amazon.com/s?k=prayer+and+fire+shirt" target="_blank" rel="noopener">
-          View on Amazon
-        </a>
-      </p>
-
-      <p class="muted">
-        ☕ <strong>Prayer & Fire Mug</strong><br>
-        <a href="https://www.amazon.com/s?k=prayer+and+fire+mug" target="_blank" rel="noopener">
-          View on Amazon
-        </a>
-      </p>
-    </section>
-
+    <!-- SUPPORT -->
     <section id="support" class="section">
       <h2>Support the Movement</h2>
-
       <p class="muted">
         Your generosity helps support prayer initiatives, discipleship,
-        and global outreach.
-      </p>
-
-      <p class="muted">
-        🙏 <strong>One-time Donation</strong><br>
-        <a href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
-          Donate via Stripe
-        </a>
-      </p>
-
-      <p class="muted">
-        🔁 <strong>Monthly Support – $6.99</strong><br>
-        <a href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">
-          Become a Monthly Supporter
+        and global outreach around the world.
+        <br><br>
+        🙏 <a href="PASTE_IGIVE_LINK_HERE" target="_blank" rel="noopener">
+          Donate
         </a>
       </p>
     </section>
 
+    <!-- CONTACT -->
     <section id="contact" class="section">
       <h2>Contact</h2>
       <p class="muted">
-        <a href="mailto:prayerandfireglobal@gmail.com">
+        Contact us to connect with the Prayer &amp; Fire movement, share prayer requests,
+        or receive more information about our mission.
+        <br><br>
+        Our ministry is led in <strong>English, Spanish, and Portuguese</strong>,
+        serving a global community.
+        <br><br>
+        📧 <a href="mailto:prayerandfireglobal@gmail.com">
           prayerandfireglobal@gmail.com
         </a>
       </p>
@@ -174,40 +151,31 @@
   </div>
 
   <script>
-    // year
     document.getElementById('year').textContent = new Date().getFullYear();
 
     function showTab(id){
-      // show only selected section
       document.querySelectorAll('.section').forEach(s => s.classList.remove('show'));
-      const el = document.getElementById(id);
-      if (el) el.classList.add('show');
+      document.getElementById(id)?.classList.add('show');
 
-      // active nav style
       document.querySelectorAll('nav a[data-tab]').forEach(a => {
         a.classList.toggle('active', a.dataset.tab === id);
       });
 
-      // keep hash
       if (location.hash !== '#' + id) {
         history.replaceState(null, '', '#' + id);
       }
     }
 
-    // click tabs
     document.querySelectorAll('nav a[data-tab]').forEach(a => {
       a.addEventListener('click', (e) => {
-        // If it's an internal tab link (#...), prevent default jump
         e.preventDefault();
         showTab(a.dataset.tab);
       });
     });
 
-    // open correct tab on load
     const initial = (location.hash || '#mission').replace('#','');
     showTab(initial);
 
-    // if user opens /#contact etc
     window.addEventListener('hashchange', () => {
       const id = (location.hash || '#mission').replace('#','');
       showTab(id);
