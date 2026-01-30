@@ -9,9 +9,9 @@
 
   <title>Prayer & Fire – Global Movement</title>
   <meta name="description" content="Prayer & Fire is a global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
-  <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, donations" />
+  <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, giving, donations" />
 
-  <!-- FAVICON (upload favicon.png in the same folder as index.html) -->
+  <!-- FAVICON: put favicon.png in the same folder as index.html -->
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
@@ -42,11 +42,7 @@
     }
     a{color:var(--accent); text-decoration:none}
     a:hover{text-decoration:underline}
-    .app{
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-    }
+    .app{min-height:100%; display:flex; flex-direction:column;}
 
     /* Top Bar */
     .topbar{
@@ -79,45 +75,10 @@
       overflow:hidden;
     }
     .brandLogo img{width:100%;height:100%;object-fit:cover}
-    .brandTitle{
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-    }
+    .brandTitle{display:flex; flex-direction:column; line-height:1.1;}
     .brandTitle strong{font-size:14px; letter-spacing:.2px}
     .brandTitle span{font-size:12px;color:var(--muted)}
     .spacer{flex:1}
-
-    /* Search */
-    .search{
-      flex:1;
-      max-width:520px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border:1px solid rgba(37,37,58,.85);
-      background: rgba(16,16,24,.7);
-      border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.20);
-    }
-    .search input{
-      width:100%;
-      border:none;
-      outline:none;
-      background:transparent;
-      color:var(--text);
-      font-size:14px;
-    }
-    .chip{
-      font-size:12px;
-      color:var(--muted);
-      border:1px solid rgba(37,37,58,.85);
-      background: rgba(20,20,34,.55);
-      padding:8px 10px;
-      border-radius: 999px;
-      white-space:nowrap;
-    }
 
     /* Language Switch */
     .langWrap{
@@ -193,11 +154,8 @@
       gap:16px;
     }
 
-    /* Pages container */
-    .pages{
-      flex:1;
-      min-width:0;
-    }
+    /* Pages */
+    .pages{flex:1; min-width:0;}
     .page{
       display:none;
       background: rgba(16,16,24,.75);
@@ -230,9 +188,7 @@
       max-width: 78ch;
     }
 
-    .content{
-      padding:18px 22px 24px;
-    }
+    .content{padding:18px 22px 24px;}
     .grid{
       display:grid;
       gap:14px;
@@ -292,16 +248,8 @@
       background: rgba(255,106,0,.14);
     }
 
-    .form{
-      display:grid;
-      gap:10px;
-      margin-top:10px;
-    }
-    .row{
-      display:grid;
-      gap:10px;
-      grid-template-columns: 1fr;
-    }
+    .form{display:grid; gap:10px; margin-top:10px;}
+    .row{display:grid; gap:10px; grid-template-columns: 1fr;}
     @media(min-width: 920px){
       .row{grid-template-columns: 1fr 1fr}
     }
@@ -343,13 +291,9 @@
       flex-wrap:wrap;
     }
 
-    /* Search hide */
-    .searchHide{display:none !important;}
-
     /* Small screens */
     @media(max-width: 720px){
       .brand{min-width:auto}
-      .search{max-width:none}
       .nav{gap:8px}
       .nav button, .nav a.navLink{padding:10px 11px}
       .main{padding-top:14px}
@@ -371,12 +315,6 @@
           <strong data-i18n="brand_title">Prayer & Fire</strong>
           <span data-i18n="brand_subtitle">Global Movement</span>
         </div>
-      </div>
-
-      <div class="search" title="Search content">
-        <span class="chip" data-i18n="search_chip">Search</span>
-        <input id="searchInput" type="search" data-i18n-placeholder="search_placeholder" placeholder="Type to find: app, volunteers, salvation, groups, giving..." />
-        <span class="chip" id="searchStatus" data-i18n="search_status_ready">Ready</span>
       </div>
 
       <div class="spacer"></div>
@@ -414,21 +352,13 @@
   <div class="main">
     <div class="pages" id="pages">
 
-      <!-- HOME -->
-      <section class="page active" data-page="home" data-searchable>
+      <!-- HOME (NO App / NO Giving buttons here) -->
+      <section class="page active" data-page="home">
         <div class="pageHeader">
           <h1 data-i18n="home_title">Prayer & Fire – Global Movement</h1>
           <p data-i18n="home_subtitle">
             A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.
           </p>
-          <div class="btnRow">
-            <a class="btn btnPrimary" href="https://apps.apple.com/us/app/prayerandfire-mobile/id6757282653" target="_blank" rel="noopener">
-              <span data-i18n="home_appstore">Download on the App Store</span>
-            </a>
-            <a class="btn" href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">
-              <span data-i18n="home_monthly">Monthly Support ($6.99)</span>
-            </a>
-          </div>
         </div>
         <div class="content">
           <div class="grid">
@@ -452,11 +382,11 @@
       </section>
 
       <!-- ABOUT -->
-      <section class="page" data-page="about" data-searchable>
+      <section class="page" data-page="about">
         <div class="pageHeader">
           <h1 data-i18n="about_title">About</h1>
           <p data-i18n="about_subtitle">
-            Prayer & Fire was founded on <strong>September 13, 2024</strong> — a word directed by the Lord to raise a global movement of prayer and faith.
+            Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.
           </p>
         </div>
         <div class="content">
@@ -480,7 +410,7 @@
       </section>
 
       <!-- BELIEFS -->
-      <section class="page" data-page="beliefs" data-searchable>
+      <section class="page" data-page="beliefs">
         <div class="pageHeader">
           <h1 data-i18n="beliefs_title">Beliefs & Values</h1>
           <p data-i18n="beliefs_subtitle">Our foundation is Jesus Christ and the Word of God.</p>
@@ -510,8 +440,8 @@
         </div>
       </section>
 
-      <!-- APP -->
-      <section class="page" data-page="app" data-searchable>
+      <!-- APP (App Store button belongs here) -->
+      <section class="page" data-page="app">
         <div class="pageHeader">
           <h1 data-i18n="app_title">Download the App</h1>
           <p data-i18n="app_subtitle">Get Prayer & Fire Mobile on iPhone and iPad.</p>
@@ -531,7 +461,7 @@
       </section>
 
       <!-- SOURCES -->
-      <section class="page" data-page="sources" data-searchable>
+      <section class="page" data-page="sources">
         <div class="pageHeader">
           <h1 data-i18n="sources_title">Sources</h1>
           <p data-i18n="sources_subtitle">Curated resources available on Amazon.</p>
@@ -567,7 +497,7 @@
       </section>
 
       <!-- GROUPS -->
-      <section class="page" data-page="groups" data-searchable>
+      <section class="page" data-page="groups">
         <div class="pageHeader">
           <h1 data-i18n="groups_title">Groups</h1>
           <p data-i18n="groups_subtitle">Connect by language and community focus.</p>
@@ -587,10 +517,14 @@
               </div>
             </div>
             <div class="card">
-              <h3>Instagram</h3>
+              <h3 data-i18n="ig_title">Instagram</h3>
               <div class="btnRow">
-                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Open @prayerandfire</a>
-                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Open @seloprayerandfire</a>
+                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
+                  <span data-i18n="ig_open_main">Open @prayerandfire</span>
+                </a>
+                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
+                  <span data-i18n="ig_open_seal">Open @seloprayerandfire</span>
+                </a>
               </div>
             </div>
           </div>
@@ -598,7 +532,7 @@
       </section>
 
       <!-- VOLUNTEERS -->
-      <section class="page" data-page="volunteers" data-searchable>
+      <section class="page" data-page="volunteers">
         <div class="pageHeader">
           <h1 data-i18n="vol_title">Volunteers</h1>
           <p data-i18n="vol_subtitle">Serve with Prayer & Fire. Send your request and we will contact you.</p>
@@ -650,7 +584,7 @@
       </section>
 
       <!-- SALVATION -->
-      <section class="page" data-page="salvation" data-searchable>
+      <section class="page" data-page="salvation">
         <div class="pageHeader">
           <h1 data-i18n="sal_title">Salvation</h1>
           <p data-i18n="sal_subtitle">If you decided to accept Christ, we want to pray with you and help you take the next step.</p>
@@ -702,8 +636,8 @@
         </div>
       </section>
 
-      <!-- SUPPORT -->
-      <section class="page" data-page="support" data-searchable>
+      <!-- SUPPORT (Giving buttons belong here) -->
+      <section class="page" data-page="support">
         <div class="pageHeader">
           <h1 data-i18n="sup_title">Support</h1>
           <p data-i18n="sup_subtitle">Your generosity helps support prayer initiatives and global outreach.</p>
@@ -733,12 +667,16 @@
       </section>
 
       <!-- FEEDBACK -->
-      <section class="page" data-page="feedback" data-searchable>
+      <section class="page" data-page="feedback">
         <div class="pageHeader">
           <h1 data-i18n="fb_title">Feedback</h1>
           <p data-i18n="fb_subtitle">Notice an issue? Tell us so we can fix it.</p>
         </div>
         <div class="content">
+          <div class="note" data-i18n="mailto_tip">
+            On iPhone, this button opens your email app. If you see a “not secure” warning, it’s normal because it’s opening the Mail app (mailto:). You can tap “Send anyway”.
+          </div>
+
           <form class="form" action="mailto:prayerandfireglobal@gmail.com" method="post" enctype="text/plain">
             <div class="row">
               <div>
@@ -777,7 +715,7 @@
       </section>
 
       <!-- CONTACT -->
-      <section class="page" data-page="contact" data-searchable>
+      <section class="page" data-page="contact">
         <div class="pageHeader">
           <h1 data-i18n="ct_title">Contact</h1>
           <p data-i18n="ct_subtitle">Reach us directly.</p>
@@ -789,10 +727,14 @@
               <p><a href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a></p>
             </div>
             <div class="card">
-              <h3>Instagram</h3>
+              <h3 data-i18n="ig_title">Instagram</h3>
               <div class="btnRow">
-                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
-                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
+                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
+                  <span data-i18n="ig_open_main">Open @prayerandfire</span>
+                </a>
+                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
+                  <span data-i18n="ig_open_seal">Open @seloprayerandfire</span>
+                </a>
               </div>
             </div>
           </div>
@@ -816,7 +758,7 @@
   // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Page navigation (each button opens its own screen)
+  // Page navigation
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
   const pages = Array.from(document.querySelectorAll('.page'));
 
@@ -831,44 +773,16 @@
     b.addEventListener('click', ()=> showPage(b.dataset.go));
   });
 
-  // Load from hash if present
+  // Load from hash
   const initial = (location.hash || "#home").replace("#","");
   const exists = pages.some(p=>p.dataset.page === initial);
   showPage(exists ? initial : "home");
-
-  // Search: filters cards/pages by text (does not change layout)
-  const searchInput = document.getElementById('searchInput');
-  const searchStatus = document.getElementById('searchStatus');
-  const searchablePages = Array.from(document.querySelectorAll('[data-searchable]'));
-
-  function runSearch(){
-    const q = (searchInput.value || "").trim().toLowerCase();
-    if(!q){
-      searchablePages.forEach(p=>p.classList.remove('searchHide'));
-      searchStatus.textContent = getText("search_status_ready") || "Ready";
-      return;
-    }
-
-    let hits = 0;
-    searchablePages.forEach(p=>{
-      const text = p.innerText.toLowerCase();
-      const ok = text.includes(q);
-      p.classList.toggle('searchHide', !ok);
-      if(ok) hits++;
-    });
-    searchStatus.textContent = hits + " match";
-  }
-
-  searchInput.addEventListener('input', runSearch);
 
   // --- i18n (English is the primary language) ---
   const i18n = {
     en: {
       brand_title: "Prayer & Fire",
       brand_subtitle: "Global Movement",
-      search_chip: "Search",
-      search_placeholder: "Type to find: app, volunteers, salvation, groups, giving...",
-      search_status_ready: "Ready",
       lang_label: "Language",
       top_giving: "Giving",
 
@@ -886,8 +800,6 @@
 
       home_title: "Prayer & Fire – Global Movement",
       home_subtitle: "A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.",
-      home_appstore: "Download on the App Store",
-      home_monthly: "Monthly Support ($6.99)",
       home_mission_title: "Mission",
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_connected_title: "Get connected",
@@ -921,6 +833,7 @@
       app_subtitle: "Get Prayer & Fire Mobile on iPhone and iPad.",
       app_card_title: "Prayer & Fire Mobile",
       app_card_text: "Download from the Apple App Store.",
+      home_appstore: "Download on the App Store",
       app_android: "Android version coming soon.",
 
       sources_title: "Sources",
@@ -942,6 +855,10 @@
       groups_3: "Global Prayer",
       groups_4: "Prayer & Fire Men",
       groups_note: "When you have the exact join links (WhatsApp/Telegram/Facebook), I’ll add “Join” buttons for each group.",
+
+      ig_title: "Instagram",
+      ig_open_main: "Open @prayerandfire",
+      ig_open_seal: "Open @seloprayerandfire",
 
       vol_title: "Volunteers",
       vol_subtitle: "Serve with Prayer & Fire. Send your request and we will contact you.",
@@ -1006,6 +923,8 @@
       fb_details_ph: "Describe the issue or your suggestion.",
       fb_send: "Send Feedback",
 
+      mailto_tip: "On iPhone, this button opens your email app. If you see a “not secure” warning, it’s normal because it’s opening the Mail app (mailto:). You can tap “Send anyway”.",
+
       ct_title: "Contact",
       ct_subtitle: "Reach us directly.",
       ct_email_title: "Email",
@@ -1016,10 +935,8 @@
     },
 
     es: {
+      brand_title: "Prayer & Fire",
       brand_subtitle: "Movimiento Global",
-      search_chip: "Buscar",
-      search_placeholder: "Escribe para buscar: app, voluntarios, salvación, grupos, ofrendar...",
-      search_status_ready: "Listo",
       lang_label: "Idioma",
       top_giving: "Ofrendar",
 
@@ -1035,16 +952,18 @@
       nav_feedback: "Comentarios",
       nav_contact: "Contacto",
 
+      home_title: "Prayer & Fire – Movimiento Global",
       home_subtitle: "Un movimiento cristiano global donde los creyentes se unen en oración y recursos centrados en la fe con una visión global.",
-      home_appstore: "Descargar en App Store",
-      home_monthly: "Apoyo mensual ($6.99)",
       home_mission_title: "Misión",
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_connected_title: "Conéctate",
-      home_connected_text: "Únete a un grupo, conéctate en Instagram o escríbenos por correo.",
+      home_connected_text: "Únete a un grupo, conéctate en Instagram o contáctanos por correo.",
       home_tip: "Consejo: usa el menú para abrir cada sección como una pantalla.",
 
       about_title: "Acerca de",
+      about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
+      about_what_title: "Qué somos",
+      about_what_text: "Un movimiento cristiano global enfocado en la oración, crecimiento espiritual y recursos que fortalecen a los creyentes en todo el mundo.",
       about_do_title: "Lo que hacemos",
       about_do_1: "Reuniones de oración e intercesión",
       about_do_2: "Comunidad y apoyo",
@@ -1066,18 +985,21 @@
 
       app_title: "Descargar App",
       app_subtitle: "Obtén Prayer & Fire Mobile en iPhone y iPad.",
+      app_card_title: "Prayer & Fire Mobile",
       app_card_text: "Descarga desde Apple App Store.",
+      home_appstore: "Descargar en App Store",
       app_android: "Versión Android pronto.",
 
       sources_title: "Recursos",
       sources_subtitle: "Recursos disponibles en Amazon.",
+      sources_book_title: "Libro – La Voz Interior",
       sources_book_text: "Disponible en Amazon.",
       sources_view_amazon: "Ver en Amazon",
       sources_merch_title: "Merch de Prayer & Fire",
       sources_merch_text: "Explora artículos en Amazon.",
       sources_search_apparel: "Buscar Ropa",
       sources_search_mugs: "Buscar Tazas",
-      sources_note: "Nota: Esta página usa enlaces limpios (sin íconos/imágenes) para mantener el diseño moderno.",
+      sources_note: "Nota: esta página usa enlaces limpios (sin íconos/imágenes) para mantener el diseño moderno.",
 
       groups_title: "Grupos",
       groups_subtitle: "Conéctate por idioma y enfoque de comunidad.",
@@ -1088,10 +1010,15 @@
       groups_4: "Prayer & Fire Hombres",
       groups_note: "Cuando tengas los links exactos (WhatsApp/Telegram/Facebook), agrego botones de “Unirme” para cada grupo.",
 
+      ig_title: "Instagram",
+      ig_open_main: "Abrir @prayerandfire",
+      ig_open_seal: "Abrir @seloprayerandfire",
+
       vol_title: "Voluntarios",
       vol_subtitle: "Sirve con Prayer & Fire. Envía tu solicitud y te contactaremos.",
       vol_name_label: "Nombre completo",
       vol_name_ph: "Tu nombre",
+      vol_email_label: "Email",
       vol_phone_label: "Teléfono (opcional)",
       vol_area_label: "Área",
       vol_area_select: "Selecciona una",
@@ -1112,6 +1039,7 @@
       sal_prayer_text: "Señor Jesús, creo que moriste y resucitaste. Perdona mis pecados. Te recibo como mi Salvador y Señor. Guía mi vida y hazme nuevo. Amén.",
       sal_name_label: "Nombre completo",
       sal_name_ph: "Tu nombre",
+      sal_email_label: "Email",
       sal_loc_label: "Ciudad / País",
       sal_loc_ph: "Ciudad, País",
       sal_req_label: "Solicitud",
@@ -1134,23 +1062,35 @@
 
       fb_title: "Comentarios",
       fb_subtitle: "¿Ves un problema? Dínoslo para corregirlo.",
+      fb_name_label: "Nombre",
+      fb_name_ph: "Tu nombre",
+      fb_email_label: "Email",
       fb_type_label: "Tipo",
       fb_type_select: "Selecciona uno",
+      fb_type_1: "Error / Problema",
+      fb_type_2: "Sugerencia",
+      fb_type_3: "Corrección de contenido",
+      fb_type_4: "Otro",
+      fb_where_label: "¿Dónde?",
+      fb_where_ph: "Ejemplo: página Descargar App",
+      fb_details_label: "Detalles",
+      fb_details_ph: "Describe el problema o sugerencia.",
       fb_send: "Enviar",
+
+      mailto_tip: "En iPhone, este botón abre tu app de correo. Si ves un aviso de “no seguro”, es normal porque abre Mail (mailto:). Puedes tocar “Enviar de todos modos”.",
 
       ct_title: "Contacto",
       ct_subtitle: "Contáctanos directamente.",
       ct_email_title: "Email",
 
+      footer_brand: "Prayer & Fire",
       footer_privacy: "Privacidad",
       footer_terms: "Términos"
     },
 
     pt: {
+      brand_title: "Prayer & Fire",
       brand_subtitle: "Movimento Global",
-      search_chip: "Buscar",
-      search_placeholder: "Digite para buscar: app, voluntários, salvação, grupos, ofertar...",
-      search_status_ready: "Pronto",
       lang_label: "Idioma",
       top_giving: "Ofertar",
 
@@ -1166,26 +1106,54 @@
       nav_feedback: "Feedback",
       nav_contact: "Contato",
 
+      home_title: "Prayer & Fire – Movimento Global",
       home_subtitle: "Um movimento cristão global onde os crentes se unem em oração e recursos centrados na fé com uma visão global.",
-      home_appstore: "Baixar na App Store",
-      home_monthly: "Apoio mensal ($6.99)",
       home_mission_title: "Missão",
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_connected_title: "Conecte-se",
       home_connected_text: "Entre em um grupo, conecte-se no Instagram ou fale conosco por email.",
       home_tip: "Dica: use o menu para abrir cada seção como uma tela.",
 
+      about_title: "Sobre",
+      about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
+      about_what_title: "O que somos",
+      about_what_text: "Um movimento cristão global focado em oração, crescimento espiritual e recursos que fortalecem os crentes em todo o mundo.",
+      about_do_title: "O que fazemos",
+      about_do_1: "Encontros de oração e intercessão",
+      about_do_2: "Comunidade e apoio",
+      about_do_3: "Recursos e alcance",
+
       beliefs_title: "Crenças e Valores",
       beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
+      beliefs_beliefs_title: "Crenças",
+      beliefs_b1: "Jesus Cristo é Senhor e Salvador.",
+      beliefs_b2: "A Bíblia é a Palavra de Deus.",
+      beliefs_b3: "A salvação é pela graça mediante a fé em Cristo.",
+      beliefs_b4: "A oração transforma vidas e nos alinha com a vontade de Deus.",
+      beliefs_values_title: "Valores",
+      beliefs_v1: "Fé e obediência",
+      beliefs_v2: "Integridade e humildade",
+      beliefs_v3: "Amor, compaixão, unidade",
+      beliefs_v4: "Excelência no serviço",
+      beliefs_v5: "Visão global",
+
+      app_title: "Baixar App",
+      app_subtitle: "Baixe o Prayer & Fire Mobile no iPhone e iPad.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_card_text: "Baixe na Apple App Store.",
+      home_appstore: "Baixar na App Store",
       app_android: "Versão Android em breve.",
 
       sources_title: "Recursos",
       sources_subtitle: "Recursos disponíveis na Amazon.",
+      sources_book_title: "Livro – La Voz Interior",
+      sources_book_text: "Disponível na Amazon.",
       sources_view_amazon: "Ver na Amazon",
       sources_merch_title: "Produtos Prayer & Fire",
       sources_merch_text: "Veja itens disponíveis na Amazon.",
       sources_search_apparel: "Buscar Roupas",
       sources_search_mugs: "Buscar Canecas",
+      sources_note: "Nota: esta página usa links limpos (sem ícones/imagens) para manter o design moderno.",
 
       groups_title: "Grupos",
       groups_subtitle: "Conecte-se por idioma e foco de comunidade.",
@@ -1196,12 +1164,45 @@
       groups_4: "Prayer & Fire Homens",
       groups_note: "Quando você tiver os links exatos (WhatsApp/Telegram/Facebook), eu adiciono botões de “Entrar” para cada grupo.",
 
+      ig_title: "Instagram",
+      ig_open_main: "Abrir @prayerandfire",
+      ig_open_seal: "Abrir @seloprayerandfire",
+
       vol_title: "Voluntários",
       vol_subtitle: "Sirva com Prayer & Fire. Envie seu pedido e entraremos em contato.",
+      vol_name_label: "Nome completo",
+      vol_name_ph: "Seu nome",
+      vol_email_label: "Email",
+      vol_phone_label: "Telefone (opcional)",
+      vol_area_label: "Área",
+      vol_area_select: "Selecione um",
+      vol_area_1: "Equipe de oração",
+      vol_area_2: "Mídia / Design",
+      vol_area_3: "Comunidade / Grupos",
+      vol_area_4: "Alcance",
+      vol_area_5: "Administração",
+      vol_area_6: "Outro",
+      vol_msg_label: "Mensagem",
+      vol_msg_ph: "Disponibilidade, dons e localização.",
       vol_send: "Enviar",
+      vol_note: "Este site é estático. O formulário abre seu app de email. Se você quiser um formulário real sem email, podemos conectar o Supabase depois.",
 
       sal_title: "Salvação",
       sal_subtitle: "Se você decidiu aceitar Cristo, queremos orar com você e ajudar no próximo passo.",
+      sal_prayer_title: "Oração",
+      sal_prayer_text: "Senhor Jesus, eu creio que Tu morreste e ressuscitaste. Perdoa meus pecados. Eu Te recebo como meu Salvador e Senhor. Guia minha vida e faz-me novo. Amém.",
+      sal_name_label: "Nome completo",
+      sal_name_ph: "Seu nome",
+      sal_email_label: "Email",
+      sal_loc_label: "Cidade / País",
+      sal_loc_ph: "Cidade, País",
+      sal_req_label: "Pedido",
+      sal_req_select: "Selecione um",
+      sal_req_1: "Quero ser salvo",
+      sal_req_2: "Preciso de oração",
+      sal_req_3: "Quero entrar em um grupo",
+      sal_msg_label: "Mensagem",
+      sal_msg_ph: "Conte-nos o que aconteceu e como podemos ajudar.",
       sal_send: "Quero seguir Jesus",
 
       sup_title: "Apoio",
@@ -1209,8 +1210,34 @@
       sup_one_title: "Oferta única",
       sup_one_text: "Ofereça com segurança via Stripe.",
       sup_one_btn: "Ofertar",
+      sup_month_title: "Apoio mensal ($6.99)",
+      sup_month_text: "Torne-se um apoiador mensal.",
       sup_month_btn: "Iniciar apoio mensal",
 
+      fb_title: "Feedback",
+      fb_subtitle: "Viu um problema? Conte para corrigirmos.",
+      fb_name_label: "Nome",
+      fb_name_ph: "Seu nome",
+      fb_email_label: "Email",
+      fb_type_label: "Tipo",
+      fb_type_select: "Selecione um",
+      fb_type_1: "Erro / Problema",
+      fb_type_2: "Sugestão",
+      fb_type_3: "Correção de conteúdo",
+      fb_type_4: "Outro",
+      fb_where_label: "Onde?",
+      fb_where_ph: "Exemplo: página Baixar App",
+      fb_details_label: "Detalhes",
+      fb_details_ph: "Descreva o problema ou sugestão.",
+      fb_send: "Enviar",
+
+      mailto_tip: "No iPhone, este botão abre seu app de email. Se aparecer um aviso de “não seguro”, é normal porque abre o Mail (mailto:). Você pode tocar em “Enviar mesmo assim”.",
+
+      ct_title: "Contato",
+      ct_subtitle: "Fale conosco diretamente.",
+      ct_email_title: "Email",
+
+      footer_brand: "Prayer & Fire",
       footer_privacy: "Privacidade",
       footer_terms: "Termos"
     }
@@ -1236,10 +1263,6 @@
       const value = (i18n[chosen] && i18n[chosen][key]) || (i18n.en && i18n.en[key]);
       if (value) el.setAttribute("placeholder", value);
     });
-
-    // Reset search status label
-    const st = document.getElementById("searchStatus");
-    if (st) st.textContent = getText("search_status_ready", chosen) || "Ready";
   }
 
   // Init language (English default)
@@ -1254,7 +1277,7 @@
     });
   }
   applyLang(savedLang);
-
 </script>
 </body>
 </html>
+
