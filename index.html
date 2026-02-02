@@ -184,6 +184,7 @@
     .card p{margin:0;color:var(--muted);font-size:14px}
     .list{margin:10px 0 0 18px; color:var(--muted); font-size:14px;}
     .list li{margin:7px 0}
+    .note{margin-top:10px; color:var(--muted); font-size:13px;}
 
     .btnRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
     .btn{
@@ -210,6 +211,13 @@
     .btnPrimary{
       border-color: rgba(255,106,0,.55);
       background: rgba(255,106,0,.14);
+    }
+    .btnDisabled{
+      opacity:.55;
+      cursor:not-allowed;
+      pointer-events:none;
+      border-color: rgba(37,37,58,.9);
+      background: rgba(20,20,34,.45);
     }
 
     footer{
@@ -284,11 +292,12 @@
 
     <div class="nav" role="navigation" aria-label="Primary">
       <button class="navBtn active" data-go="home" data-i18n="nav_home">Home</button>
-      <button class="navBtn" data-go="about" data-i18n="nav_about">About</button>
+      <button class="navBtn" data-go="about" data-i18n="nav_about">Who we are</button>
       <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs">Beliefs & Values</button>
       <button class="navBtn" data-go="app" data-i18n="nav_app">Download App</button>
       <button class="navBtn" data-go="sources" data-i18n="nav_sources">Sources</button>
-      <button class="navBtn" data-go="groups" data-i18n="nav_groups">Groups</button>
+      <button class="navBtn" data-go="social" data-i18n="nav_social">Social Media</button>
+      <button class="navBtn" data-go="photos" data-i18n="nav_photos">Photos</button>
       <button class="navBtn" data-go="volunteers" data-i18n="nav_volunteers">Volunteers</button>
       <button class="navBtn" data-go="salvation" data-i18n="nav_salvation">Salvation</button>
       <button class="navBtn" data-go="support" data-i18n="nav_support">Support</button>
@@ -323,19 +332,17 @@
             </div>
 
             <div class="card">
-              <h3 data-i18n="home_connected_title">Get connected</h3>
+              <h3 data-i18n="home_connected_title">Connect</h3>
               <p data-i18n="home_connected_text">
-                Join a group, connect on Instagram, or reach out directly by email.
+                Find our social media and contact information in the Contact page.
               </p>
               <div class="btnRow">
-                <button class="btn navBtn" data-go="groups" type="button">
-                  <span data-i18n="home_open_groups">Open Groups</span>
-                </button>
-                <button class="btn navBtn" data-go="contact" type="button">
+                <button class="btn btnPrimary navBtn" data-go="contact" type="button">
                   <span data-i18n="home_contact_us">Contact</span>
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -343,7 +350,7 @@
       <!-- ABOUT -->
       <section class="page" data-page="about">
         <div class="pageHeader">
-          <h1 data-i18n="about_title">About</h1>
+          <h1 data-i18n="about_title">Who we are</h1>
           <p data-i18n="about_subtitle">
             Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.
           </p>
@@ -455,32 +462,57 @@
         </div>
       </section>
 
-      <!-- GROUPS -->
-      <section class="page" data-page="groups">
+      <!-- SOCIAL MEDIA -->
+      <section class="page" data-page="social">
         <div class="pageHeader">
-          <h1 data-i18n="groups_title">Groups</h1>
-          <p data-i18n="groups_subtitle">Connect by language and community focus.</p>
+          <h1 data-i18n="social_title">Social Media</h1>
+          <p data-i18n="social_subtitle">Follow Prayer & Fire on our official platforms.</p>
         </div>
+
         <div class="content">
           <div class="grid">
             <div class="card">
-              <h3 data-i18n="groups_list_title">Group list</h3>
-              <ul class="list">
-                <li data-i18n="groups_1">Prayer & Fire (Main)</li>
-                <li data-i18n="groups_2">Prayer & Fire (English)</li>
-                <li data-i18n="groups_3">Global Prayer</li>
-                <li data-i18n="groups_4">Prayer & Fire Men</li>
-              </ul>
-              <div class="note" data-i18n="groups_note">
-                When you have the exact join links (WhatsApp/Telegram/Facebook), I’ll add “Join” buttons for each group.
-              </div>
-            </div>
-            <div class="card">
               <h3>Instagram</h3>
               <div class="btnRow">
-                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Open @prayerandfire</a>
-                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Open @seloprayerandfire</a>
+                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
+                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
               </div>
+            </div>
+
+            <div class="card">
+              <h3>YouTube</h3>
+              <div class="btnRow">
+                <a class="btn btnPrimary btnDisabled" href="#" aria-disabled="true">Coming soon</a>
+              </div>
+              <p class="status" style="margin-top:10px;" data-i18n="social_youtube_note">Channel link will be added soon.</p>
+            </div>
+
+            <div class="card">
+              <h3>TikTok</h3>
+              <div class="btnRow">
+                <a class="btn btnPrimary btnDisabled" href="#" aria-disabled="true">Coming soon</a>
+              </div>
+              <p class="status" style="margin-top:10px;" data-i18n="social_tiktok_note">Profile link will be added soon.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHOTOS -->
+      <section class="page" data-page="photos">
+        <div class="pageHeader">
+          <h1 data-i18n="photos_title">Photos</h1>
+          <p data-i18n="photos_subtitle">See moments from Prayer & Fire gatherings and missions.</p>
+        </div>
+
+        <div class="content">
+          <div class="card">
+            <h3 data-i18n="photos_card_title">View photos</h3>
+            <p data-i18n="photos_card_text">For now, our photo gallery is hosted on Instagram.</p>
+            <div class="btnRow">
+              <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
+                <span data-i18n="photos_btn">Open Photos</span>
+              </a>
             </div>
           </div>
         </div>
@@ -498,6 +530,7 @@
             <p data-i18n="vol_card_text">Fill the form and submit. No login required.</p>
 
             <form class="pfForm" data-form="volunteers" action="https://formspree.io/f/mojwrbaj" method="POST">
+              <input type="text" name="_gotcha" style="display:none">
               <input type="hidden" name="form" value="Volunteer Request">
               <div class="formGrid">
                 <div class="field">
@@ -554,6 +587,7 @@
             <p data-i18n="sal_next_text">Send us a message. We will pray with you.</p>
 
             <form class="pfForm" data-form="salvation" action="https://formspree.io/f/mojwrbaj" method="POST">
+              <input type="text" name="_gotcha" style="display:none">
               <input type="hidden" name="form" value="Salvation Request">
               <div class="formGrid">
                 <div class="field">
@@ -628,6 +662,7 @@
             <p data-i18n="fb_card_text">Fill the form and submit.</p>
 
             <form class="pfForm" data-form="feedback" action="https://formspree.io/f/mojwrbaj" method="POST">
+              <input type="text" name="_gotcha" style="display:none">
               <input type="hidden" name="form" value="Website Feedback">
               <div class="formGrid">
                 <div class="field">
@@ -668,13 +703,27 @@
               <h3 data-i18n="ct_email_title">Email</h3>
               <p><a href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a></p>
             </div>
+
             <div class="card">
-              <h3>Instagram</h3>
+              <h3 data-i18n="ct_social_title">Social Media</h3>
               <div class="btnRow">
                 <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
                 <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
+                <a class="btn btnDisabled" href="#" aria-disabled="true">YouTube (soon)</a>
+                <a class="btn btnDisabled" href="#" aria-disabled="true">TikTok (soon)</a>
               </div>
             </div>
+
+            <div class="card">
+              <h3 data-i18n="ct_photos_title">Photos</h3>
+              <p data-i18n="ct_photos_text">View photos on Instagram for now.</p>
+              <div class="btnRow">
+                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
+                  <span data-i18n="ct_photos_btn">Open Photos</span>
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -720,11 +769,12 @@
       lang_label: "Language",
 
       nav_home: "Home",
-      nav_about: "About",
+      nav_about: "Who we are",
       nav_beliefs: "Beliefs & Values",
       nav_app: "Download App",
       nav_sources: "Sources",
-      nav_groups: "Groups",
+      nav_social: "Social Media",
+      nav_photos: "Photos",
       nav_volunteers: "Volunteers",
       nav_salvation: "Salvation",
       nav_support: "Support",
@@ -736,12 +786,11 @@
       home_mission_title: "Mission",
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_learn_more: "Learn more",
-      home_connected_title: "Get connected",
-      home_connected_text: "Join a group, connect on Instagram, or reach out directly by email.",
-      home_open_groups: "Open Groups",
+      home_connected_title: "Connect",
+      home_connected_text: "Find our social media and contact information in the Contact page.",
       home_contact_us: "Contact",
 
-      about_title: "About",
+      about_title: "Who we are",
       about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
       about_what_title: "What we are",
       about_what_text: "A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.",
@@ -782,14 +831,16 @@
       sources_search_mugs: "Search Mugs",
       sources_note: "Note: This page uses clean links (no icons/images) to keep the design modern.",
 
-      groups_title: "Groups",
-      groups_subtitle: "Connect by language and community focus.",
-      groups_list_title: "Group list",
-      groups_1: "Prayer & Fire (Main)",
-      groups_2: "Prayer & Fire (English)",
-      groups_3: "Global Prayer",
-      groups_4: "Prayer & Fire Men",
-      groups_note: "When you have the exact join links (WhatsApp/Telegram/Facebook), I’ll add “Join” buttons for each group.",
+      social_title: "Social Media",
+      social_subtitle: "Follow Prayer & Fire on our official platforms.",
+      social_youtube_note: "Channel link will be added soon.",
+      social_tiktok_note: "Profile link will be added soon.",
+
+      photos_title: "Photos",
+      photos_subtitle: "See moments from Prayer & Fire gatherings and missions.",
+      photos_card_title: "View photos",
+      photos_card_text: "For now, our photo gallery is hosted on Instagram.",
+      photos_btn: "Open Photos",
 
       vol_title: "Volunteers",
       vol_subtitle: "Serve with Prayer & Fire. Send your request and we will contact you.",
@@ -823,6 +874,10 @@
       ct_title: "Contact",
       ct_subtitle: "Reach us directly.",
       ct_email_title: "Email",
+      ct_social_title: "Social Media",
+      ct_photos_title: "Photos",
+      ct_photos_text: "View photos on Instagram for now.",
+      ct_photos_btn: "Open Photos",
 
       f_fullname_label: "Full name",
       f_email_label: "Email",
@@ -839,15 +894,17 @@
     },
 
     es: {
+      brand_title: "Prayer & Fire",
       brand_subtitle: "Movimiento Global",
       lang_label: "Idioma",
 
       nav_home: "Inicio",
-      nav_about: "Acerca de",
+      nav_about: "Quiénes Somos",
       nav_beliefs: "Creencias y Valores",
       nav_app: "Descargar App",
       nav_sources: "Recursos",
-      nav_groups: "Grupos",
+      nav_social: "Redes",
+      nav_photos: "Fotos",
       nav_volunteers: "Voluntarios",
       nav_salvation: "Salvación",
       nav_support: "Apoyo",
@@ -860,11 +917,10 @@
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_learn_more: "Saber más",
       home_connected_title: "Conéctate",
-      home_connected_text: "Únete a un grupo, conéctate en Instagram o escríbenos por correo.",
-      home_open_groups: "Ver Grupos",
+      home_connected_text: "Encuentra nuestras redes sociales y contacto en la página de Contacto.",
       home_contact_us: "Contacto",
 
-      about_title: "Acerca de",
+      about_title: "Quiénes Somos",
       about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
       about_what_title: "Qué somos",
       about_what_text: "Un movimiento cristiano global enfocado en oración, crecimiento espiritual y recursos que fortalecen a los creyentes en todo el mundo.",
@@ -905,14 +961,16 @@
       sources_search_mugs: "Buscar Tazas",
       sources_note: "Nota: Esta página usa enlaces limpios (sin íconos/imágenes) para mantener el diseño moderno.",
 
-      groups_title: "Grupos",
-      groups_subtitle: "Conéctate por idioma y enfoque de comunidad.",
-      groups_list_title: "Lista de grupos",
-      groups_1: "Prayer & Fire (Principal)",
-      groups_2: "Prayer & Fire (Inglés)",
-      groups_3: "Oración Global",
-      groups_4: "Prayer & Fire Hombres",
-      groups_note: "Cuando tengas los links exactos (WhatsApp/Telegram/Facebook), agrego botones de “Unirme” para cada grupo.",
+      social_title: "Redes",
+      social_subtitle: "Síguenos en nuestras plataformas oficiales.",
+      social_youtube_note: "El link del canal será agregado pronto.",
+      social_tiktok_note: "El link del perfil será agregado pronto.",
+
+      photos_title: "Fotos",
+      photos_subtitle: "Mira momentos de reuniones, misiones y comunidad.",
+      photos_card_title: "Ver fotos",
+      photos_card_text: "Por ahora, la galería de fotos está en Instagram.",
+      photos_btn: "Abrir Fotos",
 
       vol_title: "Voluntarios",
       vol_subtitle: "Sirve con Prayer & Fire. Envía tu solicitud y te contactaremos.",
@@ -946,6 +1004,10 @@
       ct_title: "Contacto",
       ct_subtitle: "Contáctanos directamente.",
       ct_email_title: "Email",
+      ct_social_title: "Redes",
+      ct_photos_title: "Fotos",
+      ct_photos_text: "Por ahora, mira las fotos en Instagram.",
+      ct_photos_btn: "Abrir Fotos",
 
       f_fullname_label: "Nombre completo",
       f_email_label: "Email",
@@ -962,15 +1024,17 @@
     },
 
     pt: {
+      brand_title: "Prayer & Fire",
       brand_subtitle: "Movimento Global",
       lang_label: "Idioma",
 
       nav_home: "Início",
-      nav_about: "Sobre",
+      nav_about: "Quem Somos",
       nav_beliefs: "Crenças e Valores",
       nav_app: "Baixar App",
       nav_sources: "Recursos",
-      nav_groups: "Grupos",
+      nav_social: "Redes",
+      nav_photos: "Fotos",
       nav_volunteers: "Voluntários",
       nav_salvation: "Salvação",
       nav_support: "Apoio",
@@ -983,11 +1047,10 @@
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_learn_more: "Saiba mais",
       home_connected_title: "Conecte-se",
-      home_connected_text: "Entre em um grupo, conecte-se no Instagram ou fale conosco por email.",
-      home_open_groups: "Ver Grupos",
+      home_connected_text: "Encontre nossas redes sociais e contato na página de Contato.",
       home_contact_us: "Contato",
 
-      about_title: "Sobre",
+      about_title: "Quem Somos",
       about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
       about_what_title: "O que somos",
       about_what_text: "Um movimento cristão global focado em oração, crescimento espiritual e recursos que fortalecem os crentes no mundo todo.",
@@ -1028,14 +1091,16 @@
       sources_search_mugs: "Buscar Canecas",
       sources_note: "Nota: Esta página usa links limpos (sem ícones/imagens) para manter o design moderno.",
 
-      groups_title: "Grupos",
-      groups_subtitle: "Conecte-se por idioma e foco de comunidade.",
-      groups_list_title: "Lista de grupos",
-      groups_1: "Prayer & Fire (Principal)",
-      groups_2: "Prayer & Fire (Inglês)",
-      groups_3: "Oração Global",
-      groups_4: "Prayer & Fire Homens",
-      groups_note: "Quando você tiver os links exatos (WhatsApp/Telegram/Facebook), eu adiciono botões de “Entrar” para cada grupo.",
+      social_title: "Redes",
+      social_subtitle: "Siga o Prayer & Fire nas plataformas oficiais.",
+      social_youtube_note: "O link do canal será adicionado em breve.",
+      social_tiktok_note: "O link do perfil será adicionado em breve.",
+
+      photos_title: "Fotos",
+      photos_subtitle: "Veja momentos de encontros e missões do Prayer & Fire.",
+      photos_card_title: "Ver fotos",
+      photos_card_text: "Por enquanto, nossa galeria está no Instagram.",
+      photos_btn: "Abrir Fotos",
 
       vol_title: "Voluntários",
       vol_subtitle: "Sirva com Prayer & Fire. Envie seu pedido e entraremos em contato.",
@@ -1069,6 +1134,10 @@
       ct_title: "Contato",
       ct_subtitle: "Fale conosco diretamente.",
       ct_email_title: "Email",
+      ct_social_title: "Redes",
+      ct_photos_title: "Fotos",
+      ct_photos_text: "Por enquanto, veja as fotos no Instagram.",
+      ct_photos_btn: "Abrir Fotos",
 
       f_fullname_label: "Nome completo",
       f_email_label: "Email",
