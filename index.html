@@ -1,743 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#ff6a00" />
-
-  <link rel="canonical" href="https://prayerandfire.org/" />
-
-  <title>Prayer & Fire – Global Movement</title>
-  <meta name="description" content="Prayer & Fire is a global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
-  <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, donations" />
-
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="apple-touch-icon" href="/favicon.png">
-
-  <style>
-    :root{
-      --bg:#0b0b0f;
-      --panel:#101018;
-      --card:#141422;
-      --border:#25253a;
-      --text:#f4f4fb;
-      --muted:#b8b8cc;
-      --accent:#ff6a00;
-      --accentSoft:rgba(255,106,0,.14);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 18px;
-      --radius2: 24px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background: radial-gradient(1200px 800px at 20% -10%, rgba(255,106,0,.10), transparent 60%),
-                  radial-gradient(1000px 700px at 90% 10%, rgba(120,80,255,.08), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      line-height:1.55;
-    }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
-    .app{ min-height:100%; display:flex; flex-direction:column; }
-
-    /* Top Bar */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      backdrop-filter: blur(14px);
-      background: rgba(11,11,15,.65);
-      border-bottom:1px solid rgba(37,37,58,.65);
-    }
-    .topbarInner{
-      max-width:1200px;
-      margin:0 auto;
-      padding:14px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 210px;
-    }
-    .brandLogo{
-      width:34px;height:34px;border-radius:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      display:flex;align-items:center;justify-content:center;
-      overflow:hidden;
-    }
-    .brandLogo img{width:100%;height:100%;object-fit:cover}
-    .brandTitle{display:flex; flex-direction:column; line-height:1.1;}
-    .brandTitle strong{font-size:14px; letter-spacing:.2px}
-    .brandTitle span{font-size:12px;color:var(--muted)}
-
-    /* Language Switch */
-    .langWrap{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(37,37,58,.9);
-      background: rgba(16,16,24,.65);
-      flex-shrink:0;
-    }
-    .langWrap span{font-size:12px;color:var(--muted);white-space:nowrap;}
-    .langWrap select{
-      width:auto;
-      padding:8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(37,37,58,.9);
-      background: rgba(11,11,16,.7);
-      color:var(--text);
-      outline:none;
-      font-size:13px;
-      cursor:pointer;
-    }
-
-    /* Nav */
-    .nav{
-      max-width:1200px;
-      margin:0 auto;
-      padding:10px 16px 14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-start;
-    }
-    .nav button{
-      appearance:none;
-      border:1px solid rgba(37,37,58,.9);
-      background: rgba(16,16,24,.65);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:13px;
-      cursor:pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-    }
-    .nav button:hover{
-      border-color: rgba(255,255,255,.18);
-      background: rgba(20,20,34,.7);
-      transform: translateY(-1px);
-      text-decoration:none;
-    }
-    .nav button.active{
-      border-color: rgba(255,106,0,.6);
-      background: rgba(255,106,0,.12);
-    }
-
-    /* Main */
-    .main{
-      max-width:1200px;
-      width:100%;
-      margin:0 auto;
-      padding:18px 16px 70px;
-      display:flex;
-      gap:16px;
-    }
-    .pages{flex:1; min-width:0;}
-    .page{
-      display:none;
-      background: rgba(16,16,24,.75);
-      border:1px solid rgba(37,37,58,.9);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      animation: fadeIn .18s ease;
-    }
-    .page.active{display:block}
-    @keyframes fadeIn{
-      from{opacity:.65; transform: translateY(6px)}
-      to{opacity:1; transform: translateY(0)}
-    }
-
-    .pageHeader{
-      padding:22px 22px 16px;
-      border-bottom: 1px solid rgba(37,37,58,.75);
-      background: linear-gradient(180deg, rgba(255,106,0,.10), transparent 55%);
-    }
-    .pageHeader h1{margin:0; font-size:22px; letter-spacing:.2px;}
-    .pageHeader p{margin:8px 0 0; color:var(--muted); font-size:14px; max-width: 78ch;}
-
-    .content{padding:18px 22px 24px;}
-    .grid{display:grid; gap:14px; grid-template-columns: 1fr;}
-    @media(min-width: 920px){ .grid{grid-template-columns: 1fr 1fr} }
-    .card{
-      background: rgba(20,20,34,.65);
-      border:1px solid rgba(37,37,58,.85);
-      border-radius: var(--radius);
-      padding:16px;
-    }
-    .card h3{margin:0 0 8px; font-size:15px; letter-spacing:.2px;}
-    .card p{margin:0;color:var(--muted);font-size:14px}
-    .list{margin:10px 0 0 18px; color:var(--muted); font-size:14px;}
-    .list li{margin:7px 0}
-    .note{margin-top:10px; color:var(--muted); font-size:13px;}
-
-    .btnRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:11px 14px;
-      border-radius: 14px;
-      border:1px solid rgba(37,37,58,.9);
-      background: rgba(20,20,34,.65);
-      color:var(--text);
-      font-weight:650;
-      font-size:14px;
-      cursor:pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-    }
-    .btn:hover{
-      border-color: rgba(255,255,255,.18);
-      background: rgba(26,26,44,.70);
-      transform: translateY(-1px);
-      text-decoration:none;
-    }
-    .btnPrimary{
-      border-color: rgba(255,106,0,.55);
-      background: rgba(255,106,0,.14);
-    }
-    .btnDisabled{
-      opacity:.55;
-      cursor:not-allowed;
-      pointer-events:none;
-      border-color: rgba(37,37,58,.9);
-      background: rgba(20,20,34,.45);
-    }
-
-    footer{
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 16px 30px;
-      color:var(--muted);
-      font-size:13px;
-      text-align:center;
-    }
-    .footerLinks{
-      margin-top:10px;
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-
-    /* Forms */
-    .formGrid{display:grid; gap:12px; margin-top:12px;}
-    .field label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px;}
-    .field input, .field textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(37,37,58,.9);
-      background: rgba(11,11,16,.55);
-      color:var(--text);
-      outline:none;
-      font-size:14px;
-    }
-    .field textarea{min-height:120px; resize:vertical;}
-    .status{margin-top:12px; font-size:13px; color:var(--muted);}
-    .status.ok{color:#9fe6b8;}
-    .status.bad{color:#ffb4b4;}
-
-    /* Mobile centering fixes */
-    @media(max-width: 720px){
-      .brand{min-width:auto}
-      .langWrap span{display:none;}
-      .topbarInner{justify-content:space-between;}
-      .nav{justify-content:center;}
-      .main{padding-top:14px}
-    }
-  </style>
-</head>
-
-<body>
-<div class="app">
-
-  <div class="topbar">
-    <div class="topbarInner">
-      <div class="brand" role="banner">
-        <div class="brandLogo" aria-hidden="true">
-          <img src="logo.png" alt="">
-        </div>
-        <div class="brandTitle">
-          <strong data-i18n="brand_title">Prayer & Fire</strong>
-          <span data-i18n="brand_subtitle">Global Movement</span>
-        </div>
-      </div>
-
-      <div class="langWrap" title="Language">
-        <span data-i18n="lang_label">Language</span>
-        <select id="langSelect" aria-label="Language">
-          <option value="en" selected>EN</option>
-          <option value="es">ES</option>
-          <option value="pt">PT</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="nav" role="navigation" aria-label="Primary">
-      <button class="navBtn active" data-go="home" data-i18n="nav_home">Home</button>
-      <button class="navBtn" data-go="about" data-i18n="nav_about">Who we are</button>
-      <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs">Beliefs & Values</button>
-      <button class="navBtn" data-go="app" data-i18n="nav_app">Download App</button>
-      <button class="navBtn" data-go="sources" data-i18n="nav_sources">Sources</button>
-      <button class="navBtn" data-go="social" data-i18n="nav_social">Social Media</button>
-      <button class="navBtn" data-go="photos" data-i18n="nav_photos">Photos</button>
-      <button class="navBtn" data-go="volunteers" data-i18n="nav_volunteers">Volunteers</button>
-      <button class="navBtn" data-go="salvation" data-i18n="nav_salvation">Salvation</button>
-      <button class="navBtn" data-go="support" data-i18n="nav_support">Support</button>
-      <button class="navBtn" data-go="feedback" data-i18n="nav_feedback">Feedback</button>
-      <button class="navBtn" data-go="contact" data-i18n="nav_contact">Contact</button>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="pages" id="pages">
-
-      <!-- HOME -->
-      <section class="page active" data-page="home">
-        <div class="pageHeader">
-          <h1 data-i18n="home_title">Prayer & Fire – Global Movement</h1>
-          <p data-i18n="home_subtitle">
-            A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.
-          </p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="home_mission_title">Mission</h3>
-              <p data-i18n="home_mission_text">
-                Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.
-              </p>
-              <div class="btnRow">
-                <button class="btn btnPrimary navBtn" data-go="about" type="button">
-                  <span data-i18n="home_learn_more">Learn more</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT -->
-      <section class="page" data-page="about">
-        <div class="pageHeader">
-          <h1 data-i18n="about_title">Who we are</h1>
-          <p data-i18n="about_subtitle">
-            Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.
-          </p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="about_what_title">What we are</h3>
-              <p data-i18n="about_what_text">
-                A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.
-              </p>
-            </div>
-            <div class="card">
-              <h3 data-i18n="about_do_title">What we do</h3>
-              <ul class="list">
-                <li data-i18n="about_do_1">Prayer gatherings and intercession</li>
-                <li data-i18n="about_do_2">Community building and support</li>
-                <li data-i18n="about_do_3">Faith-based resources and outreach</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BELIEFS -->
-      <section class="page" data-page="beliefs">
-        <div class="pageHeader">
-          <h1 data-i18n="beliefs_title">Beliefs & Values</h1>
-          <p data-i18n="beliefs_subtitle">Our foundation is Jesus Christ and the Word of God.</p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="beliefs_beliefs_title">Beliefs</h3>
-              <ul class="list">
-                <li data-i18n="beliefs_b1">Jesus Christ is Lord and Savior.</li>
-                <li data-i18n="beliefs_b2">The Bible is the Word of God.</li>
-                <li data-i18n="beliefs_b3">Salvation is by grace through faith in Christ.</li>
-                <li data-i18n="beliefs_b4">Prayer transforms lives and aligns us with God’s will.</li>
-              </ul>
-            </div>
-            <div class="card">
-              <h3 data-i18n="beliefs_values_title">Values</h3>
-              <ul class="list">
-                <li data-i18n="beliefs_v1">Faith and obedience</li>
-                <li data-i18n="beliefs_v2">Integrity and humility</li>
-                <li data-i18n="beliefs_v3">Love, compassion, unity</li>
-                <li data-i18n="beliefs_v4">Excellence in service</li>
-                <li data-i18n="beliefs_v5">Global vision</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- APP -->
-      <section class="page" data-page="app">
-        <div class="pageHeader">
-          <h1 data-i18n="app_title">Download the App</h1>
-          <p data-i18n="app_subtitle">Get Prayer & Fire Mobile on iPhone and iPad.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
-            <p data-i18n="app_card_text">Download from the Apple App Store.</p>
-            <div class="btnRow">
-              <a class="btn btnPrimary" href="https://apps.apple.com/us/app/prayerandfire-mobile/id6757282653" target="_blank" rel="noopener">
-                <span data-i18n="home_appstore">Download on the App Store</span>
-              </a>
-            </div>
-          </div>
-          <div class="note" data-i18n="app_android">Android version coming soon.</div>
-        </div>
-      </section>
-
-      <!-- SOURCES -->
-      <section class="page" data-page="sources">
-        <div class="pageHeader">
-          <h1 data-i18n="sources_title">Sources</h1>
-          <p data-i18n="sources_subtitle">Curated resources available on Amazon.</p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="sources_book_title">Book – La Voz Interior</h3>
-              <p data-i18n="sources_book_text">Available on Amazon.</p>
-              <div class="btnRow">
-                <a class="btn btnPrimary" href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">
-                  <span data-i18n="sources_view_amazon">View on Amazon</span>
-                </a>
-              </div>
-            </div>
-            <div class="card">
-              <h3 data-i18n="sources_merch_title">Prayer & Fire Merchandise</h3>
-              <p data-i18n="sources_merch_text">Browse available items on Amazon.</p>
-              <div class="btnRow">
-                <a class="btn" href="https://www.amazon.com/s?k=prayer+and+fire+shirt" target="_blank" rel="noopener">
-                  <span data-i18n="sources_search_apparel">Search Apparel</span>
-                </a>
-                <a class="btn" href="https://www.amazon.com/s?k=prayer+and+fire+mug" target="_blank" rel="noopener">
-                  <span data-i18n="sources_search_mugs">Search Mugs</span>
-                </a>
-              </div>
-              <div class="note" data-i18n="sources_note">
-                Note: This page uses clean links (no icons/images) to keep the design modern.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SOCIAL MEDIA -->
-      <section class="page" data-page="social">
-        <div class="pageHeader">
-          <h1 data-i18n="social_title">Social Media</h1>
-          <p data-i18n="social_subtitle">Follow Prayer & Fire on our official platforms.</p>
-        </div>
-
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3>Instagram</h3>
-              <div class="btnRow">
-                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
-                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>YouTube</h3>
-              <div class="btnRow">
-                <a class="btn btnPrimary btnDisabled" href="#" aria-disabled="true">Coming soon</a>
-              </div>
-              <p class="status" style="margin-top:10px;" data-i18n="social_youtube_note">Channel link will be added soon.</p>
-            </div>
-
-            <div class="card">
-              <h3>TikTok</h3>
-              <div class="btnRow">
-                <a class="btn btnPrimary btnDisabled" href="#" aria-disabled="true">Coming soon</a>
-              </div>
-              <p class="status" style="margin-top:10px;" data-i18n="social_tiktok_note">Profile link will be added soon.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PHOTOS -->
-      <section class="page" data-page="photos">
-        <div class="pageHeader">
-          <h1 data-i18n="photos_title">Photos</h1>
-          <p data-i18n="photos_subtitle">See moments from Prayer & Fire gatherings and missions.</p>
-        </div>
-
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="photos_card_title">View photos</h3>
-            <p data-i18n="photos_card_text">For now, our photo gallery is hosted on Instagram.</p>
-            <div class="btnRow">
-              <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
-                <span data-i18n="photos_btn">Open Photos</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- VOLUNTEERS -->
-      <section class="page" data-page="volunteers">
-        <div class="pageHeader">
-          <h1 data-i18n="vol_title">Volunteers</h1>
-          <p data-i18n="vol_subtitle">Serve with Prayer & Fire. Send your request and we will contact you.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="vol_card_title">Volunteer Request</h3>
-            <p data-i18n="vol_card_text">Fill the form and submit. No login required.</p>
-
-            <form class="pfForm" data-form="volunteers" action="https://formspree.io/f/mojwrbaj" method="POST">
-              <input type="text" name="_gotcha" style="display:none">
-              <input type="hidden" name="form" value="Volunteer Request">
-              <div class="formGrid">
-                <div class="field">
-                  <label data-i18n="f_fullname_label">Full name</label>
-                  <input name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_email_label">Email</label>
-                  <input name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_phone_label">Phone (optional)</label>
-                  <input name="phone" autocomplete="tel" />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_location_label">City / Country</label>
-                  <input name="location" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_message_label">Message</label>
-                  <textarea name="message" required></textarea>
-                </div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn btnPrimary" type="submit">
-                  <span data-i18n="vol_send">Send Volunteer Request</span>
-                </button>
-              </div>
-
-              <div class="status" data-status></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- SALVATION -->
-      <section class="page" data-page="salvation">
-        <div class="pageHeader">
-          <h1 data-i18n="sal_title">Salvation</h1>
-          <p data-i18n="sal_subtitle">If you decided to accept Christ, we want to pray with you and help you take the next step.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="sal_prayer_title">Prayer</h3>
-            <p data-i18n="sal_prayer_text">
-              Lord Jesus, I believe You died and rose again. Forgive my sins. I receive You as my Savior and Lord.
-              Lead my life and make me new. Amen.
-            </p>
-          </div>
-
-          <div class="card" style="margin-top:14px;">
-            <h3 data-i18n="sal_next_title">Next step</h3>
-            <p data-i18n="sal_next_text">Send us a message. We will pray with you.</p>
-
-            <form class="pfForm" data-form="salvation" action="https://formspree.io/f/mojwrbaj" method="POST">
-              <input type="text" name="_gotcha" style="display:none">
-              <input type="hidden" name="form" value="Salvation Request">
-              <div class="formGrid">
-                <div class="field">
-                  <label data-i18n="f_fullname_label">Full name</label>
-                  <input name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_email_label">Email</label>
-                  <input name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_location_label">City / Country</label>
-                  <input name="location" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_message_label">Message</label>
-                  <textarea name="message" placeholder="I want to be saved / I need prayer" required></textarea>
-                </div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn btnPrimary" type="submit">
-                  <span data-i18n="sal_send">I Want to Follow Jesus</span>
-                </button>
-              </div>
-
-              <div class="status" data-status></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- SUPPORT -->
-      <section class="page" data-page="support">
-        <div class="pageHeader">
-          <h1 data-i18n="sup_title">Support</h1>
-          <p data-i18n="sup_subtitle">Your generosity helps support prayer initiatives and global outreach.</p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="sup_one_title">One-time giving</h3>
-              <p data-i18n="sup_one_text">Give securely via Stripe.</p>
-              <div class="btnRow">
-                <a class="btn btnPrimary" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
-                  <span data-i18n="sup_one_btn">Giving</span>
-                </a>
-              </div>
-            </div>
-            <div class="card">
-              <h3 data-i18n="sup_month_title">Monthly support ($6.99)</h3>
-              <p data-i18n="sup_month_text">Become a monthly supporter.</p>
-              <div class="btnRow">
-                <a class="btn" href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">
-                  <span data-i18n="sup_month_btn">Start Monthly Support</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- FEEDBACK -->
-      <section class="page" data-page="feedback">
-        <div class="pageHeader">
-          <h1 data-i18n="fb_title">Feedback</h1>
-          <p data-i18n="fb_subtitle">Notice an issue? Tell us so we can fix it.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="fb_card_title">Send Feedback</h3>
-            <p data-i18n="fb_card_text">Fill the form and submit.</p>
-
-            <form class="pfForm" data-form="feedback" action="https://formspree.io/f/mojwrbaj" method="POST">
-              <input type="text" name="_gotcha" style="display:none">
-              <input type="hidden" name="form" value="Website Feedback">
-              <div class="formGrid">
-                <div class="field">
-                  <label data-i18n="f_fullname_label">Full name</label>
-                  <input name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_email_label">Email</label>
-                  <input name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_message_label">Message</label>
-                  <textarea name="message" required></textarea>
-                </div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn btnPrimary" type="submit">
-                  <span data-i18n="fb_send">Send Feedback</span>
-                </button>
-              </div>
-
-              <div class="status" data-status></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section class="page" data-page="contact">
-        <div class="pageHeader">
-          <h1 data-i18n="ct_title">Contact</h1>
-          <p data-i18n="ct_subtitle">Reach us directly.</p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="ct_email_title">Email</h3>
-              <p><a href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a></p>
-            </div>
-
-            <div class="card">
-              <h3 data-i18n="ct_social_title">Social Media</h3>
-              <div class="btnRow">
-                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
-                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
-                <a class="btn btnDisabled" href="#" aria-disabled="true">YouTube (soon)</a>
-                <a class="btn btnDisabled" href="#" aria-disabled="true">TikTok (soon)</a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <footer>
-    © <span id="year"></span> <span data-i18n="footer_brand">Prayer & Fire</span>
-    <div class="footerLinks">
-      <a href="/privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
-      <a href="/terms.html" data-i18n="footer_terms">Terms</a>
-    </div>
-  </footer>
-
-</div>
-
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
   const pages = Array.from(document.querySelectorAll('.page'));
-
-  function showPage(key){
-    pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
-    buttons.forEach(b => b.classList.toggle('active', b.dataset.go === key));
-    history.replaceState(null, "", "#" + key);
-    window.scrollTo({top:0, behavior:"smooth"});
-  }
-
-  const initial = (location.hash || "#home").replace("#","");
-  const exists = pages.some(p=>p.dataset.page === initial);
-  showPage(exists ? initial : "home");
-
-  buttons.forEach(b=>{
-    b.addEventListener('click', ()=> showPage(b.dataset.go));
-  });
 
   const i18n = {
     en: {
@@ -860,6 +125,7 @@
       footer_privacy: "Privacy Policy",
       footer_terms: "Terms",
 
+      sent_sending: "Sending...",
       sent_ok: "Message sent. Thank you!",
       sent_bad: "Something went wrong. Please try again."
     },
@@ -984,6 +250,7 @@
       footer_privacy: "Privacidad",
       footer_terms: "Términos",
 
+      sent_sending: "Enviando...",
       sent_ok: "Mensaje enviado. ¡Gracias!",
       sent_bad: "Algo salió mal. Inténtalo de nuevo."
     },
@@ -1108,6 +375,7 @@
       footer_privacy: "Privacidade",
       footer_terms: "Termos",
 
+      sent_sending: "Enviando...",
       sent_ok: "Mensagem enviada. Obrigado!",
       sent_bad: "Algo deu errado. Tente novamente."
     }
@@ -1141,11 +409,48 @@
   }
   applyLang(savedLang);
 
+  function showPage(key, opts = {}){
+    const smooth = opts.smooth !== false;
+    pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.go === key));
+    if (smooth) window.scrollTo({top:0, behavior:"smooth"});
+    else window.scrollTo({top:0});
+  }
+
+  function navigateTo(key){
+    const exists = pages.some(p=>p.dataset.page === key);
+    const finalKey = exists ? key : "home";
+    history.pushState({page: finalKey}, "", "#" + finalKey);
+    showPage(finalKey, { smooth: true });
+  }
+
+  // Initial load (no smooth on first paint)
+  (function init(){
+    const initial = (location.hash || "#home").replace("#","");
+    const exists = pages.some(p=>p.dataset.page === initial);
+    showPage(exists ? initial : "home", { smooth: false });
+  })();
+
+  // Click navigation
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=> navigateTo(b.dataset.go));
+  });
+
+  // Browser back/forward
+  window.addEventListener("popstate", ()=>{
+    const key = (location.hash || "#home").replace("#","");
+    const exists = pages.some(p=>p.dataset.page === key);
+    showPage(exists ? key : "home", { smooth: false });
+  });
+
   async function handleSubmit(e){
     e.preventDefault();
     const form = e.currentTarget;
     const status = form.querySelector("[data-status]");
-    if(status){ status.className = "status"; status.textContent = "Sending..."; }
+    if(status){
+      status.className = "status";
+      status.textContent = getText("sent_sending") || "Sending...";
+    }
 
     try{
       const data = new FormData(form);
@@ -1174,7 +479,6 @@
       }
     }
   }
+
   document.querySelectorAll(".pfForm").forEach(f=> f.addEventListener("submit", handleSubmit));
 </script>
-</body>
-</html>
