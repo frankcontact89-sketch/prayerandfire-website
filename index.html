@@ -11,9 +11,16 @@
   <meta name="description" content="Prayer & Fire is a global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
   <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, donations" />
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="apple-touch-icon" href="/favicon.png">
+  <!-- Open Graph (sharing preview) -->
+  <meta property="og:title" content="Prayer & Fire – Global Movement" />
+  <meta property="og:description" content="A global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
+  <meta property="og:url" content="https://prayerandfire.org/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://prayerandfire.org/favicon.png" />
+
+  <!-- FAVICON (cache-bust) -->
+  <link rel="icon" type="image/png" href="/prayer-and-fire/favicon.png?v=20260207">
+  <link rel="apple-touch-icon" href="/prayer-and-fire/favicon.png?v=20260207">
 
   <style>
     :root{
@@ -186,6 +193,21 @@
     .list li{margin:7px 0}
     .note{margin-top:10px; color:var(--muted); font-size:13px;}
 
+    /* NEW: Home stat line */
+    .homeStat{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,106,0,.35);
+      background: rgba(255,106,0,.10);
+      color: var(--text);
+      font-size:13px;
+      font-weight:600;
+    }
+
     .btnRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
     .btn{
       display:inline-flex;
@@ -272,7 +294,8 @@
     <div class="topbarInner">
       <div class="brand" role="banner">
         <div class="brandLogo" aria-hidden="true">
-          <img src="logo.png" alt="Prayer & Fire logo">
+          <!-- Logo (absolute + cache-bust) -->
+          <img src="/prayer-and-fire/logo.png?v=20260207" alt="Prayer & Fire logo">
         </div>
         <div class="brandTitle">
           <strong data-i18n="brand_title">Prayer & Fire</strong>
@@ -316,6 +339,11 @@
           <p data-i18n="home_subtitle">
             A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.
           </p>
+
+          <!-- NEW: 40+ countries stat -->
+          <div class="homeStat" data-i18n="home_stat">
+            40+ countries represented, praying 24/7 in different languages.
+          </div>
         </div>
         <div class="content">
           <div class="grid">
@@ -779,6 +807,7 @@
       nav_contact: "Contact",
       home_title: "Prayer & Fire – Global Movement",
       home_subtitle: "A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.",
+      home_stat: "40+ countries represented, praying 24/7 in different languages.",
       home_mission_title: "Mission",
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_learn_more: "Learn more",
@@ -888,6 +917,7 @@
       nav_contact: "Contacto",
       home_title: "Prayer & Fire – Movimiento Global",
       home_subtitle: "Un movimiento cristiano global donde los creyentes se unen en oración y recursos centrados en la fe con una visión global.",
+      home_stat: "Más de 40 países representados, orando 24/7 en diferentes idiomas.",
       home_mission_title: "Misión",
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_learn_more: "Saber más",
@@ -997,6 +1027,7 @@
       nav_contact: "Contato",
       home_title: "Prayer & Fire – Movimento Global",
       home_subtitle: "Um movimento cristão global onde os crentes se unem em oração e recursos centrados na fé com uma visão global.",
+      home_stat: "Mais de 40 países representados, orando 24/7 em diferentes idiomas.",
       home_mission_title: "Missão",
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_learn_more: "Saiba mais",
