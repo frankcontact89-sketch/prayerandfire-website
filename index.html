@@ -18,9 +18,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://prayerandfire.org/favicon.png" />
 
-  <!-- FAVICON (cache-bust) -->
-  <link rel="icon" type="image/png" href="/prayer-and-fire/favicon.png?v=20260207">
-  <link rel="apple-touch-icon" href="/prayer-and-fire/favicon.png?v=20260207">
+  <!-- Favicon placeholders (will be set by JS to work on domain + github pages) -->
+  <link id="pfFavicon" rel="icon" type="image/png" href="/favicon.png">
+  <link id="pfAppleIcon" rel="apple-touch-icon" href="/favicon.png">
 
   <style>
     :root{
@@ -70,18 +70,42 @@
       gap:14px;
     }
 
-    .brand{
+    /* BRAND (clickable home) */
+    .brandLink{
       display:flex;
       align-items:center;
       gap:10px;
       min-width: 210px;
+      padding:6px 8px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(16,16,24,.35);
+      cursor:pointer;
+      transition: transform .10s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+      color: inherit;
     }
+    .brandLink:hover{
+      border-color: rgba(255,106,0,.35);
+      background: rgba(16,16,24,.55);
+      box-shadow: 0 10px 28px rgba(0,0,0,.28), 0 0 0 3px rgba(255,106,0,.08);
+      transform: translateY(-1px);
+      text-decoration:none;
+    }
+    .brandLink:active{
+      transform: translateY(0px) scale(.99);
+    }
+    .brandLink:focus{
+      outline:none;
+      box-shadow: 0 0 0 3px rgba(255,106,0,.18), 0 10px 28px rgba(0,0,0,.28);
+    }
+
     .brandLogo{
-      width:34px;height:34px;border-radius:10px;
+      width:42px;height:42px;border-radius:12px; /* bigger + premium */
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       display:flex;align-items:center;justify-content:center;
       overflow:hidden;
+      flex-shrink:0;
     }
     .brandLogo img{width:100%;height:100%;object-fit:cover}
     .brandTitle{display:flex; flex-direction:column; line-height:1.1;}
@@ -193,7 +217,7 @@
     .list li{margin:7px 0}
     .note{margin-top:10px; color:var(--muted); font-size:13px;}
 
-    /* NEW: Home stat line */
+    /* Home stat line */
     .homeStat{
       margin-top:10px;
       padding:10px 12px;
@@ -278,7 +302,7 @@
 
     /* Mobile centering fixes */
     @media(max-width: 720px){
-      .brand{min-width:auto}
+      .brandLink{min-width:auto}
       .langWrap span{display:none;}
       .topbarInner{justify-content:space-between;}
       .nav{justify-content:center;}
@@ -292,16 +316,16 @@
 
   <div class="topbar">
     <div class="topbarInner">
-      <div class="brand" role="banner">
+      <!-- Brand as Home button -->
+      <button class="brandLink navBtn" data-go="home" type="button" aria-label="Home">
         <div class="brandLogo" aria-hidden="true">
-          <!-- Logo (absolute + cache-bust) -->
-          <img src="/prayer-and-fire/logo.png?v=20260207" alt="Prayer & Fire logo">
+          <img id="pfLogo" src="/logo.png" alt="Prayer & Fire logo">
         </div>
         <div class="brandTitle">
           <strong data-i18n="brand_title">Prayer & Fire</strong>
           <span data-i18n="brand_subtitle">Global Movement</span>
         </div>
-      </div>
+      </button>
 
       <div class="langWrap" title="Language">
         <span data-i18n="lang_label">Language</span>
@@ -314,18 +338,18 @@
     </div>
 
     <div class="nav" role="navigation" aria-label="Primary">
-      <button class="navBtn active" data-go="home" data-i18n="nav_home">Home</button>
-      <button class="navBtn" data-go="about" data-i18n="nav_about">Who we are</button>
-      <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs">Beliefs & Values</button>
-      <button class="navBtn" data-go="app" data-i18n="nav_app">Download App</button>
-      <button class="navBtn" data-go="sources" data-i18n="nav_sources">Sources</button>
-      <button class="navBtn" data-go="social" data-i18n="nav_social">Social Media</button>
-      <button class="navBtn" data-go="photos" data-i18n="nav_photos">Photos</button>
-      <button class="navBtn" data-go="volunteers" data-i18n="nav_volunteers">Volunteers</button>
-      <button class="navBtn" data-go="salvation" data-i18n="nav_salvation">Salvation</button>
-      <button class="navBtn" data-go="support" data-i18n="nav_support">Support</button>
-      <button class="navBtn" data-go="feedback" data-i18n="nav_feedback">Feedback</button>
-      <button class="navBtn" data-go="contact" data-i18n="nav_contact">Contact</button>
+      <button class="navBtn active" data-go="home" data-i18n="nav_home" type="button">Home</button>
+      <button class="navBtn" data-go="about" data-i18n="nav_about" type="button">Who we are</button>
+      <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs" type="button">Beliefs & Values</button>
+      <button class="navBtn" data-go="app" data-i18n="nav_app" type="button">Download App</button>
+      <button class="navBtn" data-go="sources" data-i18n="nav_sources" type="button">Sources</button>
+      <button class="navBtn" data-go="social" data-i18n="nav_social" type="button">Social Media</button>
+      <button class="navBtn" data-go="photos" data-i18n="nav_photos" type="button">Photos</button>
+      <button class="navBtn" data-go="volunteers" data-i18n="nav_volunteers" type="button">Volunteers</button>
+      <button class="navBtn" data-go="salvation" data-i18n="nav_salvation" type="button">Salvation</button>
+      <button class="navBtn" data-go="support" data-i18n="nav_support" type="button">Support</button>
+      <button class="navBtn" data-go="feedback" data-i18n="nav_feedback" type="button">Feedback</button>
+      <button class="navBtn" data-go="contact" data-i18n="nav_contact" type="button">Contact</button>
     </div>
   </div>
 
@@ -340,7 +364,6 @@
             A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.
           </p>
 
-          <!-- NEW: 40+ countries stat -->
           <div class="homeStat" data-i18n="home_stat">
             40+ countries represented, praying 24/7 in different languages.
           </div>
@@ -739,25 +762,57 @@
   <footer>
     © <span id="year"></span> <span data-i18n="footer_brand">Prayer & Fire</span>
     <div class="footerLinks">
-      <a href="/privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
-      <a href="/terms.html" data-i18n="footer_terms">Terms</a>
+      <a id="pfPrivacyLink" href="/privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+      <a id="pfTermsLink" href="/terms.html" data-i18n="footer_terms">Terms</a>
     </div>
   </footer>
 
 </div>
 
 <script>
-  // Safe year (won't crash if element is missing)
+  // ==========
+  // PATH FIX (domain + github pages)
+  // ==========
+  const PF_CACHE = "20260207";
+  const isGithubPages = location.hostname.endsWith("github.io");
+  // When on github pages, repo is /prayer-and-fire
+  const BASE = isGithubPages ? "/prayer-and-fire" : "";
+
+  // Logo
+  const logoEl = document.getElementById("pfLogo");
+  if (logoEl) logoEl.src = `${BASE}/logo.png?v=${PF_CACHE}`;
+
+  // Favicons
+  const fav = document.getElementById("pfFavicon");
+  const apple = document.getElementById("pfAppleIcon");
+  if (fav) fav.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
+  if (apple) apple.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
+
+  // Footer links (privacy/terms) work in both environments
+  const privacy = document.getElementById("pfPrivacyLink");
+  const terms = document.getElementById("pfTermsLink");
+  if (privacy) privacy.href = `${BASE}/privacy.html`;
+  if (terms) terms.href = `${BASE}/terms.html`;
+
+  // ==========
+  // Safe year
+  // ==========
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // ==========
+  // Navigation
+  // ==========
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
   const pages = Array.from(document.querySelectorAll('.page'));
 
   function showPage(key, opts = {}){
     const smooth = opts.smooth !== false;
     pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
-    buttons.forEach(b => b.classList.toggle('active', b.dataset.go === key));
+    // Only highlight nav pills (ignore brand)
+    buttons.forEach(b => {
+      if (b.closest(".nav")) b.classList.toggle('active', b.dataset.go === key);
+    });
     if (smooth) window.scrollTo({top:0, behavior:"smooth"});
     else window.scrollTo({top:0});
   }
@@ -776,7 +831,7 @@
     showPage(exists ? initial : "home", { smooth: false });
   })();
 
-  // Click navigation
+  // Click navigation (includes brand)
   buttons.forEach(b=>{
     b.addEventListener('click', ()=> navigateTo(b.dataset.go));
   });
@@ -788,6 +843,9 @@
     showPage(exists ? key : "home", { smooth: false });
   });
 
+  // ==========
+  // i18n
+  // ==========
   const i18n = {
     en: {
       brand_title: "Prayer & Fire",
