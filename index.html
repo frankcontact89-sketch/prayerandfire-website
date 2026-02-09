@@ -100,7 +100,7 @@
     }
 
     .brandLogo{
-      width:42px;height:42px;border-radius:12px; /* bigger + premium */
+      width:42px;height:42px;border-radius:12px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       display:flex;align-items:center;justify-content:center;
@@ -123,7 +123,7 @@
       background: rgba(16,16,24,.65);
       flex-shrink:0;
     }
-    .langWrap span{font-size:12px;color:var(--muted);white-space:nowrap;}
+    .langWrap span{font-size:12px;color์色color:var(--muted);white-space:nowrap;}
     .langWrap select{
       width:auto;
       padding:8px 10px;
@@ -300,7 +300,6 @@
     .status.ok{color:#9fe6b8;}
     .status.bad{color:#ffb4b4;}
 
-    /* Mobile centering fixes */
     @media(max-width: 720px){
       .brandLink{min-width:auto}
       .langWrap span{display:none;}
@@ -316,7 +315,6 @@
 
   <div class="topbar">
     <div class="topbarInner">
-      <!-- Brand as Home button -->
       <button class="brandLink navBtn" data-go="home" type="button" aria-label="Home">
         <div class="brandLogo" aria-hidden="true">
           <img id="pfLogo" src="/logo.png" alt="Prayer & Fire logo">
@@ -342,6 +340,10 @@
       <button class="navBtn" data-go="about" data-i18n="nav_about" type="button">Who we are</button>
       <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs" type="button">Beliefs & Values</button>
       <button class="navBtn" data-go="app" data-i18n="nav_app" type="button">Download App</button>
+
+      <!-- NEW: SHOP -->
+      <button class="navBtn" data-go="shop" data-i18n="nav_shop" type="button">Shop</button>
+
       <button class="navBtn" data-go="sources" data-i18n="nav_sources" type="button">Sources</button>
       <button class="navBtn" data-go="social" data-i18n="nav_social" type="button">Social Media</button>
       <button class="navBtn" data-go="photos" data-i18n="nav_photos" type="button">Photos</button>
@@ -379,7 +381,46 @@
                 <button class="btn btnPrimary navBtn" data-go="about" type="button">
                   <span data-i18n="home_learn_more">Learn more</span>
                 </button>
+
+                <!-- NEW: Shop CTA -->
+                <button class="btn btnPrimary navBtn" data-go="shop" type="button">
+                  <span data-i18n="home_shop_btn">Shop Products</span>
+                </button>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHOP (NEW) -->
+      <section class="page" data-page="shop">
+        <div class="pageHeader">
+          <h1 data-i18n="shop_title">Shop</h1>
+          <p data-i18n="shop_subtitle">Get Prayer & Fire products worldwide. Apparel & items are on Etsy. The book is on Amazon.</p>
+        </div>
+
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3 data-i18n="shop_etsy_title">Apparel & Products (Etsy)</h3>
+              <p data-i18n="shop_etsy_text">Worldwide shipping via our official Etsy store.</p>
+              <div class="btnRow">
+                <a class="btn btnPrimary" href="https://prayerandfire.etsy.com" target="_blank" rel="noopener">
+                  <span data-i18n="shop_etsy_btn">Shop on Etsy</span>
+                </a>
+              </div>
+              <div class="note" data-i18n="shop_etsy_note">Print-on-demand items: shirts, mugs, and more.</div>
+            </div>
+
+            <div class="card">
+              <h3 data-i18n="shop_book_title">Book – La Voz Interior (Amazon)</h3>
+              <p data-i18n="shop_book_text">Get the official book on Amazon.</p>
+              <div class="btnRow">
+                <a class="btn" href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">
+                  <span data-i18n="shop_book_btn">Buy the Book on Amazon</span>
+                </a>
+              </div>
+              <div class="note" data-i18n="shop_book_note">Amazon link for the book only.</div>
             </div>
           </div>
         </div>
@@ -481,19 +522,18 @@
                 </a>
               </div>
             </div>
+
+            <!-- UPDATED: Merchandise now points to Etsy -->
             <div class="card">
               <h3 data-i18n="sources_merch_title">Prayer & Fire Merchandise</h3>
-              <p data-i18n="sources_merch_text">Browse available items on Amazon.</p>
+              <p data-i18n="sources_merch_text_updated">Browse available items in our Etsy store.</p>
               <div class="btnRow">
-                <a class="btn" href="https://www.amazon.com/s?k=prayer+and+fire+shirt" target="_blank" rel="noopener">
-                  <span data-i18n="sources_search_apparel">Search Apparel</span>
-                </a>
-                <a class="btn" href="https://www.amazon.com/s?k=prayer+and+fire+mug" target="_blank" rel="noopener">
-                  <span data-i18n="sources_search_mugs">Search Mugs</span>
+                <a class="btn btnPrimary" href="https://prayerandfire.etsy.com" target="_blank" rel="noopener">
+                  <span data-i18n="sources_shop_etsy">Shop on Etsy</span>
                 </a>
               </div>
-              <div class="note" data-i18n="sources_note">
-                Note: This page uses clean links (no icons/images) to keep the design modern.
+              <div class="note" data-i18n="sources_note_updated">
+                Note: Merch is hosted on Etsy for worldwide print-on-demand shipping.
               </div>
             </div>
           </div>
@@ -770,46 +810,32 @@
 </div>
 
 <script>
-  // ==========
-  // PATH FIX (domain + github pages)
-  // ==========
-  const PF_CACHE = "20260207";
+  const PF_CACHE = "20260208-shop";
   const isGithubPages = location.hostname.endsWith("github.io");
-  // When on github pages, repo is /prayer-and-fire
   const BASE = isGithubPages ? "/prayer-and-fire" : "";
 
-  // Logo
   const logoEl = document.getElementById("pfLogo");
   if (logoEl) logoEl.src = `${BASE}/logo.png?v=${PF_CACHE}`;
 
-  // Favicons
   const fav = document.getElementById("pfFavicon");
   const apple = document.getElementById("pfAppleIcon");
   if (fav) fav.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
   if (apple) apple.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
 
-  // Footer links (privacy/terms) work in both environments
   const privacy = document.getElementById("pfPrivacyLink");
   const terms = document.getElementById("pfTermsLink");
   if (privacy) privacy.href = `${BASE}/privacy.html`;
   if (terms) terms.href = `${BASE}/terms.html`;
 
-  // ==========
-  // Safe year
-  // ==========
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ==========
-  // Navigation
-  // ==========
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
   const pages = Array.from(document.querySelectorAll('.page'));
 
   function showPage(key, opts = {}){
     const smooth = opts.smooth !== false;
     pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
-    // Only highlight nav pills (ignore brand)
     buttons.forEach(b => {
       if (b.closest(".nav")) b.classList.toggle('active', b.dataset.go === key);
     });
@@ -824,28 +850,22 @@
     showPage(finalKey, { smooth: true });
   }
 
-  // Initial load
   (function init(){
     const initial = (location.hash || "#home").replace("#","");
     const exists = pages.some(p=>p.dataset.page === initial);
     showPage(exists ? initial : "home", { smooth: false });
   })();
 
-  // Click navigation (includes brand)
   buttons.forEach(b=>{
     b.addEventListener('click', ()=> navigateTo(b.dataset.go));
   });
 
-  // Browser back/forward
   window.addEventListener("popstate", ()=>{
     const key = (location.hash || "#home").replace("#","");
     const exists = pages.some(p=>p.dataset.page === key);
     showPage(exists ? key : "home", { smooth: false });
   });
 
-  // ==========
-  // i18n
-  // ==========
   const i18n = {
     en: {
       brand_title: "Prayer & Fire",
@@ -855,6 +875,7 @@
       nav_about: "Who we are",
       nav_beliefs: "Beliefs & Values",
       nav_app: "Download App",
+      nav_shop: "Shop",
       nav_sources: "Sources",
       nav_social: "Social Media",
       nav_photos: "Photos",
@@ -869,6 +890,17 @@
       home_mission_title: "Mission",
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_learn_more: "Learn more",
+      home_shop_btn: "Shop Products",
+      shop_title: "Shop",
+      shop_subtitle: "Get Prayer & Fire products worldwide. Apparel & items are on Etsy. The book is on Amazon.",
+      shop_etsy_title: "Apparel & Products (Etsy)",
+      shop_etsy_text: "Worldwide shipping via our official Etsy store.",
+      shop_etsy_btn: "Shop on Etsy",
+      shop_etsy_note: "Print-on-demand items: shirts, mugs, and more.",
+      shop_book_title: "Book – La Voz Interior (Amazon)",
+      shop_book_text: "Get the official book on Amazon.",
+      shop_book_btn: "Buy the Book on Amazon",
+      shop_book_note: "Amazon link for the book only.",
       about_title: "Who we are",
       about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
       about_what_title: "What we are",
@@ -902,10 +934,9 @@
       sources_book_text: "Available on Amazon.",
       sources_view_amazon: "View on Amazon",
       sources_merch_title: "Prayer & Fire Merchandise",
-      sources_merch_text: "Browse available items on Amazon.",
-      sources_search_apparel: "Search Apparel",
-      sources_search_mugs: "Search Mugs",
-      sources_note: "Note: This page uses clean links (no icons/images) to keep the design modern.",
+      sources_merch_text_updated: "Browse available items in our Etsy store.",
+      sources_shop_etsy: "Shop on Etsy",
+      sources_note_updated: "Note: Merch is hosted on Etsy for worldwide print-on-demand shipping.",
       social_title: "Social Media",
       social_subtitle: "Follow Prayer & Fire on our official platforms.",
       social_youtube_note: "Channel link will be added soon.",
@@ -965,6 +996,7 @@
       nav_about: "Quiénes Somos",
       nav_beliefs: "Creencias y Valores",
       nav_app: "Descargar App",
+      nav_shop: "Tienda",
       nav_sources: "Recursos",
       nav_social: "Redes",
       nav_photos: "Fotos",
@@ -979,6 +1011,17 @@
       home_mission_title: "Misión",
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_learn_more: "Saber más",
+      home_shop_btn: "Ver Tienda",
+      shop_title: "Tienda",
+      shop_subtitle: "Productos Prayer & Fire disponibles mundialmente. Ropa y artículos en Etsy. El libro en Amazon.",
+      shop_etsy_title: "Ropa y Productos (Etsy)",
+      shop_etsy_text: "Envíos internacionales en nuestra tienda oficial de Etsy.",
+      shop_etsy_btn: "Comprar en Etsy",
+      shop_etsy_note: "Productos print-on-demand: camisas, tazas y más.",
+      shop_book_title: "Libro – La Voz Interior (Amazon)",
+      shop_book_text: "Consigue el libro oficial en Amazon.",
+      shop_book_btn: "Comprar el libro en Amazon",
+      shop_book_note: "Link de Amazon solo para el libro.",
       about_title: "Quiénes Somos",
       about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
       about_what_title: "Qué somos",
@@ -1012,10 +1055,9 @@
       sources_book_text: "Disponible en Amazon.",
       sources_view_amazon: "Ver en Amazon",
       sources_merch_title: "Merch de Prayer & Fire",
-      sources_merch_text: "Explora artículos en Amazon.",
-      sources_search_apparel: "Buscar Ropa",
-      sources_search_mugs: "Buscar Tazas",
-      sources_note: "Nota: Esta página usa enlaces limpios (sin íconos/imágenes) para mantener el diseño moderno.",
+      sources_merch_text_updated: "Explora artículos en nuestra tienda Etsy.",
+      sources_shop_etsy: "Comprar en Etsy",
+      sources_note_updated: "Nota: El merch está en Etsy para envíos internacionales (print-on-demand).",
       social_title: "Redes",
       social_subtitle: "Síguenos en nuestras plataformas oficiales.",
       social_youtube_note: "El link del canal será agregado pronto.",
@@ -1075,6 +1117,7 @@
       nav_about: "Quem Somos",
       nav_beliefs: "Crenças e Valores",
       nav_app: "Baixar App",
+      nav_shop: "Loja",
       nav_sources: "Recursos",
       nav_social: "Redes",
       nav_photos: "Fotos",
@@ -1089,6 +1132,17 @@
       home_mission_title: "Missão",
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_learn_more: "Saiba mais",
+      home_shop_btn: "Ver Loja",
+      shop_title: "Loja",
+      shop_subtitle: "Produtos Prayer & Fire no mundo todo. Itens e roupas na Etsy. O livro na Amazon.",
+      shop_etsy_title: "Roupas e Produtos (Etsy)",
+      shop_etsy_text: "Envio internacional pela nossa loja oficial da Etsy.",
+      shop_etsy_btn: "Comprar na Etsy",
+      shop_etsy_note: "Print-on-demand: camisetas, canecas e mais.",
+      shop_book_title: "Livro – La Voz Interior (Amazon)",
+      shop_book_text: "Compre o livro oficial na Amazon.",
+      shop_book_btn: "Comprar o livro na Amazon",
+      shop_book_note: "Link da Amazon somente para o livro.",
       about_title: "Quem Somos",
       about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
       about_what_title: "O que somos",
@@ -1122,10 +1176,9 @@
       sources_book_text: "Disponível na Amazon.",
       sources_view_amazon: "Ver na Amazon",
       sources_merch_title: "Produtos Prayer & Fire",
-      sources_merch_text: "Veja itens disponíveis na Amazon.",
-      sources_search_apparel: "Buscar Roupas",
-      sources_search_mugs: "Buscar Canecas",
-      sources_note: "Nota: Esta página usa links limpos (sem ícones/imagens) para manter o design moderno.",
+      sources_merch_text_updated: "Veja itens na nossa loja Etsy.",
+      sources_shop_etsy: "Comprar na Etsy",
+      sources_note_updated: "Nota: O merch está na Etsy para envio internacional (print-on-demand).",
       social_title: "Redes",
       social_subtitle: "Siga o Prayer & Fire nas plataformas oficiais.",
       social_youtube_note: "O link do canal será adicionado em breve.",
