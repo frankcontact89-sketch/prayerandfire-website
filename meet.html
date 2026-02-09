@@ -11,13 +11,13 @@
     :root{
       --bg:#0b0b0f;
       --panel:#111118;
-      --panel2:#151523;
       --border:#24243a;
       --text:#ffffff;
       --muted:rgba(255,255,255,.72);
       --orange:#ff6a00;
       --orange2:#ff7a1a;
       --radius:18px;
+      --shadow: 0 16px 40px rgba(0,0,0,.34);
     }
     *{ box-sizing:border-box; }
     body{
@@ -29,7 +29,7 @@
       color:var(--text);
     }
 
-    /* Top bar */
+    /* GitHub Pages path support */
     .topbar{
       position: sticky;
       top: 0;
@@ -48,16 +48,15 @@
       gap:12px;
     }
     .brand{
-      display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text);
-      font-weight: 800;
-      letter-spacing: .3px;
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none; color:var(--text);
+      font-weight: 900; letter-spacing: .2px;
     }
     .dot{
       width:12px; height:12px; border-radius: 999px;
       background: var(--orange);
       box-shadow: 0 0 0 4px rgba(255,106,0,.18);
     }
-    .brand span{ opacity:.95; }
     .navbtn{
       text-decoration:none;
       color: var(--text);
@@ -65,62 +64,34 @@
       background: rgba(255,255,255,.04);
       padding: 10px 12px;
       border-radius: 999px;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 13px;
+      cursor:pointer;
     }
 
-    /* Layout */
     .wrap{
       max-width:1100px;
       margin:0 auto;
-      padding: 22px 18px 18px;
-    }
-    .hero{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:16px;
-      margin-top: 10px;
-    }
-    @media (max-width: 900px){
-      .hero{ grid-template-columns: 1fr; }
+      padding: 18px 18px 18px;
     }
     .card{
       border: 1px solid rgba(255,255,255,.08);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 16px 40px rgba(0,0,0,.34);
+      padding: 16px;
+      box-shadow: var(--shadow);
     }
     h1{
-      margin:0 0 8px;
-      font-size: 32px;
-      line-height: 1.05;
-      letter-spacing: -0.8px;
+      margin:0 0 10px;
+      font-size: 22px;
+      letter-spacing: -0.3px;
     }
-    .subtitle{ margin:0 0 14px; color: var(--muted); line-height:1.45; }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,106,0,.10);
-      border:1px solid rgba(255,106,0,.22);
-      font-weight: 800;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
-    .pill b{ color: var(--orange2); }
 
-    .field{
-      text-align:left;
-      margin-top: 10px;
-    }
     label{
       display:block;
       font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-weight: 800;
+      margin: 10px 0 8px;
       color: rgba(255,255,255,.86);
     }
     input{
@@ -171,27 +142,7 @@
       color:#fff;
       font-weight: 800;
     }
-    .hint{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.68);
-      line-height:1.4;
-    }
-    .features{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top: 12px;
-    }
-    @media (max-width: 520px){ .features{ grid-template-columns: 1fr; } }
-    .feat{
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-size: 13px;
-      color: rgba(255,255,255,.82);
-    }
+
     .meetWrap{
       display:none;
       margin-top: 14px;
@@ -199,7 +150,7 @@
       overflow:hidden;
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(0,0,0,.25);
-      box-shadow: 0 16px 40px rgba(0,0,0,.34);
+      box-shadow: var(--shadow);
     }
     .meetTop{
       display:flex;
@@ -212,102 +163,73 @@
       font-weight: 800;
       font-size: 13px;
     }
-    .meetTop small{ font-weight:700; opacity:.7; }
     #meet{
       width:100%;
-      height: calc(100vh - 210px);
-      min-height: 520px;
+      height: calc(100vh - 220px);
+      min-height: 540px;
       background: #000;
     }
-    .foot{
-      margin: 16px 0 6px;
-      font-size: 12px;
-      opacity:.62;
+    .smallnote{
+      margin-top:10px;
+      font-size:12px;
+      color: rgba(255,255,255,.70);
+      line-height:1.35;
     }
   </style>
 
   <script src="https://meet.jit.si/external_api.js"></script>
 </head>
-<body>
 
+<body>
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="/">
+      <a class="brand" id="homeLink" href="/">
         <span class="dot"></span>
         <span>Prayer &amp; Fire</span>
       </a>
-      <a class="navbtn" href="/">← Back to Home</a>
+      <a class="navbtn" id="backBtn" href="/">← Back to Home</a>
     </div>
   </div>
 
   <div class="wrap">
-    <div class="hero">
-      <div class="card">
-        <div class="pill">🔥 <b>Prayer &amp; Fire Meetings</b> — free for the community</div>
-        <h1>Join a meeting in seconds</h1>
-        <p class="subtitle">
-          Create or join a room using a simple code. Meetings include camera, microphone, chat, and participant controls (powered by Jitsi).
-        </p>
+    <div class="card">
+      <h1>🔥 Prayer &amp; Fire Meetings</h1>
 
-        <div class="field">
-          <label for="code">Meeting Code (example: 1234)</label>
-          <input id="code" placeholder="Enter a code or leave blank to auto-generate" autocomplete="off" inputmode="text" />
-        </div>
+      <label for="code">Meeting Code (example: 1234)</label>
+      <input id="code" placeholder="Enter a code or leave blank to auto-generate" autocomplete="off" inputmode="text" />
 
-        <div class="btnrow">
-          <button class="btn btn-primary" onclick="startMeeting()">Start / Join Meeting</button>
-          <button class="btn btn-ghost" onclick="copyLink()">Copy Invite Link</button>
-          <button class="btn btn-ghost" onclick="resetMeeting()">Reset</button>
-        </div>
-
-        <div class="hint">
-          Tip: Everyone must enter the same code to join the same room. Example room: <b>PrayerFire-1234</b>.
-        </div>
-
-        <div class="features">
-          <div class="feat">🎙️ Mic on/off</div>
-          <div class="feat">🎥 Camera on/off</div>
-          <div class="feat">💬 Chat</div>
-          <div class="feat">👥 Participants</div>
-          <div class="feat">🙋 Raise hand</div>
-          <div class="feat">🖥️ Screen share (PC)</div>
-        </div>
-
-        <div class="foot">
-          Note: Recording and advanced waiting-room moderation depend on the meeting server. This page uses the free public server <b>meet.jit.si</b>.
-        </div>
+      <div class="btnrow">
+        <button class="btn btn-primary" type="button" onclick="startMeeting()">Start / Join</button>
+        <button class="btn btn-ghost" type="button" onclick="copyLink()">Copy Invite Link</button>
+        <button class="btn btn-ghost" type="button" onclick="leaveMeeting()">Leave</button>
       </div>
 
-      <div class="card">
-        <h1 style="font-size:22px;margin-bottom:10px;">What this is</h1>
-        <p class="subtitle">
-          This is the official Prayer &amp; Fire meeting room system for prayer, discipleship, and community calls — free and simple.
-        </p>
-        <div class="features" style="margin-top:0;">
-          <div class="feat">✅ Works on phone &amp; computer</div>
-          <div class="feat">✅ No Zoom required</div>
-          <div class="feat">✅ Share the link to invite</div>
-          <div class="feat">✅ Simple “room code” system</div>
-        </div>
-        <div class="hint" style="margin-top:12px;">
-          For best experience, allow camera & microphone permissions when your browser asks.
-        </div>
+      <div class="smallnote">
+        Tip: Everyone must enter the same code to join the same room (example: <b>PrayerFire-1234</b>).<br/>
+        This stays on the Prayer &amp; Fire website — the meeting is embedded (powered by Jitsi).
       </div>
     </div>
 
     <div class="meetWrap" id="meetWrap">
       <div class="meetTop">
-        <div>
-          <span id="roomLabel">Meeting</span>
-          <small id="roomUrl"></small>
-        </div>
-        <button class="btn btn-ghost" onclick="leaveMeeting()" style="min-height:36px;padding:8px 10px;border-radius:12px;">Leave</button>
+        <div id="roomLabel">Meeting</div>
+        <button class="btn btn-ghost" type="button" onclick="leaveMeeting()" style="min-height:36px;padding:8px 10px;border-radius:12px;">End</button>
       </div>
       <div id="meet"></div>
     </div>
   </div>
 
 <script>
+  // GitHub Pages path support (same logic as your index)
+  const isGithubPages = location.hostname.endsWith("github.io");
+  const BASE = isGithubPages ? "/prayer-and-fire" : "";
+
+  // Fix home/back links so it never feels like "leaving"
+  const homeLink = document.getElementById("homeLink");
+  const backBtn = document.getElementById("backBtn");
+  if (homeLink) homeLink.href = BASE + "/";
+  if (backBtn) backBtn.href = BASE + "/";
+
   let api = null;
 
   function clean(v){
@@ -333,17 +255,14 @@
 
     document.getElementById("meetWrap").style.display = "block";
     document.getElementById("roomLabel").textContent = room;
-    document.getElementById("roomUrl").textContent = " — " + meetingUrl(room);
-    document.getElementById("roomUrl").setAttribute("data-url", meetingUrl(room));
 
-    // Destroy previous meeting if any
     if (api) {
       try { api.dispose(); } catch(e) {}
       api = null;
       document.getElementById("meet").innerHTML = "";
     }
 
-    const options = {
+    api = new JitsiMeetExternalAPI("meet.jit.si", {
       roomName: room,
       parentNode: document.querySelector("#meet"),
       width: "100%",
@@ -356,11 +275,9 @@
         SHOW_JITSI_WATERMARK: false,
         SHOW_WATERMARK_FOR_GUESTS: false
       }
-    };
+    });
 
-    api = new JitsiMeetExternalAPI("meet.jit.si", options);
-    // Scroll to meeting area
-    setTimeout(() => document.getElementById("meetWrap").scrollIntoView({ behavior: "smooth" }), 200);
+    setTimeout(() => document.getElementById("meetWrap").scrollIntoView({ behavior: "smooth" }), 150);
   }
 
   async function copyLink(){
@@ -375,20 +292,17 @@
   }
 
   function leaveMeeting(){
-    if (!api) return;
+    if (!api) {
+      document.getElementById("meetWrap").style.display = "none";
+      return;
+    }
     try { api.executeCommand("hangup"); } catch(e) {}
     try { api.dispose(); } catch(e) {}
     api = null;
     document.getElementById("meet").innerHTML = "";
     document.getElementById("meetWrap").style.display = "none";
-  }
-
-  function resetMeeting(){
-    document.getElementById("code").value = "";
-    leaveMeeting();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 </script>
 </body>
 </html>
-
