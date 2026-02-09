@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prayer & Fire – Meetings</title>
+  <meta name="description" content="Prayer & Fire Meetings — free video meetings for the community." />
+  <meta name="theme-color" content="#ff6a00" />
+
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --panel:#111118;
+      --panel2:#151523;
+      --border:#24243a;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.72);
+      --orange:#ff6a00;
+      --orange2:#ff7a1a;
+      --radius:18px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 50% -200px, rgba(255,106,0,.22), transparent 60%),
+                  radial-gradient(900px 500px at 90% 0px, rgba(255,106,0,.12), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+
+    /* Top bar */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11,11,15,.72);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .topbar-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text);
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+    .dot{
+      width:12px; height:12px; border-radius: 999px;
+      background: var(--orange);
+      box-shadow: 0 0 0 4px rgba(255,106,0,.18);
+    }
+    .brand span{ opacity:.95; }
+    .navbtn{
+      text-decoration:none;
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* Layout */
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 22px 18px 18px;
+    }
+    .hero{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:16px;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+    .card{
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.34);
+    }
+    h1{
+      margin:0 0 8px;
+      font-size: 32px;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+    }
+    .subtitle{ margin:0 0 14px; color: var(--muted); line-height:1.45; }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,106,0,.10);
+      border:1px solid rgba(255,106,0,.22);
+      font-weight: 800;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .pill b{ color: var(--orange2); }
+
+    .field{
+      text-align:left;
+      margin-top: 10px;
+    }
+    label{
+      display:block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,.86);
+    }
+    input{
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,15,22,.75);
+      color: var(--text);
+      font-size: 16px;
+      outline:none;
+    }
+    input:focus{
+      border-color: rgba(255,106,0,.55);
+      box-shadow: 0 0 0 4px rgba(255,106,0,.16);
+    }
+
+    .btnrow{
+      display:flex;
+      gap:10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .btn{
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .06s ease, filter .12s ease;
+      user-select: none;
+      min-height: 44px;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn-primary{
+      background: linear-gradient(180deg, var(--orange2), var(--orange));
+      color:#fff;
+      min-width: 220px;
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color:#fff;
+      font-weight: 800;
+    }
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.68);
+      line-height:1.4;
+    }
+    .features{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 520px){ .features{ grid-template-columns: 1fr; } }
+    .feat{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,.82);
+    }
+    .meetWrap{
+      display:none;
+      margin-top: 14px;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 16px 40px rgba(0,0,0,.34);
+    }
+    .meetTop{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap:10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.04);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .meetTop small{ font-weight:700; opacity:.7; }
+    #meet{
+      width:100%;
+      height: calc(100vh - 210px);
+      min-height: 520px;
+      background: #000;
+    }
+    .foot{
+      margin: 16px 0 6px;
+      font-size: 12px;
+      opacity:.62;
+    }
+  </style>
+
+  <script src="https://meet.jit.si/external_api.js"></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        <span class="dot"></span>
+        <span>Prayer &amp; Fire</span>
+      </a>
+      <a class="navbtn" href="/">← Back to Home</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="card">
+        <div class="pill">🔥 <b>Prayer &amp; Fire Meetings</b> — free for the community</div>
+        <h1>Join a meeting in seconds</h1>
+        <p class="subtitle">
+          Create or join a room using a simple code. Meetings include camera, microphone, chat, and participant controls (powered by Jitsi).
+        </p>
+
+        <div class="field">
+          <label for="code">Meeting Code (example: 1234)</label>
+          <input id="code" placeholder="Enter a code or leave blank to auto-generate" autocomplete="off" inputmode="text" />
+        </div>
+
+        <div class="btnrow">
+          <button class="btn btn-primary" onclick="startMeeting()">Start / Join Meeting</button>
+          <button class="btn btn-ghost" onclick="copyLink()">Copy Invite Link</button>
+          <button class="btn btn-ghost" onclick="resetMeeting()">Reset</button>
+        </div>
+
+        <div class="hint">
+          Tip: Everyone must enter the same code to join the same room. Example room: <b>PrayerFire-1234</b>.
+        </div>
+
+        <div class="features">
+          <div class="feat">🎙️ Mic on/off</div>
+          <div class="feat">🎥 Camera on/off</div>
+          <div class="feat">💬 Chat</div>
+          <div class="feat">👥 Participants</div>
+          <div class="feat">🙋 Raise hand</div>
+          <div class="feat">🖥️ Screen share (PC)</div>
+        </div>
+
+        <div class="foot">
+          Note: Recording and advanced waiting-room moderation depend on the meeting server. This page uses the free public server <b>meet.jit.si</b>.
+        </div>
+      </div>
+
+      <div class="card">
+        <h1 style="font-size:22px;margin-bottom:10px;">What this is</h1>
+        <p class="subtitle">
+          This is the official Prayer &amp; Fire meeting room system for prayer, discipleship, and community calls — free and simple.
+        </p>
+        <div class="features" style="margin-top:0;">
+          <div class="feat">✅ Works on phone &amp; computer</div>
+          <div class="feat">✅ No Zoom required</div>
+          <div class="feat">✅ Share the link to invite</div>
+          <div class="feat">✅ Simple “room code” system</div>
+        </div>
+        <div class="hint" style="margin-top:12px;">
+          For best experience, allow camera & microphone permissions when your browser asks.
+        </div>
+      </div>
+    </div>
+
+    <div class="meetWrap" id="meetWrap">
+      <div class="meetTop">
+        <div>
+          <span id="roomLabel">Meeting</span>
+          <small id="roomUrl"></small>
+        </div>
+        <button class="btn btn-ghost" onclick="leaveMeeting()" style="min-height:36px;padding:8px 10px;border-radius:12px;">Leave</button>
+      </div>
+      <div id="meet"></div>
+    </div>
+  </div>
+
+<script>
+  let api = null;
+
+  function clean(v){
+    return (v || "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-zA-Z0-9-_]/g, "");
+  }
+
+  function buildRoom(){
+    const input = document.getElementById("code").value;
+    const code = clean(input);
+    if (code.length >= 3) return "PrayerFire-" + code;
+    return "PrayerFire-" + Date.now();
+  }
+
+  function meetingUrl(room){
+    return "https://meet.jit.si/" + encodeURIComponent(room);
+  }
+
+  function startMeeting(){
+    const room = buildRoom();
+
+    document.getElementById("meetWrap").style.display = "block";
+    document.getElementById("roomLabel").textContent = room;
+    document.getElementById("roomUrl").textContent = " — " + meetingUrl(room);
+    document.getElementById("roomUrl").setAttribute("data-url", meetingUrl(room));
+
+    // Destroy previous meeting if any
+    if (api) {
+      try { api.dispose(); } catch(e) {}
+      api = null;
+      document.getElementById("meet").innerHTML = "";
+    }
+
+    const options = {
+      roomName: room,
+      parentNode: document.querySelector("#meet"),
+      width: "100%",
+      height: "100%",
+      configOverwrite: {
+        startWithAudioMuted: false,
+        startWithVideoMuted: false
+      },
+      interfaceConfigOverwrite: {
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_WATERMARK_FOR_GUESTS: false
+      }
+    };
+
+    api = new JitsiMeetExternalAPI("meet.jit.si", options);
+    // Scroll to meeting area
+    setTimeout(() => document.getElementById("meetWrap").scrollIntoView({ behavior: "smooth" }), 200);
+  }
+
+  async function copyLink(){
+    const room = buildRoom();
+    const url = meetingUrl(room);
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("Invite link copied:\n" + url);
+    } catch (e) {
+      prompt("Copy this invite link:", url);
+    }
+  }
+
+  function leaveMeeting(){
+    if (!api) return;
+    try { api.executeCommand("hangup"); } catch(e) {}
+    try { api.dispose(); } catch(e) {}
+    api = null;
+    document.getElementById("meet").innerHTML = "";
+    document.getElementById("meetWrap").style.display = "none";
+  }
+
+  function resetMeeting(){
+    document.getElementById("code").value = "";
+    leaveMeeting();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
+</body>
+</html>
+
