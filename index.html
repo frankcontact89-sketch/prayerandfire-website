@@ -100,7 +100,7 @@
     }
 
     .brandLogo{
-      width:46px;height:46px;border-radius:14px; /* bigger + premium */
+      width:46px;height:46px;border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
       display:flex;align-items:center;justify-content:center;
@@ -343,6 +343,7 @@
       <button class="navBtn" data-go="about" data-i18n="nav_about" type="button">Who we are</button>
       <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs" type="button">Beliefs & Values</button>
       <button class="navBtn" data-go="app" data-i18n="nav_app" type="button">Download App</button>
+      <button class="navBtn" data-go="meetings" data-i18n="nav_meetings" type="button">Meetings</button>
       <button class="navBtn" data-go="store" data-i18n="nav_store" type="button">P&F Store</button>
       <button class="navBtn" data-go="social" data-i18n="nav_social" type="button">Social Media</button>
       <button class="navBtn" data-go="photos" data-i18n="nav_photos" type="button">Photos</button>
@@ -381,9 +382,33 @@
                 <button class="btn btnPrimary navBtn" data-go="about" type="button">
                   <span data-i18n="home_learn_more">Learn more</span>
                 </button>
-                <!-- No store link in Home (removed as requested) -->
+
+                <a class="btn btnPrimary" href="/meet.html">
+                  <span data-i18n="home_meetings_btn">Prayer & Fire Meetings</span>
+                </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MEETINGS -->
+      <section class="page" data-page="meetings">
+        <div class="pageHeader">
+          <h1 data-i18n="meet_title">Prayer & Fire Meetings</h1>
+          <p data-i18n="meet_subtitle">Create or join a free meeting for the Prayer & Fire community.</p>
+        </div>
+
+        <div class="content">
+          <div class="card">
+            <h3 data-i18n="meet_card_title">Open Meetings</h3>
+            <p data-i18n="meet_card_text">Meetings open in a new tab and work on phones and computers.</p>
+            <div class="btnRow">
+              <a class="btn btnPrimary" href="/meet.html" target="_blank" rel="noopener">
+                <span data-i18n="meet_open_btn">Open Meetings</span>
+              </a>
+            </div>
+            <div class="note" data-i18n="meet_note">Tip: share the link or create a room code inside the meetings page.</div>
           </div>
         </div>
       </section>
@@ -679,7 +704,7 @@
               </div>
             </div>
             <div class="card">
-              <h3 data-i18n="sup_month_title">Monthly support ($6.99)</h3>
+              <h3 data-i18n="sup_month_title">Monthly support ($8.99)</h3>
               <p data-i18n="sup_month_text">Become a monthly supporter.</p>
               <div class="btnRow">
                 <a class="btn" href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">
@@ -855,6 +880,7 @@
       nav_about: "Who we are",
       nav_beliefs: "Beliefs & Values",
       nav_app: "Download App",
+      nav_meetings: "Meetings",
       nav_store: "P&F Store",
       nav_social: "Social Media",
       nav_photos: "Photos",
@@ -863,12 +889,22 @@
       nav_support: "Support",
       nav_feedback: "Feedback",
       nav_contact: "Contact",
+
       home_title: "Prayer & Fire – Global Movement",
       home_subtitle: "A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.",
       home_stat: "40+ countries represented, praying 24/7 in different languages.",
       home_mission_title: "Mission",
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_learn_more: "Learn more",
+      home_meetings_btn: "Prayer & Fire Meetings",
+
+      meet_title: "Prayer & Fire Meetings",
+      meet_subtitle: "Create or join a free meeting for the Prayer & Fire community.",
+      meet_card_title: "Open Meetings",
+      meet_card_text: "Meetings open in a new tab and work on phones and computers.",
+      meet_open_btn: "Open Meetings",
+      meet_note: "Tip: share the link or create a room code inside the meetings page.",
+
       store_title: "P&F Store",
       store_subtitle: "Apparel & products are available worldwide via Etsy. The book is available on Amazon.",
       store_etsy_title: "Apparel & Products (Etsy)",
@@ -879,6 +915,7 @@
       store_book_text: "Get the official book on Amazon.",
       store_book_btn: "Buy the Book",
       store_book_note: "Amazon link for the book only.",
+
       about_title: "Who we are",
       about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
       about_what_title: "What we are",
@@ -887,6 +924,7 @@
       about_do_1: "Prayer gatherings and intercession",
       about_do_2: "Community building and support",
       about_do_3: "Faith-based resources and outreach",
+
       beliefs_title: "Beliefs & Values",
       beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
       beliefs_beliefs_title: "Beliefs",
@@ -900,26 +938,31 @@
       beliefs_v3: "Love, compassion, unity",
       beliefs_v4: "Excellence in service",
       beliefs_v5: "Global vision",
+
       app_title: "Download the App",
       app_subtitle: "Get Prayer & Fire Mobile on iPhone and iPad.",
       app_card_title: "Prayer & Fire Mobile",
       app_card_text: "Download from the Apple App Store.",
       app_android: "Android version coming soon.",
       home_appstore: "Download on the App Store",
+
       social_title: "Social Media",
       social_subtitle: "Follow Prayer & Fire on our official platforms.",
       social_youtube_note: "Channel link will be added soon.",
       social_tiktok_note: "Profile link will be added soon.",
+
       photos_title: "Photos",
       photos_subtitle: "See moments from Prayer & Fire gatherings and missions.",
       photos_card_title: "View photos",
       photos_card_text: "For now, our photo gallery is hosted on Instagram.",
       photos_btn: "Open Photos",
+
       vol_title: "Volunteers",
       vol_subtitle: "Serve with Prayer & Fire. Send your request and we will contact you.",
       vol_card_title: "Volunteer Request",
       vol_card_text: "Fill the form and submit. No login required.",
       vol_send: "Send Volunteer Request",
+
       sal_title: "Salvation",
       sal_subtitle: "If you decided to accept Christ, we want to pray with you and help you take the next step.",
       sal_prayer_title: "Prayer",
@@ -927,28 +970,33 @@
       sal_next_title: "Next step",
       sal_next_text: "Send us a message. We will pray with you.",
       sal_send: "I Want to Follow Jesus",
+
       sup_title: "Support",
       sup_subtitle: "Your generosity helps support prayer initiatives and global outreach.",
       sup_one_title: "One-time giving",
       sup_one_text: "Give securely via Stripe.",
       sup_one_btn: "Giving",
-      sup_month_title: "Monthly support ($6.99)",
+      sup_month_title: "Monthly support ($8.99)",
       sup_month_text: "Become a monthly supporter.",
       sup_month_btn: "Start Monthly Support",
+
       fb_title: "Feedback",
       fb_subtitle: "Notice an issue? Tell us so we can fix it.",
       fb_card_title: "Send Feedback",
       fb_card_text: "Fill the form and submit.",
       fb_send: "Send Feedback",
+
       ct_title: "Contact",
       ct_subtitle: "Reach us directly.",
       ct_email_title: "Email",
       ct_social_title: "Social Media",
+
       f_fullname_label: "Full name",
       f_email_label: "Email",
       f_phone_label: "Phone (optional)",
       f_location_label: "City / Country",
       f_message_label: "Message",
+
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacy Policy",
       footer_terms: "Terms",
@@ -965,6 +1013,7 @@
       nav_about: "Quiénes Somos",
       nav_beliefs: "Creencias y Valores",
       nav_app: "Descargar App",
+      nav_meetings: "Reuniones",
       nav_store: "Tienda P&F",
       nav_social: "Redes",
       nav_photos: "Fotos",
@@ -973,12 +1022,22 @@
       nav_support: "Apoyo",
       nav_feedback: "Comentarios",
       nav_contact: "Contacto",
+
       home_title: "Prayer & Fire – Movimiento Global",
       home_subtitle: "Un movimiento cristiano global donde los creyentes se unen en oración y recursos centrados en la fe con una visión global.",
       home_stat: "Más de 40 países representados, orando 24/7 en diferentes idiomas.",
       home_mission_title: "Misión",
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_learn_more: "Saber más",
+      home_meetings_btn: "Reuniones Prayer & Fire",
+
+      meet_title: "Reuniones Prayer & Fire",
+      meet_subtitle: "Crea o únete a una reunión gratis para la comunidad de Prayer & Fire.",
+      meet_card_title: "Abrir Reuniones",
+      meet_card_text: "Las reuniones se abren en una nueva pestaña y funcionan en teléfonos y computadoras.",
+      meet_open_btn: "Abrir Reuniones",
+      meet_note: "Tip: comparte el link o crea un código de sala dentro de la página de reuniones.",
+
       store_title: "Tienda P&F",
       store_subtitle: "Ropa y productos disponibles mundialmente en Etsy. El libro está disponible en Amazon.",
       store_etsy_title: "Ropa y Productos (Etsy)",
@@ -989,6 +1048,7 @@
       store_book_text: "Consigue el libro oficial en Amazon.",
       store_book_btn: "Comprar el libro",
       store_book_note: "Link de Amazon solo para el libro.",
+
       about_title: "Quiénes Somos",
       about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
       about_what_title: "Qué somos",
@@ -997,6 +1057,7 @@
       about_do_1: "Reuniones de oración e intercesión",
       about_do_2: "Comunidad y apoyo",
       about_do_3: "Recursos y alcance",
+
       beliefs_title: "Creencias y Valores",
       beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
       beliefs_beliefs_title: "Creencias",
@@ -1010,26 +1071,31 @@
       beliefs_v3: "Amor, compasión, unidad",
       beliefs_v4: "Excelencia en el servicio",
       beliefs_v5: "Visión global",
+
       app_title: "Descargar App",
       app_subtitle: "Obtén Prayer & Fire Mobile en iPhone y iPad.",
       app_card_title: "Prayer & Fire Mobile",
       app_card_text: "Descarga desde Apple App Store.",
       app_android: "Versión Android pronto.",
       home_appstore: "Descargar en App Store",
+
       social_title: "Redes",
       social_subtitle: "Síguenos en nuestras plataformas oficiales.",
       social_youtube_note: "El link del canal será agregado pronto.",
       social_tiktok_note: "El link del perfil será agregado pronto.",
+
       photos_title: "Fotos",
       photos_subtitle: "Mira momentos de reuniones, misiones y comunidad.",
       photos_card_title: "Ver fotos",
       photos_card_text: "Por ahora, la galería de fotos está en Instagram.",
       photos_btn: "Abrir Fotos",
+
       vol_title: "Voluntarios",
       vol_subtitle: "Sirve con Prayer & Fire. Envía tu solicitud y te contactaremos.",
       vol_card_title: "Solicitud de voluntariado",
       vol_card_text: "Llena el formulario y envía. No requiere login.",
       vol_send: "Enviar solicitud",
+
       sal_title: "Salvación",
       sal_subtitle: "Si decidiste aceptar a Cristo, queremos orar contigo y ayudarte con el siguiente paso.",
       sal_prayer_title: "Oración",
@@ -1037,28 +1103,33 @@
       sal_next_title: "Siguiente paso",
       sal_next_text: "Envíanos un mensaje. Vamos a orar contigo.",
       sal_send: "Quiero seguir a Jesús",
+
       sup_title: "Apoyo",
       sup_subtitle: "Tu generosidad ayuda a iniciativas de oración y alcance global.",
       sup_one_title: "Ofrenda única",
       sup_one_text: "Ofrenda segura por Stripe.",
       sup_one_btn: "Ofrendar",
-      sup_month_title: "Apoyo mensual ($6.99)",
+      sup_month_title: "Apoyo mensual ($8.99)",
       sup_month_text: "Hazte colaborador mensual.",
       sup_month_btn: "Comenzar apoyo mensual",
+
       fb_title: "Comentarios",
       fb_subtitle: "¿Ves un problema? Dínoslo para corregirlo.",
       fb_card_title: "Enviar comentario",
       fb_card_text: "Llena el formulario y envía.",
       fb_send: "Enviar",
+
       ct_title: "Contacto",
       ct_subtitle: "Contáctanos directamente.",
       ct_email_title: "Email",
       ct_social_title: "Redes",
+
       f_fullname_label: "Nombre completo",
       f_email_label: "Email",
       f_phone_label: "Teléfono (opcional)",
       f_location_label: "Ciudad / País",
       f_message_label: "Mensaje",
+
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacidad",
       footer_terms: "Términos",
@@ -1075,6 +1146,7 @@
       nav_about: "Quem Somos",
       nav_beliefs: "Crenças e Valores",
       nav_app: "Baixar App",
+      nav_meetings: "Reuniões",
       nav_store: "Loja P&F",
       nav_social: "Redes",
       nav_photos: "Fotos",
@@ -1083,12 +1155,22 @@
       nav_support: "Apoio",
       nav_feedback: "Feedback",
       nav_contact: "Contato",
+
       home_title: "Prayer & Fire – Movimento Global",
       home_subtitle: "Um movimento cristão global onde os crentes se unem em oração e recursos centrados na fé com uma visão global.",
       home_stat: "Mais de 40 países representados, orando 24/7 em diferentes idiomas.",
       home_mission_title: "Missão",
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_learn_more: "Saiba mais",
+      home_meetings_btn: "Reuniões Prayer & Fire",
+
+      meet_title: "Reuniões Prayer & Fire",
+      meet_subtitle: "Crie ou entre em uma reunião gratuita para a comunidade Prayer & Fire.",
+      meet_card_title: "Abrir Reuniões",
+      meet_card_text: "As reuniões abrem em uma nova aba e funcionam em celular e computador.",
+      meet_open_btn: "Abrir Reuniões",
+      meet_note: "Dica: compartilhe o link ou crie um código de sala dentro da página de reuniões.",
+
       store_title: "Loja P&F",
       store_subtitle: "Roupas e produtos disponíveis no mundo todo pela Etsy. O livro está disponível na Amazon.",
       store_etsy_title: "Roupas e Produtos (Etsy)",
@@ -1099,6 +1181,7 @@
       store_book_text: "Compre o livro oficial na Amazon.",
       store_book_btn: "Comprar o livro",
       store_book_note: "Link da Amazon somente para o livro.",
+
       about_title: "Quem Somos",
       about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
       about_what_title: "O que somos",
@@ -1107,6 +1190,7 @@
       about_do_1: "Encontros de oração e intercessão",
       about_do_2: "Comunidade e apoio",
       about_do_3: "Recursos e alcance",
+
       beliefs_title: "Crenças e Valores",
       beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
       beliefs_beliefs_title: "Crenças",
@@ -1120,26 +1204,31 @@
       beliefs_v3: "Amor, compaixão, unidade",
       beliefs_v4: "Excelência no servir",
       beliefs_v5: "Visão global",
+
       app_title: "Baixar App",
       app_subtitle: "Tenha Prayer & Fire Mobile no iPhone e iPad.",
       app_card_title: "Prayer & Fire Mobile",
       app_card_text: "Baixe pela Apple App Store.",
       app_android: "Versão Android em breve.",
       home_appstore: "Baixar na App Store",
+
       social_title: "Redes",
       social_subtitle: "Siga o Prayer & Fire nas plataformas oficiais.",
       social_youtube_note: "O link do canal será adicionado em breve.",
       social_tiktok_note: "O link do perfil será adicionado em breve.",
+
       photos_title: "Fotos",
       photos_subtitle: "Veja momentos de encontros e missões do Prayer & Fire.",
       photos_card_title: "Ver fotos",
       photos_card_text: "Por enquanto, nossa galeria está no Instagram.",
       photos_btn: "Abrir Fotos",
+
       vol_title: "Voluntários",
       vol_subtitle: "Sirva com Prayer & Fire. Envie seu pedido e entraremos em contato.",
       vol_card_title: "Pedido de voluntariado",
       vol_card_text: "Preencha o formulário e envie. Sem login.",
       vol_send: "Enviar pedido",
+
       sal_title: "Salvação",
       sal_subtitle: "Se você decidiu aceitar Cristo, queremos orar com você e ajudar no próximo passo.",
       sal_prayer_title: "Oração",
@@ -1147,28 +1236,33 @@
       sal_next_title: "Próximo passo",
       sal_next_text: "Envie uma mensagem. Vamos orar com você.",
       sal_send: "Quero seguir Jesus",
+
       sup_title: "Apoio",
       sup_subtitle: "Sua generosidade apoia iniciativas de oração e alcance global.",
       sup_one_title: "Oferta única",
       sup_one_text: "Ofereça com segurança via Stripe.",
       sup_one_btn: "Ofertar",
-      sup_month_title: "Apoio mensal ($6.99)",
+      sup_month_title: "Apoio mensal ($8.99)",
       sup_month_text: "Torne-se um apoiador mensal.",
       sup_month_btn: "Iniciar apoio mensal",
+
       fb_title: "Feedback",
       fb_subtitle: "Viu um problema? Conte para corrigirmos.",
       fb_card_title: "Enviar feedback",
       fb_card_text: "Preencha o formulário e envie.",
       fb_send: "Enviar",
+
       ct_title: "Contato",
       ct_subtitle: "Fale conosco diretamente.",
       ct_email_title: "Email",
       ct_social_title: "Redes",
+
       f_fullname_label: "Nome completo",
       f_email_label: "Email",
       f_phone_label: "Telefone (opcional)",
       f_location_label: "Cidade / País",
       f_message_label: "Mensagem",
+
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacidade",
       footer_terms: "Termos",
