@@ -18,9 +18,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://prayerandfire.org/logo.jpg" />
 
-  <!-- Favicons -->
-  <link id="pfFavicon" rel="icon" type="image/png" href="favicon.png">
-  <link id="pfAppleIcon" rel="apple-touch-icon" href="favicon.png">
+  <!-- Favicons (use ./ so it works on custom domain and GitHub Pages subpath) -->
+  <link id="pfFavicon" rel="icon" type="image/png" href="./favicon.png">
+  <link id="pfAppleIcon" rel="apple-touch-icon" href="./favicon.png">
 
   <style>
     :root{
@@ -104,6 +104,18 @@
       flex-shrink:0;
     }
     .brandLogo img{width:100%;height:100%;object-fit:cover}
+
+    /* Fallback if image fails */
+    .logoFallback{
+      width:100%;height:100%;
+      display:none;
+      align-items:center;justify-content:center;
+      font-weight:800;
+      letter-spacing:.5px;
+      color: rgba(255,106,0,.95);
+      background: rgba(255,106,0,.10);
+    }
+
     .brandTitle{display:flex; flex-direction:column; line-height:1.1;}
     .brandTitle strong{font-size:14px; letter-spacing:.2px}
     .brandTitle span{font-size:12px;color:var(--muted)}
@@ -309,7 +321,8 @@
     <div class="topbarInner">
       <button class="brandLink navBtn" data-go="home" type="button" aria-label="Home">
         <div class="brandLogo" aria-hidden="true">
-          <img id="pfLogo" src="logo.jpg" alt="Prayer & Fire logo">
+          <img id="pfLogo" src="./logo.jpg" alt="Prayer & Fire logo">
+          <div id="logoFallback" class="logoFallback">P&amp;F</div>
         </div>
         <div class="brandTitle">
           <strong data-i18n="brand_title">Prayer & Fire</strong>
@@ -647,15 +660,18 @@
                 </a>
               </div>
             </div>
+
             <div class="card">
               <h3 data-i18n="sup_month_title">Monthly support ($8.99)</h3>
               <p data-i18n="sup_month_text">Become a monthly supporter.</p>
               <div class="btnRow">
-                <a class="btn" href="https://buy.stripe.com/9B6cN5fAc0c29GTfij7bW03" target="_blank" rel="noopener">
+                <!-- ✅ NEW MONTHLY LINK ($8.99) -->
+                <a class="btn" href="https://buy.stripe.com/6oU14ngEgcYO8CPfij7bW05" target="_blank" rel="noopener">
                   <span data-i18n="sup_month_btn">Start Monthly Support</span>
                 </a>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -723,8 +739,8 @@
   <footer>
     © <span id="year"></span> <span data-i18n="footer_brand">Prayer & Fire</span>
     <div class="footerLinks">
-      <a id="pfPrivacyLink" href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
-      <a id="pfTermsLink" href="terms.html" data-i18n="footer_terms">Terms</a>
+      <a id="pfPrivacyLink" href="./privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+      <a id="pfTermsLink" href="./terms.html" data-i18n="footer_terms">Terms</a>
     </div>
   </footer>
 
@@ -736,11 +752,20 @@
   const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
-  const PF_CACHE = "20260210";
+  // bump cache to force refresh
+  const PF_CACHE = "20260210-2";
 
   // Logo
   const logoEl = document.getElementById("pfLogo");
-  if (logoEl) logoEl.src = `${BASE}/logo.jpg?v=${PF_CACHE}`;
+  const logoFallback = document.getElementById("logoFallback");
+
+  if (logoEl) {
+    logoEl.src = `${BASE}/logo.jpg?v=${PF_CACHE}`;
+    logoEl.onerror = () => {
+      logoEl.style.display = "none";
+      if (logoFallback) logoFallback.style.display = "flex";
+    };
+  }
 
   // Favicons
   const fav = document.getElementById("pfFavicon");
@@ -795,8 +820,7 @@
     showPage(exists ? key : "home", { smooth: false });
   });
 
-  // i18n (your dictionaries can be added back here if you want)
-  // Keeping it simple so nothing breaks.
+  // i18n dictionaries can be added later (kept minimal so nothing breaks)
 </script>
 
 </body>
