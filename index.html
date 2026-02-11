@@ -303,7 +303,7 @@
     .status.ok{color:#9fe6b8;}
     .status.bad{color:#ffb4b4;}
 
-    /* ======= NEW: Leadership / Founders styles ======= */
+    /* ======= Leadership / Founders styles ======= */
     .leadersWrap{
       margin-top: 6px;
       display:flex;
@@ -509,7 +509,8 @@
             <div class="leadersWrap">
               <div class="leader">
                 <div class="leaderAvatar">
-                  <img id="pfAline" src="./aline.png" alt="Aline Ramiro">
+                  <!-- ✅ FIXED: must match real GitHub filename exactly -->
+                  <img id="pfAline" src="./aline.png.PNG" alt="Aline Ramiro">
                 </div>
                 <div class="leaderRole" data-i18n="leaders_founder">Founder</div>
                 <div class="leaderName">Aline Ramiro</div>
@@ -517,7 +518,8 @@
 
               <div class="leader">
                 <div class="leaderAvatar">
-                  <img id="pfFrancisco" src="./francisco.png" alt="Francisco Rivera">
+                  <!-- ✅ FIXED: must match real GitHub filename exactly -->
+                  <img id="pfFrancisco" src="./francisco.png.PNG" alt="Francisco Rivera">
                 </div>
                 <div class="leaderRole" data-i18n="leaders_president">President</div>
                 <div class="leaderName">Francisco Rivera</div>
@@ -745,7 +747,6 @@
               <h3 data-i18n="sup_month_title">Monthly support ($8.99)</h3>
               <p data-i18n="sup_month_text">Become a monthly supporter.</p>
               <div class="btnRow">
-                <!-- ✅ NEW MONTHLY LINK ($8.99) -->
                 <a class="btn" href="https://buy.stripe.com/6oU14ngEgcYO8CPfij7bW05" target="_blank" rel="noopener">
                   <span data-i18n="sup_month_btn">Start Monthly Support</span>
                 </a>
@@ -853,11 +854,11 @@
   if (fav) fav.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
   if (apple) apple.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
 
-  // Founders photos (cache-busted)
+  // Founders photos (✅ FIXED to match EXACT GitHub filenames)
   const alineImg = document.getElementById("pfAline");
   const franciscoImg = document.getElementById("pfFrancisco");
-  if (alineImg) alineImg.src = `${BASE}/aline.png?v=${PF_CACHE}`;
-  if (franciscoImg) franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
+  if (alineImg) alineImg.src = `${BASE}/aline.png.PNG?v=${PF_CACHE}`;
+  if (franciscoImg) franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`;
 
   // Footer links
   const privacy = document.getElementById("pfPrivacyLink");
