@@ -10,6 +10,7 @@
 
   <meta name="description" content="Prayer & Fire is a global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
   <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, donations" />
+  <meta name="robots" content="index,follow" />
 
   <!-- Open Graph (sharing preview) -->
   <meta property="og:title" content="Prayer & Fire – Global Movement" />
@@ -17,10 +18,27 @@
   <meta property="og:url" content="https://prayerandfire.org/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://prayerandfire.org/logo.jpg" />
+  <meta property="og:image:secure_url" content="https://prayerandfire.org/logo.jpg" />
 
-  <!-- Favicons (use ./ so it works on custom domain and GitHub Pages subpath) -->
-  <link id="pfFavicon" rel="icon" type="image/png" href="./favicon.png">
-  <link id="pfAppleIcon" rel="apple-touch-icon" href="./favicon.png">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Prayer & Fire – Global Movement" />
+  <meta name="twitter:description" content="A global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
+  <meta name="twitter:image" content="https://prayerandfire.org/logo.jpg" />
+
+  <!-- ✅ GOOGLE ICON FIX (Favicons) -->
+  <!-- Google Search usually uses /favicon.ico and/or 32x32 -->
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Optional: keep compatibility for GitHub Pages repo preview -->
+  <link id="pfFavicon32" rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link id="pfFavicon16" rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link id="pfAppleIcon" rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link id="pfManifest" rel="manifest" href="./site.webmanifest">
 
   <style>
     :root{
@@ -105,7 +123,6 @@
     }
     .brandLogo img{width:100%;height:100%;object-fit:cover}
 
-    /* Fallback if image fails */
     .logoFallback{
       width:100%;height:100%;
       display:none;
@@ -303,7 +320,7 @@
     .status.ok{color:#9fe6b8;}
     .status.bad{color:#ffb4b4;}
 
-    /* ======= Leadership / Founders styles ======= */
+    /* ===== Leadership / Founders styles ===== */
     .leadersWrap{
       margin-top: 6px;
       display:flex;
@@ -312,7 +329,7 @@
       justify-content:center;
     }
     .leader{
-      width: 220px;
+      width: 260px;
       text-align:center;
       padding: 14px 12px;
       border-radius: var(--radius);
@@ -320,20 +337,26 @@
       background: rgba(11,11,16,.35);
     }
     .leaderAvatar{
-      width: 132px;
-      height: 132px;
+      width: 150px;
+      height: 150px;
       margin: 4px auto 10px;
       border-radius: 999px;
       overflow:hidden;
       border:2px solid rgba(255,106,0,.55);
       box-shadow: 0 10px 26px rgba(0,0,0,.35);
-      background: rgba(255,255,255,.03);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
+    /* ✅ FIX: no recorta cabezas */
     .leaderAvatar img{
       width:100%;
       height:100%;
-      object-fit: cover;
+      object-fit: contain;      /* NO recorta */
+      object-position:center;
       display:block;
+      background: rgba(0,0,0,.22);
     }
     .leaderRole{
       margin-top: 8px;
@@ -361,9 +384,24 @@
       .main{padding-top:14px}
       .brandLogo{width:44px;height:44px;border-radius:14px;}
       .leader{width: 100%;}
-      .leaderAvatar{width: 140px; height: 140px;}
+      .leaderAvatar{width: 165px; height: 165px;}
     }
   </style>
+
+  <!-- ✅ Structured data for Google (helps logo/brand in results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Prayer & Fire",
+    "url": "https://prayerandfire.org/",
+    "logo": "https://prayerandfire.org/logo.jpg",
+    "sameAs": [
+      "https://www.instagram.com/prayerandfire",
+      "https://www.instagram.com/seloprayerandfire"
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -502,15 +540,14 @@
             </div>
           </div>
 
-          <!-- ✅ NEW: Leadership / Founders (as your screenshot) -->
+          <!-- Founders -->
           <div class="card" style="margin-top:14px;">
             <h3 data-i18n="leaders_title" style="text-align:center;">Founders</h3>
 
             <div class="leadersWrap">
               <div class="leader">
                 <div class="leaderAvatar">
-                  <!-- ✅ FIXED: must match real GitHub filename exactly -->
-                  <img id="pfAline" src="./aline.png.PNG" alt="Aline Ramiro">
+                  <img id="pfAline" src="./aline.png" alt="Aline Ramiro">
                 </div>
                 <div class="leaderRole" data-i18n="leaders_founder">Founder</div>
                 <div class="leaderName">Aline Ramiro</div>
@@ -518,8 +555,7 @@
 
               <div class="leader">
                 <div class="leaderAvatar">
-                  <!-- ✅ FIXED: must match real GitHub filename exactly -->
-                  <img id="pfFrancisco" src="./francisco.png.PNG" alt="Francisco Rivera">
+                  <img id="pfFrancisco" src="./francisco.png" alt="Francisco Rivera">
                 </div>
                 <div class="leaderRole" data-i18n="leaders_president">President</div>
                 <div class="leaderName">Francisco Rivera</div>
@@ -834,7 +870,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   // bump cache to force refresh
-  const PF_CACHE = "20260211-FOUNDERS";
+  const PF_CACHE = "20260211-FIX-GOOGLE-ICON-HEAD";
 
   // Logo
   const logoEl = document.getElementById("pfLogo");
@@ -848,17 +884,28 @@
     };
   }
 
-  // Favicons
-  const fav = document.getElementById("pfFavicon");
+  // GitHub Pages compatibility links (icons/manifest)
+  const f32 = document.getElementById("pfFavicon32");
+  const f16 = document.getElementById("pfFavicon16");
   const apple = document.getElementById("pfAppleIcon");
-  if (fav) fav.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
-  if (apple) apple.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
+  const mani = document.getElementById("pfManifest");
+  if (f32) f32.href = `${BASE}/favicon-32x32.png?v=${PF_CACHE}`;
+  if (f16) f16.href = `${BASE}/favicon-16x16.png?v=${PF_CACHE}`;
+  if (apple) apple.href = `${BASE}/apple-touch-icon.png?v=${PF_CACHE}`;
+  if (mani) mani.href = `${BASE}/site.webmanifest?v=${PF_CACHE}`;
 
-  // Founders photos (✅ FIXED to match EXACT GitHub filenames)
+  // ✅ Founders photos (tries lowercase first, then fallback to .PNG)
   const alineImg = document.getElementById("pfAline");
   const franciscoImg = document.getElementById("pfFrancisco");
-  if (alineImg) alineImg.src = `${BASE}/aline.png.PNG?v=${PF_CACHE}`;
-  if (franciscoImg) franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`;
+
+  if (alineImg) {
+    alineImg.src = `${BASE}/aline.png?v=${PF_CACHE}`;
+    alineImg.onerror = () => { alineImg.src = `${BASE}/aline.png.PNG?v=${PF_CACHE}`; };
+  }
+  if (franciscoImg) {
+    franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
+    franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
+  }
 
   // Footer links
   const privacy = document.getElementById("pfPrivacyLink");
@@ -906,8 +953,6 @@
     const exists = pages.some(p=>p.dataset.page === key);
     showPage(exists ? key : "home", { smooth: false });
   });
-
-  // i18n dictionaries can be added later (kept minimal so nothing breaks)
 </script>
 
 </body>
