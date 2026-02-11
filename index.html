@@ -303,6 +303,56 @@
     .status.ok{color:#9fe6b8;}
     .status.bad{color:#ffb4b4;}
 
+    /* ======= NEW: Leadership / Founders styles ======= */
+    .leadersWrap{
+      margin-top: 6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:22px;
+      justify-content:center;
+    }
+    .leader{
+      width: 220px;
+      text-align:center;
+      padding: 14px 12px;
+      border-radius: var(--radius);
+      border:1px solid rgba(37,37,58,.85);
+      background: rgba(11,11,16,.35);
+    }
+    .leaderAvatar{
+      width: 132px;
+      height: 132px;
+      margin: 4px auto 10px;
+      border-radius: 999px;
+      overflow:hidden;
+      border:2px solid rgba(255,106,0,.55);
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+      background: rgba(255,255,255,.03);
+    }
+    .leaderAvatar img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .leaderRole{
+      margin-top: 8px;
+      font-weight: 800;
+      letter-spacing:.2px;
+      color: var(--accent);
+      font-size: 13px;
+    }
+    .leaderName{
+      margin-top: 4px;
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .leaderNote{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
     @media(max-width: 720px){
       .brandLink{min-width:auto}
       .langWrap span{display:none;}
@@ -310,6 +360,8 @@
       .nav{justify-content:center;}
       .main{padding-top:14px}
       .brandLogo{width:44px;height:44px;border-radius:14px;}
+      .leader{width: 100%;}
+      .leaderAvatar{width: 140px; height: 140px;}
     }
   </style>
 </head>
@@ -449,6 +501,34 @@
               </ul>
             </div>
           </div>
+
+          <!-- ✅ NEW: Leadership / Founders (as your screenshot) -->
+          <div class="card" style="margin-top:14px;">
+            <h3 data-i18n="leaders_title" style="text-align:center;">Founders</h3>
+
+            <div class="leadersWrap">
+              <div class="leader">
+                <div class="leaderAvatar">
+                  <img id="pfAline" src="./aline.png" alt="Aline Ramiro">
+                </div>
+                <div class="leaderRole" data-i18n="leaders_founder">Founder</div>
+                <div class="leaderName">Aline Ramiro</div>
+              </div>
+
+              <div class="leader">
+                <div class="leaderAvatar">
+                  <img id="pfFrancisco" src="./francisco.png" alt="Francisco Rivera">
+                </div>
+                <div class="leaderRole" data-i18n="leaders_president">President</div>
+                <div class="leaderName">Francisco Rivera</div>
+              </div>
+            </div>
+
+            <div class="leaderNote" data-i18n="leaders_note" style="text-align:center;margin-top:12px;">
+              Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -753,7 +833,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   // bump cache to force refresh
-  const PF_CACHE = "20260210-2";
+  const PF_CACHE = "20260211-FOUNDERS";
 
   // Logo
   const logoEl = document.getElementById("pfLogo");
@@ -772,6 +852,12 @@
   const apple = document.getElementById("pfAppleIcon");
   if (fav) fav.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
   if (apple) apple.href = `${BASE}/favicon.png?v=${PF_CACHE}`;
+
+  // Founders photos (cache-busted)
+  const alineImg = document.getElementById("pfAline");
+  const franciscoImg = document.getElementById("pfFrancisco");
+  if (alineImg) alineImg.src = `${BASE}/aline.png?v=${PF_CACHE}`;
+  if (franciscoImg) franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
 
   // Footer links
   const privacy = document.getElementById("pfPrivacyLink");
