@@ -956,4 +956,508 @@
 </script>
 
 </body>
-</html>
+</html> <script>
+  // ===== BASE auto (works for custom domain AND github.io ANY repo name) =====
+  const isGithubPages = location.hostname.endsWith("github.io");
+  const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
+  const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
+
+  const PF_CACHE = "20260211-I18N-FIX";
+
+  // Logo
+  const logoEl = document.getElementById("pfLogo");
+  const logoFallback = document.getElementById("logoFallback");
+
+  if (logoEl) {
+    logoEl.src = `${BASE}/logo.jpg?v=${PF_CACHE}`;
+    logoEl.onerror = () => {
+      logoEl.style.display = "none";
+      if (logoFallback) logoFallback.style.display = "flex";
+    };
+  }
+
+  // GitHub Pages compatibility links (icons/manifest)
+  const f32 = document.getElementById("pfFavicon32");
+  const f16 = document.getElementById("pfFavicon16");
+  const apple = document.getElementById("pfAppleIcon");
+  const mani = document.getElementById("pfManifest");
+  if (f32) f32.href = `${BASE}/favicon-32x32.png?v=${PF_CACHE}`;
+  if (f16) f16.href = `${BASE}/favicon-16x16.png?v=${PF_CACHE}`;
+  if (apple) apple.href = `${BASE}/apple-touch-icon.png?v=${PF_CACHE}`;
+  if (mani) mani.href = `${BASE}/site.webmanifest?v=${PF_CACHE}`;
+
+  // Founders photos (tries lowercase first, then fallback to .PNG)
+  const alineImg = document.getElementById("pfAline");
+  const franciscoImg = document.getElementById("pfFrancisco");
+
+  if (alineImg) {
+    alineImg.src = `${BASE}/aline.png?v=${PF_CACHE}`;
+    alineImg.onerror = () => { alineImg.src = `${BASE}/aline.png.PNG?v=${PF_CACHE}`; };
+  }
+  if (franciscoImg) {
+    franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
+    franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
+  }
+
+  // Footer links
+  const privacy = document.getElementById("pfPrivacyLink");
+  const terms = document.getElementById("pfTermsLink");
+  if (privacy) privacy.href = `${BASE}/privacy.html`;
+  if (terms) terms.href = `${BASE}/terms.html`;
+
+  // Year
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Navigation
+  const buttons = Array.from(document.querySelectorAll('.navBtn'));
+  const pages = Array.from(document.querySelectorAll('.page'));
+
+  function showPage(key, opts = {}){
+    const smooth = opts.smooth !== false;
+    pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
+    buttons.forEach(b => {
+      if (b.closest(".nav")) b.classList.toggle('active', b.dataset.go === key);
+    });
+    if (smooth) window.scrollTo({top:0, behavior:"smooth"});
+    else window.scrollTo({top:0});
+  }
+
+  function navigateTo(key){
+    const exists = pages.some(p=>p.dataset.page === key);
+    const finalKey = exists ? key : "home";
+    history.pushState({page: finalKey}, "", "#" + finalKey);
+    showPage(finalKey, { smooth: true });
+  }
+
+  (function init(){
+    const initial = (location.hash || "#home").replace("#","");
+    const exists = pages.some(p=>p.dataset.page === initial);
+    showPage(exists ? initial : "home", { smooth: false });
+  })();
+
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=> navigateTo(b.dataset.go));
+  });
+
+  window.addEventListener("popstate", ()=>{
+    const key = (location.hash || "#home").replace("#","");
+    const exists = pages.some(p=>p.dataset.page === key);
+    showPage(exists ? key : "home", { smooth: false });
+  });
+
+  // =========================
+  // ✅ REAL i18n (EN / ES / PT)
+  // =========================
+  const I18N = {
+    en: {
+      lang_label: "Language",
+      brand_title: "Prayer & Fire",
+      brand_subtitle: "Global Movement",
+
+      nav_home: "Home",
+      nav_about: "Who we are",
+      nav_beliefs: "Beliefs & Values",
+      nav_app: "Download App",
+      nav_store: "P&F Store",
+      nav_social: "Social Media",
+      nav_photos: "Photos",
+      nav_volunteers: "Volunteers",
+      nav_salvation: "Salvation",
+      nav_support: "Support",
+      nav_feedback: "Feedback",
+      nav_contact: "Contact",
+
+      home_title: "Prayer & Fire – Global Movement",
+      home_subtitle: "A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.",
+      home_stat: "40+ countries represented, praying 24/7 in different languages.",
+      home_mission_title: "Mission",
+      home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
+      home_learn_more: "Learn more",
+      home_appstore: "Download on the App Store",
+
+      store_title: "P&F Store",
+      store_subtitle: "Apparel & products are available worldwide via Etsy. The book is available on Amazon.",
+      store_etsy_title: "Apparel & Products (Etsy)",
+      store_etsy_text: "Shop our official Prayer & Fire store.",
+      store_etsy_btn: "Open Etsy Store",
+      store_etsy_note: "Print-on-demand items: shirts, mugs, and more.",
+      store_book_title: "Book – La Voz Interior (Amazon)",
+      store_book_text: "Get the official book on Amazon.",
+      store_book_btn: "Buy the Book",
+      store_book_note: "Amazon link for the book only.",
+
+      about_title: "Who we are",
+      about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
+      about_what_title: "What we are",
+      about_what_text: "A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.",
+      about_do_title: "What we do",
+      about_do_1: "Prayer gatherings and intercession",
+      about_do_2: "Community building and support",
+      about_do_3: "Faith-based resources and outreach",
+
+      leaders_title: "Founders",
+      leaders_founder: "Founder",
+      leaders_president: "President",
+      leaders_note: "Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.",
+
+      beliefs_title: "Beliefs & Values",
+      beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
+      beliefs_beliefs_title: "Beliefs",
+      beliefs_values_title: "Values",
+      beliefs_b1: "Jesus Christ is Lord and Savior.",
+      beliefs_b2: "The Bible is the Word of God.",
+      beliefs_b3: "Salvation is by grace through faith in Christ.",
+      beliefs_b4: "Prayer transforms lives and aligns us with God’s will.",
+      beliefs_v1: "Faith and obedience",
+      beliefs_v2: "Integrity and humility",
+      beliefs_v3: "Love, compassion, unity",
+      beliefs_v4: "Excellence in service",
+      beliefs_v5: "Global vision",
+
+      app_title: "Download the App",
+      app_subtitle: "Get Prayer & Fire Mobile on iPhone and iPad.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_card_text: "Download from the Apple App Store.",
+      app_android: "Android version coming soon.",
+
+      social_title: "Social Media",
+      social_subtitle: "Follow Prayer & Fire on our official platforms.",
+
+      photos_title: "Photos",
+      photos_subtitle: "See moments from Prayer & Fire gatherings and missions.",
+      photos_card_title: "View photos",
+      photos_card_text: "For now, our photo gallery is hosted on Instagram.",
+      photos_btn: "Open Photos",
+
+      vol_title: "Volunteers",
+      vol_subtitle: "Serve with Prayer & Fire. Send your request and we will contact you.",
+      vol_card_title: "Volunteer Request",
+      vol_card_text: "Fill the form and submit. No login required.",
+      vol_send: "Send Volunteer Request",
+
+      sal_title: "Salvation",
+      sal_subtitle: "If you decided to accept Christ, we want to pray with you and help you take the next step.",
+      sal_prayer_title: "Prayer",
+      sal_prayer_text: "Lord Jesus, I believe You died and rose again. Forgive my sins. I receive You as my Savior and Lord. Lead my life and make me new. Amen.",
+      sal_next_title: "Next step",
+      sal_next_text: "Send us a message. We will pray with you.",
+      sal_send: "I Want to Follow Jesus",
+
+      sup_title: "Support",
+      sup_subtitle: "Your generosity helps support prayer initiatives and global outreach.",
+      sup_one_title: "One-time giving",
+      sup_one_text: "Give securely via Stripe.",
+      sup_one_btn: "Giving",
+      sup_month_title: "Monthly support ($8.99)",
+      sup_month_text: "Become a monthly supporter.",
+      sup_month_btn: "Start Monthly Support",
+
+      fb_title: "Feedback",
+      fb_subtitle: "Notice an issue? Tell us so we can fix it.",
+      fb_card_title: "Send Feedback",
+      fb_card_text: "Fill the form and submit.",
+      fb_send: "Send Feedback",
+
+      ct_title: "Contact",
+      ct_subtitle: "Reach us directly.",
+      ct_email_title: "Email",
+
+      footer_brand: "Prayer & Fire",
+      footer_privacy: "Privacy Policy",
+      footer_terms: "Terms",
+
+      f_fullname_label: "Full name",
+      f_email_label: "Email",
+      f_phone_label: "Phone (optional)",
+      f_location_label: "City / Country",
+      f_message_label: "Message"
+    },
+
+    es: {
+      lang_label: "Idioma",
+      brand_title: "Prayer & Fire",
+      brand_subtitle: "Movimiento Global",
+
+      nav_home: "Inicio",
+      nav_about: "Quiénes somos",
+      nav_beliefs: "Creencias y Valores",
+      nav_app: "Descargar App",
+      nav_store: "Tienda P&F",
+      nav_social: "Redes Sociales",
+      nav_photos: "Fotos",
+      nav_volunteers: "Voluntarios",
+      nav_salvation: "Salvación",
+      nav_support: "Apoyo",
+      nav_feedback: "Sugerencias",
+      nav_contact: "Contacto",
+
+      home_title: "Prayer & Fire – Movimiento Global",
+      home_subtitle: "Un movimiento cristiano global donde los creyentes se unen en oración y recursos centrados en la fe con una visión global.",
+      home_stat: "40+ países representados, orando 24/7 en diferentes idiomas.",
+      home_mission_title: "Misión",
+      home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
+      home_learn_more: "Conocer más",
+      home_appstore: "Descargar en App Store",
+
+      store_title: "Tienda P&F",
+      store_subtitle: "Ropa y productos disponibles en todo el mundo por Etsy. El libro está disponible en Amazon.",
+      store_etsy_title: "Ropa y Productos (Etsy)",
+      store_etsy_text: "Compra en nuestra tienda oficial de Prayer & Fire.",
+      store_etsy_btn: "Abrir Tienda Etsy",
+      store_etsy_note: "Productos print-on-demand: camisetas, tazas y más.",
+      store_book_title: "Libro – La Voz Interior (Amazon)",
+      store_book_text: "Consigue el libro oficial en Amazon.",
+      store_book_btn: "Comprar el Libro",
+      store_book_note: "Enlace de Amazon solo para el libro.",
+
+      about_title: "Quiénes somos",
+      about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
+      about_what_title: "Qué somos",
+      about_what_text: "Un movimiento cristiano global enfocado en la oración, crecimiento espiritual y recursos que fortalecen a los creyentes en todo el mundo.",
+      about_do_title: "Qué hacemos",
+      about_do_1: "Reuniones de oración e intercesión",
+      about_do_2: "Construcción de comunidad y apoyo",
+      about_do_3: "Recursos y alcance basados en la fe",
+
+      leaders_title: "Fundadores",
+      leaders_founder: "Fundadora",
+      leaders_president: "Presidente",
+      leaders_note: "El liderazgo de Prayer & Fire está comprometido a servir al cuerpo global de Cristo mediante la oración y la fe.",
+
+      beliefs_title: "Creencias y Valores",
+      beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
+      beliefs_beliefs_title: "Creencias",
+      beliefs_values_title: "Valores",
+      beliefs_b1: "Jesucristo es Señor y Salvador.",
+      beliefs_b2: "La Biblia es la Palabra de Dios.",
+      beliefs_b3: "La salvación es por gracia mediante la fe en Cristo.",
+      beliefs_b4: "La oración transforma vidas y nos alinea con la voluntad de Dios.",
+      beliefs_v1: "Fe y obediencia",
+      beliefs_v2: "Integridad y humildad",
+      beliefs_v3: "Amor, compasión, unidad",
+      beliefs_v4: "Excelencia en el servicio",
+      beliefs_v5: "Visión global",
+
+      app_title: "Descargar la App",
+      app_subtitle: "Obtén Prayer & Fire Mobile en iPhone y iPad.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_card_text: "Descarga desde la App Store.",
+      app_android: "Versión Android próximamente.",
+
+      social_title: "Redes Sociales",
+      social_subtitle: "Sigue a Prayer & Fire en nuestras plataformas oficiales.",
+
+      photos_title: "Fotos",
+      photos_subtitle: "Mira momentos de reuniones y misiones de Prayer & Fire.",
+      photos_card_title: "Ver fotos",
+      photos_card_text: "Por ahora, la galería está en Instagram.",
+      photos_btn: "Abrir Fotos",
+
+      vol_title: "Voluntarios",
+      vol_subtitle: "Sirve con Prayer & Fire. Envía tu solicitud y te contactaremos.",
+      vol_card_title: "Solicitud de Voluntariado",
+      vol_card_text: "Completa el formulario y envía. No se requiere login.",
+      vol_send: "Enviar Solicitud",
+
+      sal_title: "Salvación",
+      sal_subtitle: "Si decidiste aceptar a Cristo, queremos orar contigo y ayudarte a dar el siguiente paso.",
+      sal_prayer_title: "Oración",
+      sal_prayer_text: "Señor Jesús, creo que moriste y resucitaste. Perdona mis pecados. Te recibo como mi Salvador y Señor. Guía mi vida y hazme nuevo. Amén.",
+      sal_next_title: "Siguiente paso",
+      sal_next_text: "Envíanos un mensaje. Oraremos contigo.",
+      sal_send: "Quiero Seguir a Jesús",
+
+      sup_title: "Apoyo",
+      sup_subtitle: "Tu generosidad ayuda a sostener iniciativas de oración y alcance global.",
+      sup_one_title: "Donación única",
+      sup_one_text: "Dona de forma segura con Stripe.",
+      sup_one_btn: "Donar",
+      sup_month_title: "Apoyo mensual ($8.99)",
+      sup_month_text: "Conviértete en colaborador mensual.",
+      sup_month_btn: "Comenzar Apoyo Mensual",
+
+      fb_title: "Sugerencias",
+      fb_subtitle: "¿Ves un problema? Cuéntanos para poder arreglarlo.",
+      fb_card_title: "Enviar sugerencia",
+      fb_card_text: "Completa el formulario y envía.",
+      fb_send: "Enviar",
+
+      ct_title: "Contacto",
+      ct_subtitle: "Contáctanos directamente.",
+      ct_email_title: "Correo",
+
+      footer_brand: "Prayer & Fire",
+      footer_privacy: "Política de Privacidad",
+      footer_terms: "Términos",
+
+      f_fullname_label: "Nombre completo",
+      f_email_label: "Correo",
+      f_phone_label: "Teléfono (opcional)",
+      f_location_label: "Ciudad / País",
+      f_message_label: "Mensaje"
+    },
+
+    pt: {
+      lang_label: "Idioma",
+      brand_title: "Prayer & Fire",
+      brand_subtitle: "Movimento Global",
+
+      nav_home: "Início",
+      nav_about: "Quem somos",
+      nav_beliefs: "Crenças e Valores",
+      nav_app: "Baixar App",
+      nav_store: "Loja P&F",
+      nav_social: "Redes Sociais",
+      nav_photos: "Fotos",
+      nav_volunteers: "Voluntários",
+      nav_salvation: "Salvação",
+      nav_support: "Apoio",
+      nav_feedback: "Feedback",
+      nav_contact: "Contato",
+
+      home_title: "Prayer & Fire – Movimento Global",
+      home_subtitle: "Um movimento cristão global onde os crentes se unem em oração e recursos centrados na fé com uma visão global.",
+      home_stat: "40+ países representados, orando 24/7 em diferentes idiomas.",
+      home_mission_title: "Missão",
+      home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
+      home_learn_more: "Saiba mais",
+      home_appstore: "Baixar na App Store",
+
+      store_title: "Loja P&F",
+      store_subtitle: "Roupas e produtos disponíveis no mundo todo via Etsy. O livro está disponível na Amazon.",
+      store_etsy_title: "Roupas e Produtos (Etsy)",
+      store_etsy_text: "Compre na nossa loja oficial Prayer & Fire.",
+      store_etsy_btn: "Abrir Loja Etsy",
+      store_etsy_note: "Itens sob demanda: camisetas, canecas e mais.",
+      store_book_title: "Livro – La Voz Interior (Amazon)",
+      store_book_text: "Compre o livro oficial na Amazon.",
+      store_book_btn: "Comprar o Livro",
+      store_book_note: "Link da Amazon apenas para o livro.",
+
+      about_title: "Quem somos",
+      about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
+      about_what_title: "O que somos",
+      about_what_text: "Um movimento cristão global focado em oração, crescimento espiritual e recursos que fortalecem os crentes no mundo todo.",
+      about_do_title: "O que fazemos",
+      about_do_1: "Encontros de oração e intercessão",
+      about_do_2: "Construção de comunidade e apoio",
+      about_do_3: "Recursos e alcance baseados na fé",
+
+      leaders_title: "Fundadores",
+      leaders_founder: "Fundadora",
+      leaders_president: "Presidente",
+      leaders_note: "A liderança do Prayer & Fire está comprometida em servir o corpo global de Cristo por meio da oração e da fé.",
+
+      beliefs_title: "Crenças e Valores",
+      beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
+      beliefs_beliefs_title: "Crenças",
+      beliefs_values_title: "Valores",
+      beliefs_b1: "Jesus Cristo é Senhor e Salvador.",
+      beliefs_b2: "A Bíblia é a Palavra de Deus.",
+      beliefs_b3: "A salvação é pela graça mediante a fé em Cristo.",
+      beliefs_b4: "A oração transforma vidas e nos alinha à vontade de Deus.",
+      beliefs_v1: "Fé e obediência",
+      beliefs_v2: "Integridade e humildade",
+      beliefs_v3: "Amor, compaixão, unidade",
+      beliefs_v4: "Excelência no servir",
+      beliefs_v5: "Visão global",
+
+      app_title: "Baixar o App",
+      app_subtitle: "Obtenha Prayer & Fire Mobile no iPhone e iPad.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_card_text: "Baixe na App Store.",
+      app_android: "Versão Android em breve.",
+
+      social_title: "Redes Sociais",
+      social_subtitle: "Siga Prayer & Fire em nossas plataformas oficiais.",
+
+      photos_title: "Fotos",
+      photos_subtitle: "Veja momentos de encontros e missões do Prayer & Fire.",
+      photos_card_title: "Ver fotos",
+      photos_card_text: "Por enquanto, nossa galeria está no Instagram.",
+      photos_btn: "Abrir Fotos",
+
+      vol_title: "Voluntários",
+      vol_subtitle: "Sirva com Prayer & Fire. Envie sua solicitação e entraremos em contato.",
+      vol_card_title: "Solicitação de Voluntariado",
+      vol_card_text: "Preencha o formulário e envie. Sem login.",
+      vol_send: "Enviar Solicitação",
+
+      sal_title: "Salvação",
+      sal_subtitle: "Se você decidiu aceitar Cristo, queremos orar com você e ajudar no próximo passo.",
+      sal_prayer_title: "Oração",
+      sal_prayer_text: "Senhor Jesus, eu creio que Tu morreste e ressuscitaste. Perdoa meus pecados. Eu Te recebo como meu Salvador e Senhor. Guia minha vida e faz-me novo. Amém.",
+      sal_next_title: "Próximo passo",
+      sal_next_text: "Envie-nos uma mensagem. Vamos orar com você.",
+      sal_send: "Quero Seguir Jesus",
+
+      sup_title: "Apoio",
+      sup_subtitle: "Sua generosidade ajuda a apoiar iniciativas de oração e alcance global.",
+      sup_one_title: "Doação única",
+      sup_one_text: "Doe com segurança via Stripe.",
+      sup_one_btn: "Doar",
+      sup_month_title: "Apoio mensal ($8.99)",
+      sup_month_text: "Torne-se um apoiador mensal.",
+      sup_month_btn: "Iniciar Apoio Mensal",
+
+      fb_title: "Feedback",
+      fb_subtitle: "Viu algum problema? Conte para corrigirmos.",
+      fb_card_title: "Enviar feedback",
+      fb_card_text: "Preencha o formulário e envie.",
+      fb_send: "Enviar",
+
+      ct_title: "Contato",
+      ct_subtitle: "Fale conosco diretamente.",
+      ct_email_title: "Email",
+
+      footer_brand: "Prayer & Fire",
+      footer_privacy: "Política de Privacidade",
+      footer_terms: "Termos",
+
+      f_fullname_label: "Nome completo",
+      f_email_label: "Email",
+      f_phone_label: "Telefone (opcional)",
+      f_location_label: "Cidade / País",
+      f_message_label: "Mensagem"
+    }
+  };
+
+  function applyTranslations(lang){
+    const dict = I18N[lang] || I18N.en;
+    document.querySelectorAll("[data-i18n]").forEach(el=>{
+      const key = el.getAttribute("data-i18n");
+      if (!key) return;
+      if (dict[key]) el.textContent = dict[key];
+    });
+    // keep selector synced
+    const sel = document.getElementById("langSelect");
+    if (sel) sel.value = lang;
+    // store preference
+    try { localStorage.setItem("pf_lang", lang); } catch(e){}
+    // update <html lang="">
+    document.documentElement.lang = lang;
+  }
+
+  function detectInitialLang(){
+    // 1) saved
+    try {
+      const saved = localStorage.getItem("pf_lang");
+      if (saved && I18N[saved]) return saved;
+    } catch(e){}
+    // 2) browser
+    const nav = (navigator.language || "en").slice(0,2).toLowerCase();
+    if (I18N[nav]) return nav;
+    return "en";
+  }
+
+  // init i18n
+  const initialLang = detectInitialLang();
+  applyTranslations(initialLang);
+
+  // on change
+  const langSelect = document.getElementById("langSelect");
+  if (langSelect) {
+    langSelect.addEventListener("change", (e)=> applyTranslations(e.target.value));
+  }
+</script>
