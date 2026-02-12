@@ -26,15 +26,14 @@
   <meta name="twitter:description" content="A global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
   <meta name="twitter:image" content="https://prayerandfire.org/logo.jpg" />
 
-  <!-- ✅ GOOGLE ICON FIX (Favicons) -->
-  <!-- Google Search usually uses /favicon.ico and/or 32x32 -->
+  <!-- ✅ Google icon / favicon (works best with real files in repo root) -->
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
 
-  <!-- Optional: keep compatibility for GitHub Pages repo preview -->
+  <!-- ✅ GitHub Pages repo preview compatibility (./ paths) -->
   <link id="pfFavicon32" rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link id="pfFavicon16" rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link id="pfAppleIcon" rel="apple-touch-icon" href="./apple-touch-icon.png">
@@ -353,7 +352,7 @@
     .leaderAvatar img{
       width:100%;
       height:100%;
-      object-fit: contain;      /* NO recorta */
+      object-fit: contain;
       object-position:center;
       display:block;
       background: rgba(0,0,0,.22);
@@ -864,18 +863,21 @@
 </div>
 
 <script>
-  // ===== BASE auto (works for custom domain AND github.io ANY repo name) =====
+  /* ===============================
+     BASE auto (custom domain + github.io repo)
+  ================================ */
   const isGithubPages = location.hostname.endsWith("github.io");
   const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
-  // bump cache to force refresh
-  const PF_CACHE = "20260211-FIX-GOOGLE-ICON-HEAD";
+  /* Force refresh when needed */
+  const PF_CACHE = "20260211-FINAL-COMPLETE";
 
-  // Logo
+  /* ===============================
+     LOGO
+  ================================ */
   const logoEl = document.getElementById("pfLogo");
   const logoFallback = document.getElementById("logoFallback");
-
   if (logoEl) {
     logoEl.src = `${BASE}/logo.jpg?v=${PF_CACHE}`;
     logoEl.onerror = () => {
@@ -884,7 +886,9 @@
     };
   }
 
-  // GitHub Pages compatibility links (icons/manifest)
+  /* ===============================
+     GitHub preview icon links (optional)
+  ================================ */
   const f32 = document.getElementById("pfFavicon32");
   const f16 = document.getElementById("pfFavicon16");
   const apple = document.getElementById("pfAppleIcon");
@@ -894,7 +898,9 @@
   if (apple) apple.href = `${BASE}/apple-touch-icon.png?v=${PF_CACHE}`;
   if (mani) mani.href = `${BASE}/site.webmanifest?v=${PF_CACHE}`;
 
-  // ✅ Founders photos (tries lowercase first, then fallback to .PNG)
+  /* ===============================
+     Founders photos (lowercase first, then .PNG fallback)
+  ================================ */
   const alineImg = document.getElementById("pfAline");
   const franciscoImg = document.getElementById("pfFrancisco");
 
@@ -907,109 +913,23 @@
     franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
   }
 
-  // Footer links
+  /* ===============================
+     Footer links
+  ================================ */
   const privacy = document.getElementById("pfPrivacyLink");
   const terms = document.getElementById("pfTermsLink");
   if (privacy) privacy.href = `${BASE}/privacy.html`;
   if (terms) terms.href = `${BASE}/terms.html`;
 
-  // Year
+  /* ===============================
+     Year
+  ================================ */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Navigation
-  const buttons = Array.from(document.querySelectorAll('.navBtn'));
-  const pages = Array.from(document.querySelectorAll('.page'));
-
-  function showPage(key, opts = {}){
-    const smooth = opts.smooth !== false;
-    pages.forEach(p => p.classList.toggle('active', p.dataset.page === key));
-    buttons.forEach(b => {
-      if (b.closest(".nav")) b.classList.toggle('active', b.dataset.go === key);
-    });
-    if (smooth) window.scrollTo({top:0, behavior:"smooth"});
-    else window.scrollTo({top:0});
-  }
-
-  function navigateTo(key){
-    const exists = pages.some(p=>p.dataset.page === key);
-    const finalKey = exists ? key : "home";
-    history.pushState({page: finalKey}, "", "#" + finalKey);
-    showPage(finalKey, { smooth: true });
-  }
-
-  (function init(){
-    const initial = (location.hash || "#home").replace("#","");
-    const exists = pages.some(p=>p.dataset.page === initial);
-    showPage(exists ? initial : "home", { smooth: false });
-  })();
-
-  buttons.forEach(b=>{
-    b.addEventListener('click', ()=> navigateTo(b.dataset.go));
-  });
-
-  window.addEventListener("popstate", ()=>{
-    const key = (location.hash || "#home").replace("#","");
-    const exists = pages.some(p=>p.dataset.page === key);
-    showPage(exists ? key : "home", { smooth: false });
-  });
-</script>
-
-</body>
-</html> <script>
-  // ===== BASE auto (works for custom domain AND github.io ANY repo name) =====
-  const isGithubPages = location.hostname.endsWith("github.io");
-  const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
-  const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
-
-  const PF_CACHE = "20260211-I18N-FIX";
-
-  // Logo
-  const logoEl = document.getElementById("pfLogo");
-  const logoFallback = document.getElementById("logoFallback");
-
-  if (logoEl) {
-    logoEl.src = `${BASE}/logo.jpg?v=${PF_CACHE}`;
-    logoEl.onerror = () => {
-      logoEl.style.display = "none";
-      if (logoFallback) logoFallback.style.display = "flex";
-    };
-  }
-
-  // GitHub Pages compatibility links (icons/manifest)
-  const f32 = document.getElementById("pfFavicon32");
-  const f16 = document.getElementById("pfFavicon16");
-  const apple = document.getElementById("pfAppleIcon");
-  const mani = document.getElementById("pfManifest");
-  if (f32) f32.href = `${BASE}/favicon-32x32.png?v=${PF_CACHE}`;
-  if (f16) f16.href = `${BASE}/favicon-16x16.png?v=${PF_CACHE}`;
-  if (apple) apple.href = `${BASE}/apple-touch-icon.png?v=${PF_CACHE}`;
-  if (mani) mani.href = `${BASE}/site.webmanifest?v=${PF_CACHE}`;
-
-  // Founders photos (tries lowercase first, then fallback to .PNG)
-  const alineImg = document.getElementById("pfAline");
-  const franciscoImg = document.getElementById("pfFrancisco");
-
-  if (alineImg) {
-    alineImg.src = `${BASE}/aline.png?v=${PF_CACHE}`;
-    alineImg.onerror = () => { alineImg.src = `${BASE}/aline.png.PNG?v=${PF_CACHE}`; };
-  }
-  if (franciscoImg) {
-    franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
-    franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
-  }
-
-  // Footer links
-  const privacy = document.getElementById("pfPrivacyLink");
-  const terms = document.getElementById("pfTermsLink");
-  if (privacy) privacy.href = `${BASE}/privacy.html`;
-  if (terms) terms.href = `${BASE}/terms.html`;
-
-  // Year
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // Navigation
+  /* ===============================
+     Navigation
+  ================================ */
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
   const pages = Array.from(document.querySelectorAll('.page'));
 
@@ -1046,9 +966,9 @@
     showPage(exists ? key : "home", { smooth: false });
   });
 
-  // =========================
-  // ✅ REAL i18n (EN / ES / PT)
-  // =========================
+  /* ===============================
+     i18n (EN / ES / PT) — FULL
+  ================================ */
   const I18N = {
     en: {
       lang_label: "Language",
@@ -1425,39 +1345,39 @@
 
   function applyTranslations(lang){
     const dict = I18N[lang] || I18N.en;
+
     document.querySelectorAll("[data-i18n]").forEach(el=>{
       const key = el.getAttribute("data-i18n");
       if (!key) return;
       if (dict[key]) el.textContent = dict[key];
     });
-    // keep selector synced
+
     const sel = document.getElementById("langSelect");
     if (sel) sel.value = lang;
-    // store preference
+
     try { localStorage.setItem("pf_lang", lang); } catch(e){}
-    // update <html lang="">
     document.documentElement.lang = lang;
   }
 
   function detectInitialLang(){
-    // 1) saved
     try {
       const saved = localStorage.getItem("pf_lang");
       if (saved && I18N[saved]) return saved;
     } catch(e){}
-    // 2) browser
+
     const nav = (navigator.language || "en").slice(0,2).toLowerCase();
     if (I18N[nav]) return nav;
     return "en";
   }
 
-  // init i18n
   const initialLang = detectInitialLang();
   applyTranslations(initialLang);
 
-  // on change
   const langSelect = document.getElementById("langSelect");
   if (langSelect) {
     langSelect.addEventListener("change", (e)=> applyTranslations(e.target.value));
   }
 </script>
+
+</body>
+</html>
