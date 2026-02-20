@@ -375,6 +375,29 @@
       font-size: 12px;
     }
 
+    /* ===== Who we are photos gallery ===== */
+    .whoGallery{
+      margin-top: 10px;
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 780px){
+      .whoGallery{ grid-template-columns: 1fr 1fr; }
+    }
+    .whoPhoto{
+      border:1px solid rgba(37,37,58,.85);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+      box-shadow: 0 10px 26px rgba(0,0,0,.25);
+    }
+    .whoPhoto img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
     @media(max-width: 720px){
       .brandLink{min-width:auto}
       .langWrap span{display:none;}
@@ -436,11 +459,11 @@
       <button class="navBtn" data-go="app" data-i18n="nav_app" type="button">Download App</button>
       <button class="navBtn" data-go="store" data-i18n="nav_store" type="button">P&F Store</button>
       <button class="navBtn" data-go="social" data-i18n="nav_social" type="button">Social Media</button>
-      <button class="navBtn" data-go="photos" data-i18n="nav_photos" type="button">Photos</button>
+      <!-- ✅ REMOVIDO: Photos -->
       <button class="navBtn" data-go="volunteers" data-i18n="nav_volunteers" type="button">Volunteers</button>
       <button class="navBtn" data-go="salvation" data-i18n="nav_salvation" type="button">Salvation</button>
       <button class="navBtn" data-go="support" data-i18n="nav_support" type="button">Support</button>
-      <button class="navBtn" data-go="feedback" data-i18n="nav_feedback" type="button">Feedback</button>
+      <!-- ✅ REMOVIDO: Feedback -->
       <button class="navBtn" data-go="contact" data-i18n="nav_contact" type="button">Contact</button>
     </div>
   </div>
@@ -566,6 +589,25 @@
             </div>
           </div>
 
+          <!-- ✅ Who we are photos (agregadas) -->
+          <div class="card" style="margin-top:14px;">
+            <h3 data-i18n="about_photos_title" style="text-align:center;">Our Global Movement</h3>
+            <p data-i18n="about_photos_subtitle" style="text-align:center; color:var(--muted); margin-top:6px;">
+              Highlights and moments from Prayer & Fire.
+            </p>
+
+            <div class="whoGallery" style="margin-top:14px;">
+              <div class="whoPhoto"><img id="who1" src="./who-1.jpg" alt="Prayer & Fire photo 1"></div>
+              <div class="whoPhoto"><img id="who2" src="./who-2.jpg" alt="Prayer & Fire photo 2"></div>
+              <div class="whoPhoto"><img id="who3" src="./who-3.jpg" alt="Prayer & Fire photo 3"></div>
+              <div class="whoPhoto"><img id="who4" src="./who-4.jpg" alt="Prayer & Fire photo 4"></div>
+            </div>
+
+            <div class="note" data-i18n="about_photos_note" style="text-align:center; margin-top:12px;">
+              Add or replace these images anytime by updating the files in the website folder.
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -604,16 +646,16 @@
       <section class="page" data-page="app">
         <div class="pageHeader">
           <h1 data-i18n="app_title">Download the App</h1>
-          <p data-i18n="app_subtitle">Get Prayer & Fire Mobile on iPhone and iPad.</p>
+          <p data-i18n="app_subtitle">Prayer & Fire Mobile is coming soon.</p>
         </div>
         <div class="content">
           <div class="card">
             <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
-            <p data-i18n="app_card_text">Download from the Apple App Store.</p>
+            <p data-i18n="app_card_text">Coming soon.</p>
             <div class="btnRow">
-              <a class="btn btnPrimary" href="https://apps.apple.com/us/app/prayerandfire-mobile/id6757282653" target="_blank" rel="noopener">
-                <span data-i18n="home_appstore">Download on the App Store</span>
-              </a>
+              <!-- ✅ Link removido (sin href) -->
+              <span class="btn btnPrimary btnDisabled" data-i18n="app_btn_disabled">Coming soon</span>
+              <span class="btn btnDisabled" data-i18n="app_zoom_soon">Zoom coming soon</span>
             </div>
           </div>
           <div class="note" data-i18n="app_android">Android version coming soon.</div>
@@ -634,25 +676,6 @@
                 <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
                 <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PHOTOS -->
-      <section class="page" data-page="photos">
-        <div class="pageHeader">
-          <h1 data-i18n="photos_title">Photos</h1>
-          <p data-i18n="photos_subtitle">See moments from Prayer & Fire gatherings and missions.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="photos_card_title">View photos</h3>
-            <p data-i18n="photos_card_text">For now, our photo gallery is hosted on Instagram.</p>
-            <div class="btnRow">
-              <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">
-                <span data-i18n="photos_btn">Open Photos</span>
-              </a>
             </div>
           </div>
         </div>
@@ -792,47 +815,6 @@
         </div>
       </section>
 
-      <!-- FEEDBACK -->
-      <section class="page" data-page="feedback">
-        <div class="pageHeader">
-          <h1 data-i18n="fb_title">Feedback</h1>
-          <p data-i18n="fb_subtitle">Notice an issue? Tell us so we can fix it.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="fb_card_title">Send Feedback</h3>
-            <p data-i18n="fb_card_text">Fill the form and submit.</p>
-
-            <form class="pfForm" action="https://formspree.io/f/mojwrbaj" method="POST">
-              <input type="text" name="_gotcha" style="display:none">
-              <input type="hidden" name="form" value="Website Feedback">
-              <div class="formGrid">
-                <div class="field">
-                  <label data-i18n="f_fullname_label">Full name</label>
-                  <input name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_email_label">Email</label>
-                  <input name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_message_label">Message</label>
-                  <textarea name="message" required></textarea>
-                </div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn btnPrimary" type="submit">
-                  <span data-i18n="fb_send">Send Feedback</span>
-                </button>
-              </div>
-
-              <div class="status" data-status></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
       <!-- CONTACT -->
       <section class="page" data-page="contact">
         <div class="pageHeader">
@@ -871,7 +853,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   /* Force refresh when needed */
-  const PF_CACHE = "20260211-FINAL-COMPLETE";
+  const PF_CACHE = "20260220-WHO-APP-NAV-UPDATE";
 
   /* ===============================
      LOGO
@@ -912,6 +894,19 @@
     franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
     franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
   }
+
+  /* ===============================
+     Who we are photos
+  ================================ */
+  const who1 = document.getElementById("who1");
+  const who2 = document.getElementById("who2");
+  const who3 = document.getElementById("who3");
+  const who4 = document.getElementById("who4");
+
+  if (who1) who1.src = `${BASE}/who-1.jpg?v=${PF_CACHE}`;
+  if (who2) who2.src = `${BASE}/who-2.jpg?v=${PF_CACHE}`;
+  if (who3) who3.src = `${BASE}/who-3.jpg?v=${PF_CACHE}`;
+  if (who4) who4.src = `${BASE}/who-4.jpg?v=${PF_CACHE}`;
 
   /* ===============================
      Footer links
@@ -981,11 +976,9 @@
       nav_app: "Download App",
       nav_store: "P&F Store",
       nav_social: "Social Media",
-      nav_photos: "Photos",
       nav_volunteers: "Volunteers",
       nav_salvation: "Salvation",
       nav_support: "Support",
-      nav_feedback: "Feedback",
       nav_contact: "Contact",
 
       home_title: "Prayer & Fire – Global Movement",
@@ -1021,6 +1014,10 @@
       leaders_president: "President",
       leaders_note: "Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.",
 
+      about_photos_title: "Our Global Movement",
+      about_photos_subtitle: "Highlights and moments from Prayer & Fire.",
+      about_photos_note: "Add or replace these images anytime by updating the files in the website folder.",
+
       beliefs_title: "Beliefs & Values",
       beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
       beliefs_beliefs_title: "Beliefs",
@@ -1036,19 +1033,15 @@
       beliefs_v5: "Global vision",
 
       app_title: "Download the App",
-      app_subtitle: "Get Prayer & Fire Mobile on iPhone and iPad.",
+      app_subtitle: "Prayer & Fire Mobile is coming soon.",
       app_card_title: "Prayer & Fire Mobile",
-      app_card_text: "Download from the Apple App Store.",
+      app_card_text: "Coming soon.",
+      app_btn_disabled: "Coming soon",
+      app_zoom_soon: "Zoom coming soon",
       app_android: "Android version coming soon.",
 
       social_title: "Social Media",
       social_subtitle: "Follow Prayer & Fire on our official platforms.",
-
-      photos_title: "Photos",
-      photos_subtitle: "See moments from Prayer & Fire gatherings and missions.",
-      photos_card_title: "View photos",
-      photos_card_text: "For now, our photo gallery is hosted on Instagram.",
-      photos_btn: "Open Photos",
 
       vol_title: "Volunteers",
       vol_subtitle: "Serve with Prayer & Fire. Send your request and we will contact you.",
@@ -1072,12 +1065,6 @@
       sup_month_title: "Monthly support ($8.99)",
       sup_month_text: "Become a monthly supporter.",
       sup_month_btn: "Start Monthly Support",
-
-      fb_title: "Feedback",
-      fb_subtitle: "Notice an issue? Tell us so we can fix it.",
-      fb_card_title: "Send Feedback",
-      fb_card_text: "Fill the form and submit.",
-      fb_send: "Send Feedback",
 
       ct_title: "Contact",
       ct_subtitle: "Reach us directly.",
@@ -1105,11 +1092,9 @@
       nav_app: "Descargar App",
       nav_store: "Tienda P&F",
       nav_social: "Redes Sociales",
-      nav_photos: "Fotos",
       nav_volunteers: "Voluntarios",
       nav_salvation: "Salvación",
       nav_support: "Apoyo",
-      nav_feedback: "Sugerencias",
       nav_contact: "Contacto",
 
       home_title: "Prayer & Fire – Movimiento Global",
@@ -1145,6 +1130,10 @@
       leaders_president: "Presidente",
       leaders_note: "El liderazgo de Prayer & Fire está comprometido a servir al cuerpo global de Cristo mediante la oración y la fe.",
 
+      about_photos_title: "Nuestro Movimiento Global",
+      about_photos_subtitle: "Momentos y anuncios de Prayer & Fire.",
+      about_photos_note: "Puedes cambiar estas imágenes cuando quieras: solo reemplaza los archivos en la carpeta del website.",
+
       beliefs_title: "Creencias y Valores",
       beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
       beliefs_beliefs_title: "Creencias",
@@ -1160,19 +1149,15 @@
       beliefs_v5: "Visión global",
 
       app_title: "Descargar la App",
-      app_subtitle: "Obtén Prayer & Fire Mobile en iPhone y iPad.",
+      app_subtitle: "Prayer & Fire Mobile estará disponible pronto.",
       app_card_title: "Prayer & Fire Mobile",
-      app_card_text: "Descarga desde la App Store.",
+      app_card_text: "Próximamente.",
+      app_btn_disabled: "Próximamente",
+      app_zoom_soon: "Zoom próximamente",
       app_android: "Versión Android próximamente.",
 
       social_title: "Redes Sociales",
       social_subtitle: "Sigue a Prayer & Fire en nuestras plataformas oficiales.",
-
-      photos_title: "Fotos",
-      photos_subtitle: "Mira momentos de reuniones y misiones de Prayer & Fire.",
-      photos_card_title: "Ver fotos",
-      photos_card_text: "Por ahora, la galería está en Instagram.",
-      photos_btn: "Abrir Fotos",
 
       vol_title: "Voluntarios",
       vol_subtitle: "Sirve con Prayer & Fire. Envía tu solicitud y te contactaremos.",
@@ -1196,12 +1181,6 @@
       sup_month_title: "Apoyo mensual ($8.99)",
       sup_month_text: "Conviértete en colaborador mensual.",
       sup_month_btn: "Comenzar Apoyo Mensual",
-
-      fb_title: "Sugerencias",
-      fb_subtitle: "¿Ves un problema? Cuéntanos para poder arreglarlo.",
-      fb_card_title: "Enviar sugerencia",
-      fb_card_text: "Completa el formulario y envía.",
-      fb_send: "Enviar",
 
       ct_title: "Contacto",
       ct_subtitle: "Contáctanos directamente.",
@@ -1229,11 +1208,9 @@
       nav_app: "Baixar App",
       nav_store: "Loja P&F",
       nav_social: "Redes Sociais",
-      nav_photos: "Fotos",
       nav_volunteers: "Voluntários",
       nav_salvation: "Salvação",
       nav_support: "Apoio",
-      nav_feedback: "Feedback",
       nav_contact: "Contato",
 
       home_title: "Prayer & Fire – Movimento Global",
@@ -1269,6 +1246,10 @@
       leaders_president: "Presidente",
       leaders_note: "A liderança do Prayer & Fire está comprometida em servir o corpo global de Cristo por meio da oração e da fé.",
 
+      about_photos_title: "Nosso Movimento Global",
+      about_photos_subtitle: "Momentos e anúncios do Prayer & Fire.",
+      about_photos_note: "Você pode trocar essas imagens quando quiser: basta substituir os arquivos na pasta do site.",
+
       beliefs_title: "Crenças e Valores",
       beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
       beliefs_beliefs_title: "Crenças",
@@ -1284,19 +1265,15 @@
       beliefs_v5: "Visão global",
 
       app_title: "Baixar o App",
-      app_subtitle: "Obtenha Prayer & Fire Mobile no iPhone e iPad.",
+      app_subtitle: "Prayer & Fire Mobile estará disponível em breve.",
       app_card_title: "Prayer & Fire Mobile",
-      app_card_text: "Baixe na App Store.",
+      app_card_text: "Em breve.",
+      app_btn_disabled: "Em breve",
+      app_zoom_soon: "Zoom em breve",
       app_android: "Versão Android em breve.",
 
       social_title: "Redes Sociais",
       social_subtitle: "Siga Prayer & Fire em nossas plataformas oficiais.",
-
-      photos_title: "Fotos",
-      photos_subtitle: "Veja momentos de encontros e missões do Prayer & Fire.",
-      photos_card_title: "Ver fotos",
-      photos_card_text: "Por enquanto, nossa galeria está no Instagram.",
-      photos_btn: "Abrir Fotos",
 
       vol_title: "Voluntários",
       vol_subtitle: "Sirva com Prayer & Fire. Envie sua solicitação e entraremos em contato.",
@@ -1320,12 +1297,6 @@
       sup_month_title: "Apoio mensal ($8.99)",
       sup_month_text: "Torne-se um apoiador mensal.",
       sup_month_btn: "Iniciar Apoio Mensal",
-
-      fb_title: "Feedback",
-      fb_subtitle: "Viu algum problema? Conte para corrigirmos.",
-      fb_card_title: "Enviar feedback",
-      fb_card_text: "Preencha o formulário e envie.",
-      fb_send: "Enviar",
 
       ct_title: "Contato",
       ct_subtitle: "Fale conosco diretamente.",
