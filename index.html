@@ -348,7 +348,6 @@
       align-items:center;
       justify-content:center;
     }
-    /* ✅ FIX: no recorta cabezas */
     .leaderAvatar img{
       width:100%;
       height:100%;
@@ -587,7 +586,7 @@
             </div>
           </div>
 
-          <!-- ✅ Who we are photos (agregadas) -->
+          <!-- Our Global Movement photos (NO NOTE TEXT) -->
           <div class="card" style="margin-top:14px;">
             <h3 data-i18n="about_photos_title" style="text-align:center;">Our Global Movement</h3>
             <p data-i18n="about_photos_subtitle" style="text-align:center; color:var(--muted); margin-top:6px;">
@@ -600,8 +599,6 @@
               <div class="whoPhoto"><img id="who3" src="./who-3.jpg" alt="Prayer & Fire photo 3"></div>
               <div class="whoPhoto"><img id="who4" src="./who-4.jpg" alt="Prayer & Fire photo 4"></div>
             </div>
-
-            <!-- ✅ REMOVIDO: texto de nota abajo -->
           </div>
 
         </div>
@@ -846,8 +843,8 @@
   const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
-  /* Force refresh when needed */
-  const PF_CACHE = "20260220-WHO-APP-NAV-UPDATE";
+  /* ✅ Force refresh */
+  const PF_CACHE = "20260220-WHO-APP-NAV-UPDATE-2";
 
   /* ===============================
      LOGO
@@ -890,17 +887,29 @@
   }
 
   /* ===============================
-     Who we are photos
+     Who we are photos (✅ FIX: .jpg OR .JPG)
   ================================ */
   const who1 = document.getElementById("who1");
   const who2 = document.getElementById("who2");
   const who3 = document.getElementById("who3");
   const who4 = document.getElementById("who4");
 
-  if (who1) who1.src = `${BASE}/who-1.jpg?v=${PF_CACHE}`;
-  if (who2) who2.src = `${BASE}/who-2.jpg?v=${PF_CACHE}`;
-  if (who3) who3.src = `${BASE}/who-3.jpg?v=${PF_CACHE}`;
-  if (who4) who4.src = `${BASE}/who-4.jpg?v=${PF_CACHE}`;
+  if (who1) {
+    who1.src = `${BASE}/who-1.jpg?v=${PF_CACHE}`;
+    who1.onerror = () => { who1.src = `${BASE}/who-1.JPG?v=${PF_CACHE}`; };
+  }
+  if (who2) {
+    who2.src = `${BASE}/who-2.jpg?v=${PF_CACHE}`;
+    who2.onerror = () => { who2.src = `${BASE}/who-2.JPG?v=${PF_CACHE}`; };
+  }
+  if (who3) {
+    who3.src = `${BASE}/who-3.jpg?v=${PF_CACHE}`;
+    who3.onerror = () => { who3.src = `${BASE}/who-3.JPG?v=${PF_CACHE}`; };
+  }
+  if (who4) {
+    who4.src = `${BASE}/who-4.jpg?v=${PF_CACHE}`;
+    who4.onerror = () => { who4.src = `${BASE}/who-4.JPG?v=${PF_CACHE}`; };
+  }
 
   /* ===============================
      Footer links
@@ -981,7 +990,6 @@
       home_mission_title: "Mission",
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_learn_more: "Learn more",
-      home_appstore: "Download on the App Store",
 
       store_title: "P&F Store",
       store_subtitle: "Apparel & products are available worldwide via Etsy. The book is available on Amazon.",
@@ -1010,7 +1018,6 @@
 
       about_photos_title: "Our Global Movement",
       about_photos_subtitle: "Highlights and moments from Prayer & Fire.",
-      about_photos_note: "Add or replace these images anytime by updating the files in the website folder.",
 
       beliefs_title: "Beliefs & Values",
       beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
@@ -1096,7 +1103,6 @@
       home_mission_title: "Misión",
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_learn_more: "Conocer más",
-      home_appstore: "Descargar en App Store",
 
       store_title: "Tienda P&F",
       store_subtitle: "Ropa y productos disponibles en todo el mundo por Etsy. El libro está disponible en Amazon.",
@@ -1125,7 +1131,6 @@
 
       about_photos_title: "Nuestro Movimiento Global",
       about_photos_subtitle: "Momentos y anuncios de Prayer & Fire.",
-      about_photos_note: "Puedes cambiar estas imágenes cuando quieras: solo reemplaza los archivos en la carpeta del website.",
 
       beliefs_title: "Creencias y Valores",
       beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
@@ -1211,7 +1216,6 @@
       home_mission_title: "Missão",
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_learn_more: "Saiba mais",
-      home_appstore: "Baixar na App Store",
 
       store_title: "Loja P&F",
       store_subtitle: "Roupas e produtos disponíveis no mundo todo via Etsy. O livro está disponível na Amazon.",
@@ -1240,7 +1244,6 @@
 
       about_photos_title: "Nosso Movimento Global",
       about_photos_subtitle: "Momentos e anúncios do Prayer & Fire.",
-      about_photos_note: "Você pode trocar essas imagens quando quiser: basta substituir os arquivos na pasta do site.",
 
       beliefs_title: "Crenças e Valores",
       beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
