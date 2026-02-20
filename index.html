@@ -374,29 +374,6 @@
       font-size: 12px;
     }
 
-    /* ===== Who we are photos gallery ===== */
-    .whoGallery{
-      margin-top: 10px;
-      display:grid;
-      gap:12px;
-      grid-template-columns: 1fr;
-    }
-    @media(min-width: 780px){
-      .whoGallery{ grid-template-columns: 1fr 1fr; }
-    }
-    .whoPhoto{
-      border:1px solid rgba(37,37,58,.85);
-      border-radius: var(--radius);
-      overflow:hidden;
-      background: rgba(0,0,0,.18);
-      box-shadow: 0 10px 26px rgba(0,0,0,.25);
-    }
-    .whoPhoto img{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-
     @media(max-width: 720px){
       .brandLink{min-width:auto}
       .langWrap span{display:none;}
@@ -586,20 +563,7 @@
             </div>
           </div>
 
-          <!-- Our Global Movement photos (NO NOTE TEXT) -->
-          <div class="card" style="margin-top:14px;">
-            <h3 data-i18n="about_photos_title" style="text-align:center;">Our Global Movement</h3>
-            <p data-i18n="about_photos_subtitle" style="text-align:center; color:var(--muted); margin-top:6px;">
-              Highlights and moments from Prayer & Fire.
-            </p>
-
-            <div class="whoGallery" style="margin-top:14px;">
-              <div class="whoPhoto"><img id="who1" src="./who-1.jpg" alt="Prayer & Fire photo 1"></div>
-              <div class="whoPhoto"><img id="who2" src="./who-2.jpg" alt="Prayer & Fire photo 2"></div>
-              <div class="whoPhoto"><img id="who3" src="./who-3.jpg" alt="Prayer & Fire photo 3"></div>
-              <div class="whoPhoto"><img id="who4" src="./who-4.jpg" alt="Prayer & Fire photo 4"></div>
-            </div>
-          </div>
+          <!-- ✅ Photos section REMOVED as requested -->
 
         </div>
       </section>
@@ -844,7 +808,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   /* ✅ Force refresh */
-  const PF_CACHE = "20260220-WHO-APP-NAV-UPDATE-2";
+  const PF_CACHE = "20260220-WHO-APP-NAV-UPDATE-REMOVED-PHOTOS";
 
   /* ===============================
      LOGO
@@ -884,31 +848,6 @@
   if (franciscoImg) {
     franciscoImg.src = `${BASE}/francisco.png?v=${PF_CACHE}`;
     franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
-  }
-
-  /* ===============================
-     Who we are photos (✅ FIX: .jpg OR .JPG)
-  ================================ */
-  const who1 = document.getElementById("who1");
-  const who2 = document.getElementById("who2");
-  const who3 = document.getElementById("who3");
-  const who4 = document.getElementById("who4");
-
-  if (who1) {
-    who1.src = `${BASE}/who-1.jpg?v=${PF_CACHE}`;
-    who1.onerror = () => { who1.src = `${BASE}/who-1.JPG?v=${PF_CACHE}`; };
-  }
-  if (who2) {
-    who2.src = `${BASE}/who-2.jpg?v=${PF_CACHE}`;
-    who2.onerror = () => { who2.src = `${BASE}/who-2.JPG?v=${PF_CACHE}`; };
-  }
-  if (who3) {
-    who3.src = `${BASE}/who-3.jpg?v=${PF_CACHE}`;
-    who3.onerror = () => { who3.src = `${BASE}/who-3.JPG?v=${PF_CACHE}`; };
-  }
-  if (who4) {
-    who4.src = `${BASE}/who-4.jpg?v=${PF_CACHE}`;
-    who4.onerror = () => { who4.src = `${BASE}/who-4.JPG?v=${PF_CACHE}`; };
   }
 
   /* ===============================
@@ -1015,9 +954,6 @@
       leaders_founder: "Founder",
       leaders_president: "President",
       leaders_note: "Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.",
-
-      about_photos_title: "Our Global Movement",
-      about_photos_subtitle: "Highlights and moments from Prayer & Fire.",
 
       beliefs_title: "Beliefs & Values",
       beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
@@ -1129,9 +1065,6 @@
       leaders_president: "Presidente",
       leaders_note: "El liderazgo de Prayer & Fire está comprometido a servir al cuerpo global de Cristo mediante la oración y la fe.",
 
-      about_photos_title: "Nuestro Movimiento Global",
-      about_photos_subtitle: "Momentos y anuncios de Prayer & Fire.",
-
       beliefs_title: "Creencias y Valores",
       beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
       beliefs_beliefs_title: "Creencias",
@@ -1241,9 +1174,6 @@
       leaders_founder: "Fundadora",
       leaders_president: "Presidente",
       leaders_note: "A liderança do Prayer & Fire está comprometida em servir o corpo global de Cristo por meio da oração e da fé.",
-
-      about_photos_title: "Nosso Movimento Global",
-      about_photos_subtitle: "Momentos e anúncios do Prayer & Fire.",
 
       beliefs_title: "Crenças e Valores",
       beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
