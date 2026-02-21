@@ -286,6 +286,13 @@
       background: rgba(20,20,34,.45);
     }
 
+    /* ✅ Support: Manage subscription panel */
+    .managePanel{
+      border:1px solid rgba(255,106,0,.35);
+      background: rgba(255,106,0,.08);
+    }
+    .managePanel p{ color: var(--muted); }
+
     footer{
       max-width:1200px;
       margin:0 auto;
@@ -563,8 +570,6 @@
             </div>
           </div>
 
-          <!-- ✅ Photos section REMOVED as requested -->
-
         </div>
       </section>
 
@@ -766,6 +771,23 @@
               </div>
             </div>
 
+            <!-- ✅ NEW: Manage / Cancel Subscription -->
+            <div class="card managePanel">
+              <h3 data-i18n="sup_manage_title">Manage your subscription</h3>
+              <p data-i18n="sup_manage_text">
+                If you need to update your payment method or cancel your monthly support, use the secure customer portal.
+              </p>
+              <div class="btnRow">
+                <a class="btn btnPrimary"
+                   href="https://billing.stripe.com/p/login/cNi00j3Ru6Aq5qD1rt7bW00"
+                   target="_blank"
+                   rel="noopener">
+                  <span data-i18n="sup_manage_btn">Manage / Cancel Subscription</span>
+                </a>
+              </div>
+              <div class="note" data-i18n="sup_manage_note">You can cancel anytime.</div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -808,7 +830,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   /* ✅ Force refresh */
-  const PF_CACHE = "20260220-WHO-APP-NAV-UPDATE-REMOVED-PHOTOS";
+  const PF_CACHE = "20260221-STRIPE-PORTAL-MANAGE-CANCEL-ADDED";
 
   /* ===============================
      LOGO
@@ -1002,6 +1024,12 @@
       sup_month_text: "Become a monthly supporter.",
       sup_month_btn: "Start Monthly Support",
 
+      /* ✅ NEW i18n */
+      sup_manage_title: "Manage your subscription",
+      sup_manage_text: "If you need to update your payment method or cancel your monthly support, use the secure customer portal.",
+      sup_manage_btn: "Manage / Cancel Subscription",
+      sup_manage_note: "You can cancel anytime.",
+
       ct_title: "Contact",
       ct_subtitle: "Reach us directly.",
       ct_email_title: "Email",
@@ -1112,6 +1140,12 @@
       sup_month_text: "Conviértete en colaborador mensual.",
       sup_month_btn: "Comenzar Apoyo Mensual",
 
+      /* ✅ NEW i18n */
+      sup_manage_title: "Administrar suscripción",
+      sup_manage_text: "Si necesitas actualizar tu método de pago o cancelar tu apoyo mensual, usa el portal seguro de Stripe.",
+      sup_manage_btn: "Administrar / Cancelar Suscripción",
+      sup_manage_note: "Puedes cancelar en cualquier momento.",
+
       ct_title: "Contacto",
       ct_subtitle: "Contáctanos directamente.",
       ct_email_title: "Correo",
@@ -1221,6 +1255,12 @@
       sup_month_title: "Apoio mensal ($8.99)",
       sup_month_text: "Torne-se um apoiador mensal.",
       sup_month_btn: "Iniciar Apoio Mensal",
+
+      /* ✅ NEW i18n */
+      sup_manage_title: "Gerenciar assinatura",
+      sup_manage_text: "Se você precisar atualizar o método de pagamento ou cancelar o apoio mensal, use o portal seguro do cliente.",
+      sup_manage_btn: "Gerenciar / Cancelar Assinatura",
+      sup_manage_note: "Você pode cancelar a qualquer momento.",
 
       ct_title: "Contato",
       ct_subtitle: "Fale conosco diretamente.",
