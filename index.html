@@ -39,14 +39,17 @@
   <link id="pfAppleIcon" rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link id="pfManifest" rel="manifest" href="./site.webmanifest">
 
-  <!-- Google tag (gtag.js) -->
+  <!-- ✅ Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVR33MJKHC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'G-GVR33MJKHC');
+    /* ✅ Make sure first pageview includes hash path too */
+    gtag('config', 'G-GVR33MJKHC', {
+      page_path: location.pathname + location.search + location.hash
+    });
   </script>
 
   <style>
@@ -897,6 +900,26 @@
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* ===============================
+     ✅ GA4 SPA Tracking (hash navigation)
+     This is the key fix so Analytics shows activity.
+  ================================ */
+  function trackPageView(){
+    try{
+      if (typeof gtag !== "function") return;
+
+      const page_path = location.pathname + location.search + location.hash;
+      const page_location = location.href;
+      const page_title = document.title;
+
+      gtag('event', 'page_view', {
+        page_title,
+        page_location,
+        page_path
+      });
+    } catch(e){}
+  }
+
+  /* ===============================
      Navigation
   ================================ */
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
@@ -917,12 +940,18 @@
     const finalKey = exists ? key : "home";
     history.pushState({page: finalKey}, "", "#" + finalKey);
     showPage(finalKey, { smooth: true });
+
+    /* ✅ Track virtual pageview */
+    trackPageView();
   }
 
   (function init(){
     const initial = (location.hash || "#home").replace("#","");
     const exists = pages.some(p=>p.dataset.page === initial);
     showPage(exists ? initial : "home", { smooth: false });
+
+    /* ✅ Track first load */
+    trackPageView();
   })();
 
   buttons.forEach(b=>{
@@ -933,6 +962,9 @@
     const key = (location.hash || "#home").replace("#","");
     const exists = pages.some(p=>p.dataset.page === key);
     showPage(exists ? key : "home", { smooth: false });
+
+    /* ✅ Track back/forward */
+    trackPageView();
   });
 
   /* ===============================
@@ -1034,7 +1066,6 @@
       sup_month_text: "Become a monthly supporter.",
       sup_month_btn: "Start Monthly Support",
 
-      /* ✅ NEW i18n */
       sup_manage_title: "Manage your subscription",
       sup_manage_text: "If you need to update your payment method or cancel your monthly support, use the secure customer portal.",
       sup_manage_btn: "Manage / Cancel Subscription",
@@ -1150,7 +1181,6 @@
       sup_month_text: "Conviértete en colaborador mensual.",
       sup_month_btn: "Comenzar Apoyo Mensual",
 
-      /* ✅ NEW i18n */
       sup_manage_title: "Administrar suscripción",
       sup_manage_text: "Si necesitas actualizar tu método de pago o cancelar tu apoyo mensual, usa el portal seguro de Stripe.",
       sup_manage_btn: "Administrar / Cancelar Suscripción",
@@ -1266,7 +1296,6 @@
       sup_month_text: "Torne-se um apoiador mensal.",
       sup_month_btn: "Iniciar Apoio Mensal",
 
-      /* ✅ NEW i18n */
       sup_manage_title: "Gerenciar assinatura",
       sup_manage_text: "Se você precisar atualizar o método de pagamento ou cancelar o apoio mensal, use o portal seguro do cliente.",
       sup_manage_btn: "Gerenciar / Cancelar Assinatura",
