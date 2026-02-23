@@ -787,8 +787,6 @@
         <div class="content">
           <div class="card">
             <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
-
-            <!-- ✅ Removed the duplicate "Coming soon." line (kept only the button) -->
             <div class="btnRow">
               <span class="btn btnPrimary btnDisabled" data-i18n="app_btn_disabled">Coming soon</span>
             </div>
@@ -1578,11 +1576,12 @@
 
   /* ===============================
      ✅ SUPABASE BOOKS (Public list + Admin CRUD)
-     Table required: "books"
-     Columns: id (uuid), title (text), author (text nullable), cover_url (text), amazon_url (text), created_at (timestamp default now())
   ================================ */
   const SUPABASE_URL = "https://xikmhnulxksadgvzajdk.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
+
+  // ✅ IMPORTANT: Use ONLY publishable (anon) key in the website
+  const SUPABASE_ANON_KEY = "sb_publishable_tuOqa-o2MpSBjQHvbi3NEw_RghmA9tN";
+
   let supabaseClient = null;
   let booksInitDone = false;
 
@@ -1657,7 +1656,7 @@
     if (status) status.textContent = "";
 
     if (!supabaseClient){
-      status && (status.textContent = "Loading...");
+      status && (status.textContent = "Supabase not ready yet. Refresh the page.");
       return;
     }
 
@@ -1673,13 +1672,21 @@
     renderBooks(data);
   }
 
+  // ✅ NEW: wait for supabase-js to actually load (because script is defer)
+  async function waitForSupabase(maxMs = 4000){
+    const start = Date.now();
+    while (Date.now() - start < maxMs){
+      if (window.supabase && typeof window.supabase.createClient === "function") return true;
+      await new Promise(r => setTimeout(r, 50));
+    }
+    return false;
+  }
+
   async function initSupabase(){
     if (supabaseClient) return supabaseClient;
 
-    if (!window.supabase || !window.supabase.createClient){
-      // supabase-js not loaded yet
-      return null;
-    }
+    const ok = await waitForSupabase();
+    if (!ok) return null;
 
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     return supabaseClient;
