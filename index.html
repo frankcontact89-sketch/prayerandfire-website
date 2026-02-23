@@ -52,6 +52,9 @@
     });
   </script>
 
+  <!-- ✅ Supabase JS (for Books + Admin) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root{
       --bg:#0b0b0f;
@@ -394,6 +397,75 @@
       font-size: 12px;
     }
 
+    /* ===== Books grid ===== */
+    .booksGrid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 720px){ .booksGrid{ grid-template-columns: 1fr 1fr; } }
+    @media(min-width: 1100px){ .booksGrid{ grid-template-columns: 1fr 1fr 1fr; } }
+
+    .bookCard{
+      background: rgba(20,20,34,.65);
+      border:1px solid rgba(37,37,58,.85);
+      border-radius: var(--radius);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 100%;
+    }
+    .bookCover{
+      width:100%;
+      aspect-ratio: 3 / 4;
+      background: rgba(0,0,0,.18);
+      border-bottom:1px solid rgba(37,37,58,.75);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .bookCover img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .bookBody{ padding:14px; display:flex; flex-direction:column; gap:10px; }
+    .bookTitle{
+      font-weight:800;
+      letter-spacing:.2px;
+      font-size:14px;
+      margin:0;
+      color: var(--text);
+      line-height:1.25;
+    }
+    .bookMeta{
+      margin:0;
+      color: var(--muted);
+      font-size:13px;
+    }
+    .bookActions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ===== Admin panel (books) ===== */
+    .adminWrap{
+      margin-top:14px;
+      border:1px solid rgba(255,106,0,.35);
+      background: rgba(255,106,0,.08);
+      border-radius: var(--radius);
+      padding:14px;
+      display:none;
+    }
+    .adminWrap.active{ display:block; }
+    .adminGrid{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+    }
+    @media(min-width: 920px){ .adminGrid{ grid-template-columns: 1fr 1fr; } }
+    .adminRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .tinyNote{ color: var(--muted); font-size: 12px; margin-top: 8px; }
+
     @media(max-width: 720px){
       .brandLink{min-width:auto}
       .langWrap span{display:none;}
@@ -516,15 +588,104 @@
               <div class="note" data-i18n="store_etsy_note">Print-on-demand items: shirts, mugs, and more.</div>
             </div>
 
+            <!-- ✅ Books entry (opens a full list with cover + name, then Amazon) -->
             <div class="card">
-              <h3 data-i18n="store_book_title">Book – Voz Interior (Amazon)</h3>
-              <p data-i18n="store_book_text">Get the official book on Amazon.</p>
+              <h3 data-i18n="store_books_title">Books (Amazon)</h3>
+              <p data-i18n="store_books_text">Browse all available books. Tap a book to view it on Amazon.</p>
               <div class="btnRow">
-                <a class="btn" href="https://a.co/d/3fluyhQ" target="_blank" rel="noopener">
-                  <span data-i18n="store_book_btn">Buy the Book</span>
-                </a>
+                <button class="btn btnPrimary navBtn" data-go="books" type="button">
+                  <span data-i18n="store_books_btn">View Books</span>
+                </button>
               </div>
-              <div class="note" data-i18n="store_book_note">Amazon link for the book only.</div>
+              <div class="note" data-i18n="store_books_note">You will see covers and titles first, then Amazon.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOOKS -->
+      <section class="page" data-page="books">
+        <div class="pageHeader">
+          <h1 data-i18n="books_title">Books</h1>
+          <p data-i18n="books_subtitle">Browse the available titles. Tap to open on Amazon.</p>
+          <div class="btnRow" style="margin-top:12px;">
+            <button class="btn navBtn" data-go="store" type="button">
+              <span data-i18n="books_back">Back to Store</span>
+            </button>
+
+            <!-- ✅ Admin button shows ONLY if you open the site with ?admin=1 -->
+            <button id="adminToggleBtn" class="btn" type="button" style="display:none;">
+              <span data-i18n="books_admin_btn">Admin</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div id="booksStatus" class="note"></div>
+
+          <div id="booksGrid" class="booksGrid" aria-live="polite"></div>
+
+          <!-- ✅ Admin Panel (only for you) -->
+          <div id="adminWrap" class="adminWrap" aria-label="Books admin">
+            <h3 style="margin:0 0 8px;" data-i18n="admin_title">Books Admin</h3>
+            <p class="note" style="margin:0;" data-i18n="admin_note">
+              Login first. Then you can add or delete books without changing the code.
+            </p>
+
+            <!-- Login -->
+            <div id="adminLogin" style="margin-top:12px;">
+              <div class="adminGrid">
+                <div class="field">
+                  <label data-i18n="admin_email">Email</label>
+                  <input id="adminEmail" type="email" autocomplete="email" />
+                </div>
+                <div class="field">
+                  <label data-i18n="admin_password">Password</label>
+                  <input id="adminPassword" type="password" autocomplete="current-password" />
+                </div>
+              </div>
+              <div class="adminRow">
+                <button id="adminLoginBtn" class="btn btnPrimary" type="button">
+                  <span data-i18n="admin_login">Login</span>
+                </button>
+                <div id="adminMsg" class="tinyNote"></div>
+              </div>
+            </div>
+
+            <!-- Add book -->
+            <div id="adminManage" style="margin-top:14px; display:none;">
+              <div class="adminGrid">
+                <div class="field">
+                  <label data-i18n="admin_book_title">Book title</label>
+                  <input id="bookTitle" />
+                </div>
+                <div class="field">
+                  <label data-i18n="admin_book_author">Author (optional)</label>
+                  <input id="bookAuthor" />
+                </div>
+                <div class="field">
+                  <label data-i18n="admin_cover_url">Cover image URL</label>
+                  <input id="bookCoverUrl" placeholder="https://..." />
+                </div>
+                <div class="field">
+                  <label data-i18n="admin_amazon_url">Amazon link</label>
+                  <input id="bookAmazonUrl" placeholder="https://a.co/..." />
+                </div>
+              </div>
+
+              <div class="adminRow">
+                <button id="addBookBtn" class="btn btnPrimary" type="button">
+                  <span data-i18n="admin_add">Add book</span>
+                </button>
+                <button id="adminLogoutBtn" class="btn" type="button">
+                  <span data-i18n="admin_logout">Logout</span>
+                </button>
+                <div id="adminManageMsg" class="tinyNote"></div>
+              </div>
+
+              <div class="tinyNote" data-i18n="admin_hint">
+                Tip: Use a direct image URL for the cover. (You can host covers on your site or anywhere public.)
+              </div>
             </div>
           </div>
         </div>
@@ -626,7 +787,8 @@
         <div class="content">
           <div class="card">
             <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
-            <p data-i18n="app_card_text">Coming soon.</p>
+
+            <!-- ✅ Removed the duplicate "Coming soon." line (kept only the button) -->
             <div class="btnRow">
               <span class="btn btnPrimary btnDisabled" data-i18n="app_btn_disabled">Coming soon</span>
             </div>
@@ -843,7 +1005,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   /* ✅ Force refresh */
-  const PF_CACHE = "20260221-STRIPE-PORTAL-MANAGE-CANCEL-ADDED";
+  const PF_CACHE = "20260223-BOOKS-SUPABASE-ADMIN";
 
   /* ===============================
      LOGO
@@ -901,7 +1063,6 @@
 
   /* ===============================
      ✅ GA4 SPA Tracking (hash navigation)
-     This is the key fix so Analytics shows activity.
   ================================ */
   function trackPageView(){
     try{
@@ -943,15 +1104,21 @@
 
     /* ✅ Track virtual pageview */
     trackPageView();
+
+    /* ✅ When Books page opens, load books */
+    if (finalKey === "books") initBooksPage();
   }
 
   (function init(){
     const initial = (location.hash || "#home").replace("#","");
     const exists = pages.some(p=>p.dataset.page === initial);
-    showPage(exists ? initial : "home", { smooth: false });
+    const first = exists ? initial : "home";
+    showPage(first, { smooth: false });
 
     /* ✅ Track first load */
     trackPageView();
+
+    if (first === "books") initBooksPage();
   })();
 
   buttons.forEach(b=>{
@@ -961,10 +1128,13 @@
   window.addEventListener("popstate", ()=>{
     const key = (location.hash || "#home").replace("#","");
     const exists = pages.some(p=>p.dataset.page === key);
-    showPage(exists ? key : "home", { smooth: false });
+    const finalKey = exists ? key : "home";
+    showPage(finalKey, { smooth: false });
 
     /* ✅ Track back/forward */
     trackPageView();
+
+    if (finalKey === "books") initBooksPage();
   });
 
   /* ===============================
@@ -1000,10 +1170,29 @@
       store_etsy_text: "Shop our official Prayer & Fire store.",
       store_etsy_btn: "Open Etsy Store",
       store_etsy_note: "Print-on-demand items: shirts, mugs, and more.",
-      store_book_title: "Book – Voz Interior (Amazon)",
-      store_book_text: "Get the official book on Amazon.",
-      store_book_btn: "Buy the Book",
-      store_book_note: "Amazon link for the book only.",
+
+      store_books_title: "Books (Amazon)",
+      store_books_text: "Browse all available books. Tap a book to view it on Amazon.",
+      store_books_btn: "View Books",
+      store_books_note: "You will see covers and titles first, then Amazon.",
+
+      books_title: "Books",
+      books_subtitle: "Browse the available titles. Tap to open on Amazon.",
+      books_back: "Back to Store",
+      books_admin_btn: "Admin",
+
+      admin_title: "Books Admin",
+      admin_note: "Login first. Then you can add or delete books without changing the code.",
+      admin_email: "Email",
+      admin_password: "Password",
+      admin_login: "Login",
+      admin_logout: "Logout",
+      admin_book_title: "Book title",
+      admin_book_author: "Author (optional)",
+      admin_cover_url: "Cover image URL",
+      admin_amazon_url: "Amazon link",
+      admin_add: "Add book",
+      admin_hint: "Tip: Use a direct image URL for the cover. (You can host covers on your site or anywhere public.)",
 
       about_title: "Who we are",
       about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
@@ -1036,7 +1225,6 @@
       app_title: "Download the App",
       app_subtitle: "Prayer & Fire Mobile is coming soon.",
       app_card_title: "Prayer & Fire Mobile",
-      app_card_text: "Coming soon.",
       app_btn_disabled: "Coming soon",
       app_android: "Android version coming soon.",
 
@@ -1115,10 +1303,29 @@
       store_etsy_text: "Compra en nuestra tienda oficial de Prayer & Fire.",
       store_etsy_btn: "Abrir Tienda Etsy",
       store_etsy_note: "Productos print-on-demand: camisetas, tazas y más.",
-      store_book_title: "Libro – Voz Interior (Amazon)",
-      store_book_text: "Consigue el libro oficial en Amazon.",
-      store_book_btn: "Comprar el Libro",
-      store_book_note: "Enlace de Amazon solo para el libro.",
+
+      store_books_title: "Libros (Amazon)",
+      store_books_text: "Mira todos los libros disponibles. Toca un libro para verlo en Amazon.",
+      store_books_btn: "Ver Libros",
+      store_books_note: "Primero verás portadas y títulos, luego Amazon.",
+
+      books_title: "Libros",
+      books_subtitle: "Explora los títulos disponibles. Toca para abrir en Amazon.",
+      books_back: "Volver a la Tienda",
+      books_admin_btn: "Admin",
+
+      admin_title: "Admin de Libros",
+      admin_note: "Inicia sesión. Luego podrás agregar o borrar libros sin cambiar el código.",
+      admin_email: "Correo",
+      admin_password: "Contraseña",
+      admin_login: "Entrar",
+      admin_logout: "Salir",
+      admin_book_title: "Nombre del libro",
+      admin_book_author: "Autor (opcional)",
+      admin_cover_url: "URL de la portada",
+      admin_amazon_url: "Link de Amazon",
+      admin_add: "Agregar libro",
+      admin_hint: "Tip: Usa un link directo de imagen para la portada (puedes alojarla en tu sitio o donde sea público).",
 
       about_title: "Quiénes somos",
       about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
@@ -1151,7 +1358,6 @@
       app_title: "Descargar la App",
       app_subtitle: "Prayer & Fire Mobile estará disponible pronto.",
       app_card_title: "Prayer & Fire Mobile",
-      app_card_text: "Próximamente.",
       app_btn_disabled: "Próximamente",
       app_android: "Versión Android próximamente.",
 
@@ -1230,10 +1436,29 @@
       store_etsy_text: "Compre na nossa loja oficial Prayer & Fire.",
       store_etsy_btn: "Abrir Loja Etsy",
       store_etsy_note: "Itens sob demanda: camisetas, canecas e mais.",
-      store_book_title: "Livro – Voz Interior (Amazon)",
-      store_book_text: "Compre o livro oficial na Amazon.",
-      store_book_btn: "Comprar o Livro",
-      store_book_note: "Link da Amazon apenas para o livro.",
+
+      store_books_title: "Livros (Amazon)",
+      store_books_text: "Veja todos os livros disponíveis. Toque em um livro para ver na Amazon.",
+      store_books_btn: "Ver Livros",
+      store_books_note: "Você verá capas e títulos primeiro, depois Amazon.",
+
+      books_title: "Livros",
+      books_subtitle: "Explore os títulos disponíveis. Toque para abrir na Amazon.",
+      books_back: "Voltar para a Loja",
+      books_admin_btn: "Admin",
+
+      admin_title: "Admin de Livros",
+      admin_note: "Faça login. Depois você pode adicionar ou excluir livros sem mudar o código.",
+      admin_email: "Email",
+      admin_password: "Senha",
+      admin_login: "Entrar",
+      admin_logout: "Sair",
+      admin_book_title: "Título do livro",
+      admin_book_author: "Autor (opcional)",
+      admin_cover_url: "URL da capa",
+      admin_amazon_url: "Link da Amazon",
+      admin_add: "Adicionar livro",
+      admin_hint: "Dica: Use um link direto de imagem para a capa (você pode hospedar no seu site ou em qualquer lugar público).",
 
       about_title: "Quem somos",
       about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
@@ -1266,7 +1491,6 @@
       app_title: "Baixar o App",
       app_subtitle: "Prayer & Fire Mobile estará disponível em breve.",
       app_card_title: "Prayer & Fire Mobile",
-      app_card_text: "Em breve.",
       app_btn_disabled: "Em breve",
       app_android: "Versão Android em breve.",
 
@@ -1351,6 +1575,265 @@
   if (langSelect) {
     langSelect.addEventListener("change", (e)=> applyTranslations(e.target.value));
   }
+
+  /* ===============================
+     ✅ SUPABASE BOOKS (Public list + Admin CRUD)
+     Table required: "books"
+     Columns: id (uuid), title (text), author (text nullable), cover_url (text), amazon_url (text), created_at (timestamp default now())
+  ================================ */
+  const SUPABASE_URL = "https://xikmhnulxksadgvzajdk.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
+  let supabaseClient = null;
+  let booksInitDone = false;
+
+  function isAdminMode(){
+    try{
+      const url = new URL(location.href);
+      return url.searchParams.get("admin") === "1";
+    }catch(e){
+      return false;
+    }
+  }
+
+  function renderBooks(items){
+    const grid = document.getElementById("booksGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    if (!items || items.length === 0){
+      grid.innerHTML = `<div class="note" data-i18n="books_empty">No books added yet.</div>`;
+      applyTranslations(document.documentElement.lang || "en");
+      return;
+    }
+
+    for (const b of items){
+      const cover = b.cover_url || "";
+      const title = b.title || "Untitled";
+      const author = b.author ? String(b.author) : "";
+      const amazon = b.amazon_url || "#";
+
+      const el = document.createElement("div");
+      el.className = "bookCard";
+      el.innerHTML = `
+        <div class="bookCover">
+          ${cover ? `<img loading="lazy" src="${cover}" alt="${title} cover">` : `<div class="note">No cover</div>`}
+        </div>
+        <div class="bookBody">
+          <p class="bookTitle">${title}</p>
+          ${author ? `<p class="bookMeta">${author}</p>` : ``}
+          <div class="bookActions">
+            <a class="btn btnPrimary" href="${amazon}" target="_blank" rel="noopener">
+              <span data-i18n="books_view_amazon">View on Amazon</span>
+            </a>
+            ${isAdminMode() ? `<button class="btn" type="button" data-del="${b.id}"><span data-i18n="admin_delete">Delete</span></button>` : ``}
+          </div>
+        </div>
+      `;
+      grid.appendChild(el);
+    }
+
+    applyTranslations(document.documentElement.lang || "en");
+
+    if (isAdminMode()){
+      grid.querySelectorAll("button[data-del]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          const id = btn.getAttribute("data-del");
+          if (!id || !supabaseClient) return;
+          const ok = confirm("Delete this book?");
+          if (!ok) return;
+          const { error } = await supabaseClient.from("books").delete().eq("id", id);
+          if (error){
+            alert("Error deleting: " + error.message);
+            return;
+          }
+          await loadBooks();
+        });
+      });
+    }
+  }
+
+  async function loadBooks(){
+    const status = document.getElementById("booksStatus");
+    if (status) status.textContent = "";
+
+    if (!supabaseClient){
+      status && (status.textContent = "Loading...");
+      return;
+    }
+
+    const { data, error } = await supabaseClient
+      .from("books")
+      .select("id,title,author,cover_url,amazon_url,created_at")
+      .order("created_at", { ascending: false });
+
+    if (error){
+      status && (status.textContent = "Books could not be loaded.");
+      return;
+    }
+    renderBooks(data);
+  }
+
+  async function initSupabase(){
+    if (supabaseClient) return supabaseClient;
+
+    if (!window.supabase || !window.supabase.createClient){
+      // supabase-js not loaded yet
+      return null;
+    }
+
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return supabaseClient;
+  }
+
+  async function initBooksPage(){
+    if (booksInitDone) return;
+    booksInitDone = true;
+
+    // Show admin toggle ONLY if ?admin=1
+    const adminBtn = document.getElementById("adminToggleBtn");
+    if (adminBtn && isAdminMode()){
+      adminBtn.style.display = "inline-flex";
+    }
+
+    // Init supabase
+    await initSupabase();
+
+    // Load books
+    await loadBooks();
+
+    // Admin UI
+    const adminWrap = document.getElementById("adminWrap");
+    const adminToggle = document.getElementById("adminToggleBtn");
+    const adminLogin = document.getElementById("adminLogin");
+    const adminManage = document.getElementById("adminManage");
+    const adminMsg = document.getElementById("adminMsg");
+    const adminManageMsg = document.getElementById("adminManageMsg");
+
+    const loginBtn = document.getElementById("adminLoginBtn");
+    const logoutBtn = document.getElementById("adminLogoutBtn");
+    const addBookBtn = document.getElementById("addBookBtn");
+
+    const emailEl = document.getElementById("adminEmail");
+    const passEl = document.getElementById("adminPassword");
+
+    const titleEl = document.getElementById("bookTitle");
+    const authorEl = document.getElementById("bookAuthor");
+    const coverEl = document.getElementById("bookCoverUrl");
+    const amazonEl = document.getElementById("bookAmazonUrl");
+
+    async function refreshAdminState(){
+      if (!supabaseClient) return;
+      const { data } = await supabaseClient.auth.getSession();
+      const hasSession = !!data?.session;
+
+      if (adminWrap){
+        adminWrap.classList.toggle("active", !!(isAdminMode() && adminWrap.classList));
+      }
+
+      if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
+      if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
+    }
+
+    if (adminToggle && isAdminMode()){
+      adminToggle.addEventListener("click", async ()=>{
+        if (!adminWrap) return;
+        const open = adminWrap.classList.contains("active");
+        adminWrap.classList.toggle("active", !open);
+        await refreshAdminState();
+      });
+    }
+
+    if (loginBtn){
+      loginBtn.addEventListener("click", async ()=>{
+        if (!supabaseClient) return;
+        adminMsg && (adminMsg.textContent = "Logging in...");
+        const email = (emailEl?.value || "").trim();
+        const password = (passEl?.value || "").trim();
+
+        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error){
+          adminMsg && (adminMsg.textContent = "Login failed.");
+          return;
+        }
+        adminMsg && (adminMsg.textContent = "Logged in.");
+        await refreshAdminState();
+        await loadBooks();
+      });
+    }
+
+    if (logoutBtn){
+      logoutBtn.addEventListener("click", async ()=>{
+        if (!supabaseClient) return;
+        await supabaseClient.auth.signOut();
+        adminManageMsg && (adminManageMsg.textContent = "Logged out.");
+        await refreshAdminState();
+        await loadBooks();
+      });
+    }
+
+    if (addBookBtn){
+      addBookBtn.addEventListener("click", async ()=>{
+        if (!supabaseClient) return;
+
+        adminManageMsg && (adminManageMsg.textContent = "Saving...");
+
+        const title = (titleEl?.value || "").trim();
+        const author = (authorEl?.value || "").trim();
+        const cover_url = (coverEl?.value || "").trim();
+        const amazon_url = (amazonEl?.value || "").trim();
+
+        if (!title || !cover_url || !amazon_url){
+          adminManageMsg && (adminManageMsg.textContent = "Title, cover URL, and Amazon URL are required.");
+          return;
+        }
+
+        const { error } = await supabaseClient
+          .from("books")
+          .insert([{ title, author: author || null, cover_url, amazon_url }]);
+
+        if (error){
+          adminManageMsg && (adminManageMsg.textContent = "Error: " + error.message);
+          return;
+        }
+
+        adminManageMsg && (adminManageMsg.textContent = "Book added.");
+        if (titleEl) titleEl.value = "";
+        if (authorEl) authorEl.value = "";
+        if (coverEl) coverEl.value = "";
+        if (amazonEl) amazonEl.value = "";
+
+        await loadBooks();
+      });
+    }
+
+    if (isAdminMode()){
+      adminWrap && adminWrap.classList.add("active");
+      await refreshAdminState();
+    }
+
+    // keep session updates
+    if (supabaseClient){
+      supabaseClient.auth.onAuthStateChange(async ()=>{
+        if (isAdminMode()){
+          await refreshAdminState();
+          await loadBooks();
+        }
+      });
+    }
+  }
+
+  /* Add a couple i18n keys used inside books render (kept minimal) */
+  I18N.en.books_view_amazon = "View on Amazon";
+  I18N.es.books_view_amazon = "Ver en Amazon";
+  I18N.pt.books_view_amazon = "Ver na Amazon";
+
+  I18N.en.admin_delete = "Delete";
+  I18N.es.admin_delete = "Borrar";
+  I18N.pt.admin_delete = "Excluir";
+
+  I18N.en.books_empty = "No books added yet.";
+  I18N.es.books_empty = "Aún no hay libros agregados.";
+  I18N.pt.books_empty = "Ainda não há livros adicionados.";
 </script>
 
 </body>
