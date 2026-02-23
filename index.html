@@ -588,7 +588,7 @@
               <div class="note" data-i18n="store_etsy_note">Print-on-demand items: shirts, mugs, and more.</div>
             </div>
 
-            <!-- ✅ Books entry (opens a full list with cover + name, then Amazon) -->
+            <!-- ✅ Books entry -->
             <div class="card">
               <h3 data-i18n="store_books_title">Books (Amazon)</h3>
               <p data-i18n="store_books_text">Browse all available books. Tap a book to view it on Amazon.</p>
@@ -613,7 +613,7 @@
               <span data-i18n="books_back">Back to Store</span>
             </button>
 
-            <!-- ✅ Admin button shows ONLY if you open the site with ?admin=1 -->
+            <!-- ✅ Admin button shows ONLY if admin mode -->
             <button id="adminToggleBtn" class="btn" type="button" style="display:none;">
               <span data-i18n="books_admin_btn">Admin</span>
             </button>
@@ -625,7 +625,7 @@
 
           <div id="booksGrid" class="booksGrid" aria-live="polite"></div>
 
-          <!-- ✅ Admin Panel (only for you) -->
+          <!-- ✅ Admin Panel -->
           <div id="adminWrap" class="adminWrap" aria-label="Books admin">
             <h3 style="margin:0 0 8px;" data-i18n="admin_title">Books Admin</h3>
             <p class="note" style="margin:0;" data-i18n="admin_note">
@@ -717,7 +717,6 @@
             </div>
           </div>
 
-          <!-- Founders -->
           <div class="card" style="margin-top:14px;">
             <h3 data-i18n="leaders_title" style="text-align:center;">Founders</h3>
 
@@ -743,7 +742,6 @@
               Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.
             </div>
           </div>
-
         </div>
       </section>
 
@@ -944,7 +942,6 @@
               </div>
             </div>
 
-            <!-- ✅ NEW: Manage / Cancel Subscription -->
             <div class="card managePanel">
               <h3 data-i18n="sup_manage_title">Manage your subscription</h3>
               <p data-i18n="sup_manage_text">
@@ -960,7 +957,6 @@
               </div>
               <div class="note" data-i18n="sup_manage_note">You can cancel anytime.</div>
             </div>
-
           </div>
         </div>
       </section>
@@ -1003,7 +999,7 @@
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
   /* ✅ Force refresh */
-  const PF_CACHE = "20260223-BOOKS-SUPABASE-ADMIN";
+  const PF_CACHE = "20260223-BOOKS-SUPABASE-ADMIN-FIX";
 
   /* ===============================
      LOGO
@@ -1065,17 +1061,40 @@
   function trackPageView(){
     try{
       if (typeof gtag !== "function") return;
-
       const page_path = location.pathname + location.search + location.hash;
       const page_location = location.href;
       const page_title = document.title;
-
-      gtag('event', 'page_view', {
-        page_title,
-        page_location,
-        page_path
-      });
+      gtag('event', 'page_view', { page_title, page_location, page_path });
     } catch(e){}
+  }
+
+  /* ===============================
+     ✅ HASH PARSER FIX
+     Supports:
+       #books
+       #books?admin=1
+       #books&admin=1
+  ================================ */
+  function parseHash(){
+    const raw = (location.hash || "#home").replace(/^#/, "");
+    const clean = raw.split("?")[0].split("&")[0].trim(); // <-- KEY FIX
+    return clean || "home";
+  }
+
+  /* ===============================
+     ✅ ADMIN MODE FIX
+     Supports both:
+       ?admin=1   (recommended)
+       #books?admin=1 (your way)
+  ================================ */
+  function isAdminMode(){
+    try{
+      const url = new URL(location.href);
+      if (url.searchParams.get("admin") === "1") return true;
+    }catch(e){}
+    // fallback: read from hash
+    const h = (location.hash || "").toLowerCase();
+    return h.includes("admin=1");
   }
 
   /* ===============================
@@ -1099,23 +1118,16 @@
     const finalKey = exists ? key : "home";
     history.pushState({page: finalKey}, "", "#" + finalKey);
     showPage(finalKey, { smooth: true });
-
-    /* ✅ Track virtual pageview */
     trackPageView();
-
-    /* ✅ When Books page opens, load books */
     if (finalKey === "books") initBooksPage();
   }
 
   (function init(){
-    const initial = (location.hash || "#home").replace("#","");
+    const initial = parseHash();
     const exists = pages.some(p=>p.dataset.page === initial);
     const first = exists ? initial : "home";
     showPage(first, { smooth: false });
-
-    /* ✅ Track first load */
     trackPageView();
-
     if (first === "books") initBooksPage();
   })();
 
@@ -1124,14 +1136,11 @@
   });
 
   window.addEventListener("popstate", ()=>{
-    const key = (location.hash || "#home").replace("#","");
+    const key = parseHash();
     const exists = pages.some(p=>p.dataset.page === key);
     const finalKey = exists ? key : "home";
     showPage(finalKey, { smooth: false });
-
-    /* ✅ Track back/forward */
     trackPageView();
-
     if (finalKey === "books") initBooksPage();
   });
 
@@ -1143,7 +1152,6 @@
       lang_label: "Language",
       brand_title: "Prayer & Fire",
       brand_subtitle: "Global Movement",
-
       nav_home: "Home",
       nav_about: "Who we are",
       nav_beliefs: "Beliefs & Values",
@@ -1276,7 +1284,6 @@
       lang_label: "Idioma",
       brand_title: "Prayer & Fire",
       brand_subtitle: "Movimiento Global",
-
       nav_home: "Inicio",
       nav_about: "Quiénes somos",
       nav_beliefs: "Creencias y Valores",
@@ -1409,7 +1416,6 @@
       lang_label: "Idioma",
       brand_title: "Prayer & Fire",
       brand_subtitle: "Movimento Global",
-
       nav_home: "Início",
       nav_about: "Quem somos",
       nav_beliefs: "Crenças e Valores",
@@ -1541,16 +1547,13 @@
 
   function applyTranslations(lang){
     const dict = I18N[lang] || I18N.en;
-
     document.querySelectorAll("[data-i18n]").forEach(el=>{
       const key = el.getAttribute("data-i18n");
       if (!key) return;
       if (dict[key]) el.textContent = dict[key];
     });
-
     const sel = document.getElementById("langSelect");
     if (sel) sel.value = lang;
-
     try { localStorage.setItem("pf_lang", lang); } catch(e){}
     document.documentElement.lang = lang;
   }
@@ -1560,7 +1563,6 @@
       const saved = localStorage.getItem("pf_lang");
       if (saved && I18N[saved]) return saved;
     } catch(e){}
-
     const nav = (navigator.language || "en").slice(0,2).toLowerCase();
     if (I18N[nav]) return nav;
     return "en";
@@ -1584,15 +1586,7 @@
 
   let supabaseClient = null;
   let booksInitDone = false;
-
-  function isAdminMode(){
-    try{
-      const url = new URL(location.href);
-      return url.searchParams.get("admin") === "1";
-    }catch(e){
-      return false;
-    }
-  }
+  let adminPanelOpen = false;
 
   function renderBooks(items){
     const grid = document.getElementById("booksGrid");
@@ -1672,8 +1666,8 @@
     renderBooks(data);
   }
 
-  // ✅ NEW: wait for supabase-js to actually load (because script is defer)
-  async function waitForSupabase(maxMs = 4000){
+  // ✅ wait for supabase-js to actually load (script is defer)
+  async function waitForSupabase(maxMs = 6000){
     const start = Date.now();
     while (Date.now() - start < maxMs){
       if (window.supabase && typeof window.supabase.createClient === "function") return true;
@@ -1684,10 +1678,8 @@
 
   async function initSupabase(){
     if (supabaseClient) return supabaseClient;
-
     const ok = await waitForSupabase();
     if (!ok) return null;
-
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     return supabaseClient;
   }
@@ -1696,19 +1688,14 @@
     if (booksInitDone) return;
     booksInitDone = true;
 
-    // Show admin toggle ONLY if ?admin=1
     const adminBtn = document.getElementById("adminToggleBtn");
     if (adminBtn && isAdminMode()){
       adminBtn.style.display = "inline-flex";
     }
 
-    // Init supabase
     await initSupabase();
-
-    // Load books
     await loadBooks();
 
-    // Admin UI
     const adminWrap = document.getElementById("adminWrap");
     const adminToggle = document.getElementById("adminToggleBtn");
     const adminLogin = document.getElementById("adminLogin");
@@ -1733,10 +1720,6 @@
       const { data } = await supabaseClient.auth.getSession();
       const hasSession = !!data?.session;
 
-      if (adminWrap){
-        adminWrap.classList.toggle("active", !!(isAdminMode() && adminWrap.classList));
-      }
-
       if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
       if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
     }
@@ -1744,8 +1727,8 @@
     if (adminToggle && isAdminMode()){
       adminToggle.addEventListener("click", async ()=>{
         if (!adminWrap) return;
-        const open = adminWrap.classList.contains("active");
-        adminWrap.classList.toggle("active", !open);
+        adminPanelOpen = !adminPanelOpen;
+        adminWrap.classList.toggle("active", adminPanelOpen);
         await refreshAdminState();
       });
     }
@@ -1753,15 +1736,19 @@
     if (loginBtn){
       loginBtn.addEventListener("click", async ()=>{
         if (!supabaseClient) return;
-        adminMsg && (adminMsg.textContent = "Logging in...");
         const email = (emailEl?.value || "").trim();
         const password = (passEl?.value || "").trim();
 
+        adminMsg && (adminMsg.textContent = "Logging in...");
+
         const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
         if (error){
-          adminMsg && (adminMsg.textContent = "Login failed.");
+          // ✅ show REAL error
+          adminMsg && (adminMsg.textContent = `Login failed: ${error.message}`);
           return;
         }
+
         adminMsg && (adminMsg.textContent = "Logged in.");
         await refreshAdminState();
         await loadBooks();
@@ -1814,11 +1801,11 @@
     }
 
     if (isAdminMode()){
+      adminPanelOpen = true;
       adminWrap && adminWrap.classList.add("active");
       await refreshAdminState();
     }
 
-    // keep session updates
     if (supabaseClient){
       supabaseClient.auth.onAuthStateChange(async ()=>{
         if (isAdminMode()){
@@ -1829,7 +1816,7 @@
     }
   }
 
-  /* Add a couple i18n keys used inside books render (kept minimal) */
+  /* i18n keys used inside books render */
   I18N.en.books_view_amazon = "View on Amazon";
   I18N.es.books_view_amazon = "Ver en Amazon";
   I18N.pt.books_view_amazon = "Ver na Amazon";
