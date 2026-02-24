@@ -45,7 +45,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     /* ✅ Make sure first pageview includes hash path too */
     gtag('config', 'G-GVR33MJKHC', {
       page_path: location.pathname + location.search + location.hash
@@ -442,7 +441,7 @@
     }
     .bookMeta{
       margin:0;
-      color: var(--muted);
+      color:var(--muted);
       font-size:13px;
     }
     .bookActions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
@@ -1077,7 +1076,7 @@
   ================================ */
   function parseHash(){
     const raw = (location.hash || "#home").replace(/^#/, "");
-    const clean = raw.split("?")[0].split("&")[0].trim(); // <-- KEY FIX
+    const clean = raw.split("?")[0].split("&")[0].trim();
     return clean || "home";
   }
 
@@ -1085,14 +1084,13 @@
      ✅ ADMIN MODE FIX
      Supports both:
        ?admin=1   (recommended)
-       #books?admin=1 (your way)
+       #books?admin=1 (also works)
   ================================ */
   function isAdminMode(){
     try{
       const url = new URL(location.href);
       if (url.searchParams.get("admin") === "1") return true;
     }catch(e){}
-    // fallback: read from hash
     const h = (location.hash || "").toLowerCase();
     return h.includes("admin=1");
   }
@@ -1581,8 +1579,8 @@
   ================================ */
   const SUPABASE_URL = "https://xikmhnulxksadgvzajdk.supabase.co";
 
-  // ✅ IMPORTANT: Use ONLY publishable (anon) key in the website
-  const SUPABASE_ANON_KEY = "sb_publishable_tuOqa-o2MpSBjQHvbi3NEw_RghmA9tN";
+  /* ✅ FIX #1: REAL anon key (JWT) */
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
 
   let supabaseClient = null;
   let booksInitDone = false;
@@ -1656,17 +1654,17 @@
 
     const { data, error } = await supabaseClient
       .from("books")
-      .select("id,title,author,cover_url,amazon_url,created_at")
+      .select("id,title,author,cover_url,amazon_url,created_at,is_active")
       .order("created_at", { ascending: false });
 
     if (error){
       status && (status.textContent = "Books could not be loaded.");
       return;
     }
+
     renderBooks(data);
   }
 
-  // ✅ wait for supabase-js to actually load (script is defer)
   async function waitForSupabase(maxMs = 6000){
     const start = Date.now();
     while (Date.now() - start < maxMs){
@@ -1744,7 +1742,6 @@
         const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
         if (error){
-          // ✅ show REAL error
           adminMsg && (adminMsg.textContent = `Login failed: ${error.message}`);
           return;
         }
@@ -1781,9 +1778,10 @@
           return;
         }
 
+        /* ✅ FIX #2: ensure is_active=true so public policy can read it */
         const { error } = await supabaseClient
           .from("books")
-          .insert([{ title, author: author || null, cover_url, amazon_url }]);
+          .insert([{ title, author: author || null, cover_url, amazon_url, is_active: true }]);
 
         if (error){
           adminManageMsg && (adminManageMsg.textContent = "Error: " + error.message);
@@ -1828,6 +1826,11 @@
   I18N.en.books_empty = "No books added yet.";
   I18N.es.books_empty = "Aún no hay libros agregados.";
   I18N.pt.books_empty = "Ainda não há livros adicionados.";
+
+  /* ===============================
+     ✅ IMPORTANT: Call initBooksPage when navigating to #books
+     (Your navigation already calls it)
+  ================================ */
 </script>
 
 </body>
