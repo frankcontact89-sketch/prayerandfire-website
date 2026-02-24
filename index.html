@@ -26,7 +26,7 @@
   <meta name="twitter:description" content="A global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
   <meta name="twitter:image" content="https://prayerandfire.org/logo.jpg" />
 
-  <!-- ✅ Google icon / favicon (works best with real files in repo root) -->
+  <!-- ✅ Google icon / favicon -->
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,16 +39,15 @@
   <link id="pfAppleIcon" rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link id="pfManifest" rel="manifest" href="./site.webmanifest">
 
-  <!-- ✅ Google tag (gtag.js) -->
+  <!-- ✅ Google tag (gtag.js) - SPA SAFE -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVR33MJKHC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    /* ✅ Make sure first pageview includes hash path too */
-    gtag('config', 'G-GVR33MJKHC', {
-      page_path: location.pathname + location.search + location.hash
-    });
+
+    // IMPORTANT: disable auto page_view for SPA
+    gtag('config', 'G-GVR33MJKHC', { send_page_view: false });
   </script>
 
   <!-- ✅ Supabase JS (for Books + Admin) -->
@@ -301,7 +300,6 @@
       background: rgba(20,20,34,.45);
     }
 
-    /* ✅ Support: Manage subscription panel */
     .managePanel{
       border:1px solid rgba(255,106,0,.35);
       background: rgba(255,106,0,.08);
@@ -341,7 +339,6 @@
     .status.ok{color:#9fe6b8;}
     .status.bad{color:#ffb4b4;}
 
-    /* ===== Leadership / Founders styles ===== */
     .leadersWrap{
       margin-top: 6px;
       display:flex;
@@ -396,7 +393,6 @@
       font-size: 12px;
     }
 
-    /* ===== Books grid ===== */
     .booksGrid{
       display:grid;
       gap:14px;
@@ -441,12 +437,11 @@
     }
     .bookMeta{
       margin:0;
-      color:var(--muted);
+      color: var(--muted);
       font-size:13px;
     }
     .bookActions{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* ===== Admin panel (books) ===== */
     .adminWrap{
       margin-top:14px;
       border:1px solid rgba(255,106,0,.35);
@@ -477,7 +472,6 @@
     }
   </style>
 
-  <!-- ✅ Structured data for Google (helps logo/brand in results) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -587,7 +581,6 @@
               <div class="note" data-i18n="store_etsy_note">Print-on-demand items: shirts, mugs, and more.</div>
             </div>
 
-            <!-- ✅ Books entry -->
             <div class="card">
               <h3 data-i18n="store_books_title">Books (Amazon)</h3>
               <p data-i18n="store_books_text">Browse all available books. Tap a book to view it on Amazon.</p>
@@ -612,7 +605,6 @@
               <span data-i18n="books_back">Back to Store</span>
             </button>
 
-            <!-- ✅ Admin button shows ONLY if admin mode -->
             <button id="adminToggleBtn" class="btn" type="button" style="display:none;">
               <span data-i18n="books_admin_btn">Admin</span>
             </button>
@@ -621,17 +613,14 @@
 
         <div class="content">
           <div id="booksStatus" class="note"></div>
-
           <div id="booksGrid" class="booksGrid" aria-live="polite"></div>
 
-          <!-- ✅ Admin Panel -->
           <div id="adminWrap" class="adminWrap" aria-label="Books admin">
             <h3 style="margin:0 0 8px;" data-i18n="admin_title">Books Admin</h3>
             <p class="note" style="margin:0;" data-i18n="admin_note">
               Login first. Then you can add or delete books without changing the code.
             </p>
 
-            <!-- Login -->
             <div id="adminLogin" style="margin-top:12px;">
               <div class="adminGrid">
                 <div class="field">
@@ -651,7 +640,6 @@
               </div>
             </div>
 
-            <!-- Add book -->
             <div id="adminManage" style="margin-top:14px; display:none;">
               <div class="adminGrid">
                 <div class="field">
@@ -990,19 +978,12 @@
 </div>
 
 <script>
-  /* ===============================
-     BASE auto (custom domain + github.io repo)
-  ================================ */
   const isGithubPages = location.hostname.endsWith("github.io");
   const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
 
-  /* ✅ Force refresh */
-  const PF_CACHE = "20260223-BOOKS-SUPABASE-ADMIN-FIX";
+  const PF_CACHE = "20260223-BOOKS-ADMIN-FINAL";
 
-  /* ===============================
-     LOGO
-  ================================ */
   const logoEl = document.getElementById("pfLogo");
   const logoFallback = document.getElementById("logoFallback");
   if (logoEl) {
@@ -1013,9 +994,6 @@
     };
   }
 
-  /* ===============================
-     GitHub preview icon links (optional)
-  ================================ */
   const f32 = document.getElementById("pfFavicon32");
   const f16 = document.getElementById("pfFavicon16");
   const apple = document.getElementById("pfAppleIcon");
@@ -1025,12 +1003,8 @@
   if (apple) apple.href = `${BASE}/apple-touch-icon.png?v=${PF_CACHE}`;
   if (mani) mani.href = `${BASE}/site.webmanifest?v=${PF_CACHE}`;
 
-  /* ===============================
-     Founders photos (lowercase first, then .PNG fallback)
-  ================================ */
   const alineImg = document.getElementById("pfAline");
   const franciscoImg = document.getElementById("pfFrancisco");
-
   if (alineImg) {
     alineImg.src = `${BASE}/aline.png?v=${PF_CACHE}`;
     alineImg.onerror = () => { alineImg.src = `${BASE}/aline.png.PNG?v=${PF_CACHE}`; };
@@ -1040,39 +1014,30 @@
     franciscoImg.onerror = () => { franciscoImg.src = `${BASE}/francisco.png.PNG?v=${PF_CACHE}`; };
   }
 
-  /* ===============================
-     Footer links
-  ================================ */
   const privacy = document.getElementById("pfPrivacyLink");
   const terms = document.getElementById("pfTermsLink");
   if (privacy) privacy.href = `${BASE}/privacy.html`;
   if (terms) terms.href = `${BASE}/terms.html`;
 
-  /* ===============================
-     Year
-  ================================ */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ===============================
-     ✅ GA4 SPA Tracking (hash navigation)
-  ================================ */
+  // SPA-safe GA tracking
   function trackPageView(){
     try{
       if (typeof gtag !== "function") return;
       const page_path = location.pathname + location.search + location.hash;
-      const page_location = location.href;
-      const page_title = document.title;
-      gtag('event', 'page_view', { page_title, page_location, page_path });
+
+      gtag('config', 'G-GVR33MJKHC', {
+        page_title: document.title,
+        page_location: location.href,
+        page_path
+      });
     } catch(e){}
   }
 
   /* ===============================
-     ✅ HASH PARSER FIX
-     Supports:
-       #books
-       #books?admin=1
-       #books&admin=1
+     ✅ HASH PARSER (supports #books?admin=1)
   ================================ */
   function parseHash(){
     const raw = (location.hash || "#home").replace(/^#/, "");
@@ -1081,23 +1046,18 @@
   }
 
   /* ===============================
-     ✅ ADMIN MODE FIX
-     Supports both:
-       ?admin=1   (recommended)
-       #books?admin=1 (also works)
+     ✅ ADMIN MODE (supports admin=1 AND andmin=1)
   ================================ */
   function isAdminMode(){
     try{
       const url = new URL(location.href);
       if (url.searchParams.get("admin") === "1") return true;
+      if (url.searchParams.get("andmin") === "1") return true; // typo support
     }catch(e){}
     const h = (location.hash || "").toLowerCase();
-    return h.includes("admin=1");
+    return h.includes("admin=1") || h.includes("andmin=1");
   }
 
-  /* ===============================
-     Navigation
-  ================================ */
   const buttons = Array.from(document.querySelectorAll('.navBtn'));
   const pages = Array.from(document.querySelectorAll('.page'));
 
@@ -1143,7 +1103,7 @@
   });
 
   /* ===============================
-     i18n (EN / ES / PT) — FULL
+     i18n
   ================================ */
   const I18N = {
     en: {
@@ -1198,20 +1158,6 @@
       admin_add: "Add book",
       admin_hint: "Tip: Use a direct image URL for the cover. (You can host covers on your site or anywhere public.)",
 
-      about_title: "Who we are",
-      about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
-      about_what_title: "What we are",
-      about_what_text: "A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.",
-      about_do_title: "What we do",
-      about_do_1: "Prayer gatherings and intercession",
-      about_do_2: "Community building and support",
-      about_do_3: "Faith-based resources and outreach",
-
-      leaders_title: "Founders",
-      leaders_founder: "Founder",
-      leaders_president: "President",
-      leaders_note: "Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.",
-
       beliefs_title: "Beliefs & Values",
       beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
       beliefs_beliefs_title: "Beliefs",
@@ -1257,7 +1203,6 @@
       sup_month_title: "Monthly support ($8.99)",
       sup_month_text: "Become a monthly supporter.",
       sup_month_btn: "Start Monthly Support",
-
       sup_manage_title: "Manage your subscription",
       sup_manage_text: "If you need to update your payment method or cancel your monthly support, use the secure customer portal.",
       sup_manage_btn: "Manage / Cancel Subscription",
@@ -1275,7 +1220,11 @@
       f_email_label: "Email",
       f_phone_label: "Phone (optional)",
       f_location_label: "City / Country",
-      f_message_label: "Message"
+      f_message_label: "Message",
+
+      books_view_amazon: "View on Amazon",
+      admin_delete: "Delete",
+      books_empty: "No books added yet."
     },
 
     es: {
@@ -1330,20 +1279,6 @@
       admin_add: "Agregar libro",
       admin_hint: "Tip: Usa un link directo de imagen para la portada (puedes alojarla en tu sitio o donde sea público).",
 
-      about_title: "Quiénes somos",
-      about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
-      about_what_title: "Qué somos",
-      about_what_text: "Un movimiento cristiano global enfocado en la oración, crecimiento espiritual y recursos que fortalecen a los creyentes en todo el mundo.",
-      about_do_title: "Qué hacemos",
-      about_do_1: "Reuniones de oración e intercesión",
-      about_do_2: "Construcción de comunidad y apoyo",
-      about_do_3: "Recursos y alcance basados en la fe",
-
-      leaders_title: "Fundadores",
-      leaders_founder: "Fundadora",
-      leaders_president: "Presidente",
-      leaders_note: "El liderazgo de Prayer & Fire está comprometido a servir al cuerpo global de Cristo mediante la oración y la fe.",
-
       beliefs_title: "Creencias y Valores",
       beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
       beliefs_beliefs_title: "Creencias",
@@ -1389,7 +1324,6 @@
       sup_month_title: "Apoyo mensual ($8.99)",
       sup_month_text: "Conviértete en colaborador mensual.",
       sup_month_btn: "Comenzar Apoyo Mensual",
-
       sup_manage_title: "Administrar suscripción",
       sup_manage_text: "Si necesitas actualizar tu método de pago o cancelar tu apoyo mensual, usa el portal seguro de Stripe.",
       sup_manage_btn: "Administrar / Cancelar Suscripción",
@@ -1407,7 +1341,11 @@
       f_email_label: "Correo",
       f_phone_label: "Teléfono (opcional)",
       f_location_label: "Ciudad / País",
-      f_message_label: "Mensaje"
+      f_message_label: "Mensaje",
+
+      books_view_amazon: "Ver en Amazon",
+      admin_delete: "Borrar",
+      books_empty: "Aún no hay libros agregados."
     },
 
     pt: {
@@ -1462,20 +1400,6 @@
       admin_add: "Adicionar livro",
       admin_hint: "Dica: Use um link direto de imagem para a capa (você pode hospedar no seu site ou em qualquer lugar público).",
 
-      about_title: "Quem somos",
-      about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
-      about_what_title: "O que somos",
-      about_what_text: "Um movimento cristão global focado em oração, crescimento espiritual e recursos que fortalecem os crentes no mundo todo.",
-      about_do_title: "O que fazemos",
-      about_do_1: "Encontros de oração e intercessão",
-      about_do_2: "Construção de comunidade e apoio",
-      about_do_3: "Recursos e alcance baseados na fé",
-
-      leaders_title: "Fundadores",
-      leaders_founder: "Fundadora",
-      leaders_president: "Presidente",
-      leaders_note: "A liderança do Prayer & Fire está comprometida em servir o corpo global de Cristo por meio da oração e da fé.",
-
       beliefs_title: "Crenças e Valores",
       beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
       beliefs_beliefs_title: "Crenças",
@@ -1521,7 +1445,6 @@
       sup_month_title: "Apoio mensal ($8.99)",
       sup_month_text: "Torne-se um apoiador mensal.",
       sup_month_btn: "Iniciar Apoio Mensal",
-
       sup_manage_title: "Gerenciar assinatura",
       sup_manage_text: "Se você precisar atualizar o método de pagamento ou cancelar o apoio mensal, use o portal seguro do cliente.",
       sup_manage_btn: "Gerenciar / Cancelar Assinatura",
@@ -1539,7 +1462,11 @@
       f_email_label: "Email",
       f_phone_label: "Telefone (opcional)",
       f_location_label: "Cidade / País",
-      f_message_label: "Mensagem"
+      f_message_label: "Mensagem",
+
+      books_view_amazon: "Ver na Amazon",
+      admin_delete: "Excluir",
+      books_empty: "Ainda não há livros adicionados."
     }
   };
 
@@ -1566,8 +1493,7 @@
     return "en";
   }
 
-  const initialLang = detectInitialLang();
-  applyTranslations(initialLang);
+  applyTranslations(detectInitialLang());
 
   const langSelect = document.getElementById("langSelect");
   if (langSelect) {
@@ -1575,16 +1501,32 @@
   }
 
   /* ===============================
-     ✅ SUPABASE BOOKS (Public list + Admin CRUD)
+     ✅ SUPABASE (FIXED KEY)
   ================================ */
   const SUPABASE_URL = "https://xikmhnulxksadgvzajdk.supabase.co";
-
-  /* ✅ FIX #1: REAL anon key (JWT) */
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
 
   let supabaseClient = null;
   let booksInitDone = false;
   let adminPanelOpen = false;
+
+  async function waitForSupabase(maxMs = 8000){
+    const start = Date.now();
+    while (Date.now() - start < maxMs){
+      if (window.supabase && typeof window.supabase.createClient === "function") return true;
+      await new Promise(r => setTimeout(r, 60));
+    }
+    return false;
+  }
+
+  async function initSupabase(){
+    if (supabaseClient) return supabaseClient;
+    const ok = await waitForSupabase();
+    if (!ok) return null;
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return supabaseClient;
+  }
 
   function renderBooks(items){
     const grid = document.getElementById("booksGrid");
@@ -1654,32 +1596,14 @@
 
     const { data, error } = await supabaseClient
       .from("books")
-      .select("id,title,author,cover_url,amazon_url,created_at,is_active")
+      .select("id,title,author,cover_url,amazon_url,created_at")
       .order("created_at", { ascending: false });
 
     if (error){
-      status && (status.textContent = "Books could not be loaded.");
+      status && (status.textContent = "Books could not be loaded. " + error.message);
       return;
     }
-
     renderBooks(data);
-  }
-
-  async function waitForSupabase(maxMs = 6000){
-    const start = Date.now();
-    while (Date.now() - start < maxMs){
-      if (window.supabase && typeof window.supabase.createClient === "function") return true;
-      await new Promise(r => setTimeout(r, 50));
-    }
-    return false;
-  }
-
-  async function initSupabase(){
-    if (supabaseClient) return supabaseClient;
-    const ok = await waitForSupabase();
-    if (!ok) return null;
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    return supabaseClient;
   }
 
   async function initBooksPage(){
@@ -1717,7 +1641,6 @@
       if (!supabaseClient) return;
       const { data } = await supabaseClient.auth.getSession();
       const hasSession = !!data?.session;
-
       if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
       if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
     }
@@ -1778,10 +1701,9 @@
           return;
         }
 
-        /* ✅ FIX #2: ensure is_active=true so public policy can read it */
         const { error } = await supabaseClient
           .from("books")
-          .insert([{ title, author: author || null, cover_url, amazon_url, is_active: true }]);
+          .insert([{ title, author: author || null, cover_url, amazon_url }]);
 
         if (error){
           adminManageMsg && (adminManageMsg.textContent = "Error: " + error.message);
@@ -1814,23 +1736,47 @@
     }
   }
 
-  /* i18n keys used inside books render */
-  I18N.en.books_view_amazon = "View on Amazon";
-  I18N.es.books_view_amazon = "Ver en Amazon";
-  I18N.pt.books_view_amazon = "Ver na Amazon";
-
-  I18N.en.admin_delete = "Delete";
-  I18N.es.admin_delete = "Borrar";
-  I18N.pt.admin_delete = "Excluir";
-
-  I18N.en.books_empty = "No books added yet.";
-  I18N.es.books_empty = "Aún no hay libros agregados.";
-  I18N.pt.books_empty = "Ainda não há livros adicionados.";
-
   /* ===============================
-     ✅ IMPORTANT: Call initBooksPage when navigating to #books
-     (Your navigation already calls it)
+     Formspree AJAX (no redirect)
   ================================ */
+  document.querySelectorAll("form.pfForm").forEach(form=>{
+    form.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const statusEl = form.querySelector("[data-status]");
+      if (statusEl){
+        statusEl.className = "status";
+        statusEl.textContent = "Sending...";
+      }
+
+      try{
+        const formData = new FormData(form);
+        const res = await fetch(form.action, {
+          method: form.method || "POST",
+          body: formData,
+          headers: { "Accept": "application/json" }
+        });
+
+        if (res.ok){
+          if (statusEl){
+            statusEl.className = "status ok";
+            statusEl.textContent = "✅ Sent successfully";
+          }
+          form.reset();
+          return;
+        }
+
+        if (statusEl){
+          statusEl.className = "status bad";
+          statusEl.textContent = "❌ Could not send";
+        }
+      }catch(err){
+        if (statusEl){
+          statusEl.className = "status bad";
+          statusEl.textContent = "❌ Network error";
+        }
+      }
+    });
+  });
 </script>
 
 </body>
