@@ -12,7 +12,7 @@
   <meta name="keywords" content="Prayer and Fire, global movement, prayer, christian movement, faith-based resources, donations" />
   <meta name="robots" content="index,follow" />
 
-  <!-- Open Graph (sharing preview) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Prayer & Fire – Global Movement" />
   <meta property="og:description" content="A global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
   <meta property="og:url" content="https://prayerandfire.org/" />
@@ -26,31 +26,29 @@
   <meta name="twitter:description" content="A global Christian movement where believers unite in prayer and faith-centered resources with a global vision." />
   <meta name="twitter:image" content="https://prayerandfire.org/logo.jpg" />
 
-  <!-- ✅ Google icon / favicon -->
+  <!-- Favicon -->
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
 
-  <!-- ✅ GitHub Pages repo preview compatibility (./ paths) -->
+  <!-- GitHub Pages preview compatibility -->
   <link id="pfFavicon32" rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link id="pfFavicon16" rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link id="pfAppleIcon" rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link id="pfManifest" rel="manifest" href="./site.webmanifest">
 
-  <!-- ✅ Google tag (gtag.js) - SPA SAFE -->
+  <!-- Google tag (gtag.js) - SPA SAFE -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVR33MJKHC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
-    // IMPORTANT: disable auto page_view for SPA
     gtag('config', 'G-GVR33MJKHC', { send_page_view: false });
   </script>
 
-  <!-- ✅ Supabase JS (for Books + Admin) -->
+  <!-- Supabase JS -->
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -135,7 +133,6 @@
       flex-shrink:0;
     }
     .brandLogo img{width:100%;height:100%;object-fit:cover}
-
     .logoFallback{
       width:100%;height:100%;
       display:none;
@@ -339,6 +336,7 @@
     .status.ok{color:#9fe6b8;}
     .status.bad{color:#ffb4b4;}
 
+    /* LEADERS */
     .leadersWrap{
       margin-top: 6px;
       display:flex;
@@ -393,6 +391,7 @@
       font-size: 12px;
     }
 
+    /* BOOKS */
     .booksGrid{
       display:grid;
       gap:14px;
@@ -471,20 +470,6 @@
       .leaderAvatar{width: 165px; height: 165px;}
     }
   </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Prayer & Fire",
-    "url": "https://prayerandfire.org/",
-    "logo": "https://prayerandfire.org/logo.jpg",
-    "sameAs": [
-      "https://www.instagram.com/prayerandfire",
-      "https://www.instagram.com/seloprayerandfire"
-    ]
-  }
-  </script>
 </head>
 
 <body>
@@ -541,7 +526,6 @@
             40+ countries represented, praying 24/7 in different languages.
           </div>
         </div>
-
         <div class="content">
           <div class="grid">
             <div class="card">
@@ -556,6 +540,108 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="page" data-page="about">
+        <div class="pageHeader">
+          <h1 data-i18n="about_title">Who we are</h1>
+          <p data-i18n="about_subtitle">
+            Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.
+          </p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3 data-i18n="about_what_title">What we are</h3>
+              <p data-i18n="about_what_text">
+                A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.
+              </p>
+            </div>
+            <div class="card">
+              <h3 data-i18n="about_do_title">What we do</h3>
+              <ul class="list">
+                <li data-i18n="about_do_1">Prayer gatherings and intercession</li>
+                <li data-i18n="about_do_2">Community building and support</li>
+                <li data-i18n="about_do_3">Faith-based resources and outreach</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px;">
+            <h3 data-i18n="leaders_title" style="text-align:center;">Founders</h3>
+
+            <div class="leadersWrap">
+              <div class="leader">
+                <div class="leaderAvatar">
+                  <img id="pfAline" src="./aline.png" alt="Aline Ramiro">
+                </div>
+                <div class="leaderRole" data-i18n="leaders_founder">Founder</div>
+                <div class="leaderName">Aline Ramiro</div>
+              </div>
+
+              <div class="leader">
+                <div class="leaderAvatar">
+                  <img id="pfFrancisco" src="./francisco.png" alt="Francisco Rivera">
+                </div>
+                <div class="leaderRole" data-i18n="leaders_president">President</div>
+                <div class="leaderName">Francisco Rivera</div>
+              </div>
+            </div>
+
+            <div class="leaderNote" data-i18n="leaders_note" style="text-align:center;margin-top:12px;">
+              Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BELIEFS -->
+      <section class="page" data-page="beliefs">
+        <div class="pageHeader">
+          <h1 data-i18n="beliefs_title">Beliefs & Values</h1>
+          <p data-i18n="beliefs_subtitle">Our foundation is Jesus Christ and the Word of God.</p>
+        </div>
+        <div class="content">
+          <div class="grid">
+            <div class="card">
+              <h3 data-i18n="beliefs_beliefs_title">Beliefs</h3>
+              <ul class="list">
+                <li data-i18n="beliefs_b1">Jesus Christ is Lord and Savior.</li>
+                <li data-i18n="beliefs_b2">The Bible is the Word of God.</li>
+                <li data-i18n="beliefs_b3">Salvation is by grace through faith in Christ.</li>
+                <li data-i18n="beliefs_b4">Prayer transforms lives and aligns us with God’s will.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3 data-i18n="beliefs_values_title">Values</h3>
+              <ul class="list">
+                <li data-i18n="beliefs_v1">Faith and obedience</li>
+                <li data-i18n="beliefs_v2">Integrity and humility</li>
+                <li data-i18n="beliefs_v3">Love, compassion, unity</li>
+                <li data-i18n="beliefs_v4">Excellence in service</li>
+                <li data-i18n="beliefs_v5">Global vision</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP -->
+      <section class="page" data-page="app">
+        <div class="pageHeader">
+          <h1 data-i18n="app_title">Download the App</h1>
+          <p data-i18n="app_subtitle">Prayer & Fire Mobile is coming soon.</p>
+        </div>
+        <div class="content">
+          <div class="card">
+            <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
+            <div class="btnRow">
+              <span class="btn btnPrimary btnDisabled" data-i18n="app_btn_disabled">Coming soon</span>
+            </div>
+          </div>
+          <div class="note" data-i18n="app_android">Android version coming soon.</div>
         </div>
       </section>
 
@@ -675,108 +761,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- ABOUT -->
-      <section class="page" data-page="about">
-        <div class="pageHeader">
-          <h1 data-i18n="about_title">Who we are</h1>
-          <p data-i18n="about_subtitle">
-            Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.
-          </p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="about_what_title">What we are</h3>
-              <p data-i18n="about_what_text">
-                A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.
-              </p>
-            </div>
-            <div class="card">
-              <h3 data-i18n="about_do_title">What we do</h3>
-              <ul class="list">
-                <li data-i18n="about_do_1">Prayer gatherings and intercession</li>
-                <li data-i18n="about_do_2">Community building and support</li>
-                <li data-i18n="about_do_3">Faith-based resources and outreach</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:14px;">
-            <h3 data-i18n="leaders_title" style="text-align:center;">Founders</h3>
-
-            <div class="leadersWrap">
-              <div class="leader">
-                <div class="leaderAvatar">
-                  <img id="pfAline" src="./aline.png" alt="Aline Ramiro">
-                </div>
-                <div class="leaderRole" data-i18n="leaders_founder">Founder</div>
-                <div class="leaderName">Aline Ramiro</div>
-              </div>
-
-              <div class="leader">
-                <div class="leaderAvatar">
-                  <img id="pfFrancisco" src="./francisco.png" alt="Francisco Rivera">
-                </div>
-                <div class="leaderRole" data-i18n="leaders_president">President</div>
-                <div class="leaderName">Francisco Rivera</div>
-              </div>
-            </div>
-
-            <div class="leaderNote" data-i18n="leaders_note" style="text-align:center;margin-top:12px;">
-              Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BELIEFS -->
-      <section class="page" data-page="beliefs">
-        <div class="pageHeader">
-          <h1 data-i18n="beliefs_title">Beliefs & Values</h1>
-          <p data-i18n="beliefs_subtitle">Our foundation is Jesus Christ and the Word of God.</p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="beliefs_beliefs_title">Beliefs</h3>
-              <ul class="list">
-                <li data-i18n="beliefs_b1">Jesus Christ is Lord and Savior.</li>
-                <li data-i18n="beliefs_b2">The Bible is the Word of God.</li>
-                <li data-i18n="beliefs_b3">Salvation is by grace through faith in Christ.</li>
-                <li data-i18n="beliefs_b4">Prayer transforms lives and aligns us with God’s will.</li>
-              </ul>
-            </div>
-            <div class="card">
-              <h3 data-i18n="beliefs_values_title">Values</h3>
-              <ul class="list">
-                <li data-i18n="beliefs_v1">Faith and obedience</li>
-                <li data-i18n="beliefs_v2">Integrity and humility</li>
-                <li data-i18n="beliefs_v3">Love, compassion, unity</li>
-                <li data-i18n="beliefs_v4">Excellence in service</li>
-                <li data-i18n="beliefs_v5">Global vision</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- APP -->
-      <section class="page" data-page="app">
-        <div class="pageHeader">
-          <h1 data-i18n="app_title">Download the App</h1>
-          <p data-i18n="app_subtitle">Prayer & Fire Mobile is coming soon.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
-            <div class="btnRow">
-              <span class="btn btnPrimary btnDisabled" data-i18n="app_btn_disabled">Coming soon</span>
-            </div>
-          </div>
-          <div class="note" data-i18n="app_android">Android version coming soon.</div>
         </div>
       </section>
 
@@ -978,12 +962,15 @@
 </div>
 
 <script>
+  /* ===============================
+     BASE PATH (GitHub pages support)
+  ================================ */
   const isGithubPages = location.hostname.endsWith("github.io");
   const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
+  const PF_CACHE = "20260224-VIP-2CLIENTS";
 
-  const PF_CACHE = "20260223-BOOKS-ADMIN-FINAL";
-
+  /* assets */
   const logoEl = document.getElementById("pfLogo");
   const logoFallback = document.getElementById("logoFallback");
   if (logoEl) {
@@ -993,7 +980,6 @@
       if (logoFallback) logoFallback.style.display = "flex";
     };
   }
-
   const f32 = document.getElementById("pfFavicon32");
   const f16 = document.getElementById("pfFavicon16");
   const apple = document.getElementById("pfAppleIcon");
@@ -1022,12 +1008,13 @@
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // SPA-safe GA tracking
+  /* ===============================
+     SPA-safe GA
+  ================================ */
   function trackPageView(){
     try{
       if (typeof gtag !== "function") return;
       const page_path = location.pathname + location.search + location.hash;
-
       gtag('config', 'G-GVR33MJKHC', {
         page_title: document.title,
         page_location: location.href,
@@ -1037,22 +1024,18 @@
   }
 
   /* ===============================
-     ✅ HASH PARSER (supports #books?admin=1)
+     HASH helpers
   ================================ */
   function parseHash(){
     const raw = (location.hash || "#home").replace(/^#/, "");
     const clean = raw.split("?")[0].split("&")[0].trim();
     return clean || "home";
   }
-
-  /* ===============================
-     ✅ ADMIN MODE (supports admin=1 AND andmin=1)
-  ================================ */
   function isAdminMode(){
     try{
       const url = new URL(location.href);
       if (url.searchParams.get("admin") === "1") return true;
-      if (url.searchParams.get("andmin") === "1") return true; // typo support
+      if (url.searchParams.get("andmin") === "1") return true;
     }catch(e){}
     const h = (location.hash || "").toLowerCase();
     return h.includes("admin=1") || h.includes("andmin=1");
@@ -1077,7 +1060,7 @@
     history.pushState({page: finalKey}, "", "#" + finalKey);
     showPage(finalKey, { smooth: true });
     trackPageView();
-    if (finalKey === "books") initBooksPage();
+    if (finalKey === "books") initBooksPageVIP();
   }
 
   (function init(){
@@ -1086,9 +1069,10 @@
     const first = exists ? initial : "home";
     showPage(first, { smooth: false });
     trackPageView();
-    if (first === "books") initBooksPage();
+    if (first === "books") initBooksPageVIP();
   })();
 
+  // IMPORTANT: only bind once here
   buttons.forEach(b=>{
     b.addEventListener('click', ()=> navigateTo(b.dataset.go));
   });
@@ -1099,7 +1083,7 @@
     const finalKey = exists ? key : "home";
     showPage(finalKey, { smooth: false });
     trackPageView();
-    if (finalKey === "books") initBooksPage();
+    if (finalKey === "books") initBooksPageVIP();
   });
 
   /* ===============================
@@ -1128,13 +1112,45 @@
       home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
       home_learn_more: "Learn more",
 
+      about_title: "Who we are",
+      about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
+      about_what_title: "What we are",
+      about_what_text: "A global Christian movement focused on prayer, spiritual growth, and resources that strengthen believers worldwide.",
+      about_do_title: "What we do",
+      about_do_1: "Prayer gatherings and intercession",
+      about_do_2: "Community building and support",
+      about_do_3: "Faith-based resources and outreach",
+      leaders_title: "Founders",
+      leaders_founder: "Founder",
+      leaders_president: "President",
+      leaders_note: "Prayer & Fire leadership is committed to serving the global body of Christ through prayer and faith.",
+
+      beliefs_title: "Beliefs & Values",
+      beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
+      beliefs_beliefs_title: "Beliefs",
+      beliefs_values_title: "Values",
+      beliefs_b1: "Jesus Christ is Lord and Savior.",
+      beliefs_b2: "The Bible is the Word of God.",
+      beliefs_b3: "Salvation is by grace through faith in Christ.",
+      beliefs_b4: "Prayer transforms lives and aligns us with God’s will.",
+      beliefs_v1: "Faith and obedience",
+      beliefs_v2: "Integrity and humility",
+      beliefs_v3: "Love, compassion, unity",
+      beliefs_v4: "Excellence in service",
+      beliefs_v5: "Global vision",
+
+      app_title: "Download the App",
+      app_subtitle: "Prayer & Fire Mobile is coming soon.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_btn_disabled: "Coming soon",
+      app_android: "Android version coming soon.",
+
       store_title: "P&F Store",
       store_subtitle: "Apparel & products are available worldwide via Etsy. The book is available on Amazon.",
       store_etsy_title: "Apparel & Products (Etsy)",
       store_etsy_text: "Shop our official Prayer & Fire store.",
       store_etsy_btn: "Open Etsy Store",
       store_etsy_note: "Print-on-demand items: shirts, mugs, and more.",
-
       store_books_title: "Books (Amazon)",
       store_books_text: "Browse all available books. Tap a book to view it on Amazon.",
       store_books_btn: "View Books",
@@ -1157,26 +1173,6 @@
       admin_amazon_url: "Amazon link",
       admin_add: "Add book",
       admin_hint: "Tip: Use a direct image URL for the cover. (You can host covers on your site or anywhere public.)",
-
-      beliefs_title: "Beliefs & Values",
-      beliefs_subtitle: "Our foundation is Jesus Christ and the Word of God.",
-      beliefs_beliefs_title: "Beliefs",
-      beliefs_values_title: "Values",
-      beliefs_b1: "Jesus Christ is Lord and Savior.",
-      beliefs_b2: "The Bible is the Word of God.",
-      beliefs_b3: "Salvation is by grace through faith in Christ.",
-      beliefs_b4: "Prayer transforms lives and aligns us with God’s will.",
-      beliefs_v1: "Faith and obedience",
-      beliefs_v2: "Integrity and humility",
-      beliefs_v3: "Love, compassion, unity",
-      beliefs_v4: "Excellence in service",
-      beliefs_v5: "Global vision",
-
-      app_title: "Download the App",
-      app_subtitle: "Prayer & Fire Mobile is coming soon.",
-      app_card_title: "Prayer & Fire Mobile",
-      app_btn_disabled: "Coming soon",
-      app_android: "Android version coming soon.",
 
       social_title: "Social Media",
       social_subtitle: "Follow Prayer & Fire on our official platforms.",
@@ -1226,7 +1222,6 @@
       admin_delete: "Delete",
       books_empty: "No books added yet."
     },
-
     es: {
       lang_label: "Idioma",
       brand_title: "Prayer & Fire",
@@ -1249,13 +1244,45 @@
       home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
       home_learn_more: "Conocer más",
 
+      about_title: "Quiénes somos",
+      about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
+      about_what_title: "Qué somos",
+      about_what_text: "Un movimiento cristiano global enfocado en oración, crecimiento espiritual y recursos que fortalecen a los creyentes en todo el mundo.",
+      about_do_title: "Qué hacemos",
+      about_do_1: "Reuniones de oración e intercesión",
+      about_do_2: "Comunidad y apoyo",
+      about_do_3: "Recursos y alcance basados en la fe",
+      leaders_title: "Fundadores",
+      leaders_founder: "Fundadora",
+      leaders_president: "Presidente",
+      leaders_note: "El liderazgo de Prayer & Fire está comprometido a servir al cuerpo de Cristo global a través de la oración y la fe.",
+
+      beliefs_title: "Creencias y Valores",
+      beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
+      beliefs_beliefs_title: "Creencias",
+      beliefs_values_title: "Valores",
+      beliefs_b1: "Jesucristo es Señor y Salvador.",
+      beliefs_b2: "La Biblia es la Palabra de Dios.",
+      beliefs_b3: "La salvación es por gracia mediante la fe en Cristo.",
+      beliefs_b4: "La oración transforma vidas y nos alinea con la voluntad de Dios.",
+      beliefs_v1: "Fe y obediencia",
+      beliefs_v2: "Integridad y humildad",
+      beliefs_v3: "Amor, compasión, unidad",
+      beliefs_v4: "Excelencia en el servicio",
+      beliefs_v5: "Visión global",
+
+      app_title: "Descargar la App",
+      app_subtitle: "Prayer & Fire Mobile estará disponible pronto.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_btn_disabled: "Próximamente",
+      app_android: "Versión Android próximamente.",
+
       store_title: "Tienda P&F",
       store_subtitle: "Ropa y productos disponibles en todo el mundo por Etsy. El libro está disponible en Amazon.",
       store_etsy_title: "Ropa y Productos (Etsy)",
       store_etsy_text: "Compra en nuestra tienda oficial de Prayer & Fire.",
       store_etsy_btn: "Abrir Tienda Etsy",
       store_etsy_note: "Productos print-on-demand: camisetas, tazas y más.",
-
       store_books_title: "Libros (Amazon)",
       store_books_text: "Mira todos los libros disponibles. Toca un libro para verlo en Amazon.",
       store_books_btn: "Ver Libros",
@@ -1278,26 +1305,6 @@
       admin_amazon_url: "Link de Amazon",
       admin_add: "Agregar libro",
       admin_hint: "Tip: Usa un link directo de imagen para la portada (puedes alojarla en tu sitio o donde sea público).",
-
-      beliefs_title: "Creencias y Valores",
-      beliefs_subtitle: "Nuestro fundamento es Jesucristo y la Palabra de Dios.",
-      beliefs_beliefs_title: "Creencias",
-      beliefs_values_title: "Valores",
-      beliefs_b1: "Jesucristo es Señor y Salvador.",
-      beliefs_b2: "La Biblia es la Palabra de Dios.",
-      beliefs_b3: "La salvación es por gracia mediante la fe en Cristo.",
-      beliefs_b4: "La oración transforma vidas y nos alinea con la voluntad de Dios.",
-      beliefs_v1: "Fe y obediencia",
-      beliefs_v2: "Integridad y humildad",
-      beliefs_v3: "Amor, compasión, unidad",
-      beliefs_v4: "Excelencia en el servicio",
-      beliefs_v5: "Visión global",
-
-      app_title: "Descargar la App",
-      app_subtitle: "Prayer & Fire Mobile estará disponible pronto.",
-      app_card_title: "Prayer & Fire Mobile",
-      app_btn_disabled: "Próximamente",
-      app_android: "Versión Android próximamente.",
 
       social_title: "Redes Sociales",
       social_subtitle: "Sigue a Prayer & Fire en nuestras plataformas oficiales.",
@@ -1347,7 +1354,6 @@
       admin_delete: "Borrar",
       books_empty: "Aún no hay libros agregados."
     },
-
     pt: {
       lang_label: "Idioma",
       brand_title: "Prayer & Fire",
@@ -1370,13 +1376,45 @@
       home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
       home_learn_more: "Saiba mais",
 
+      about_title: "Quem somos",
+      about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
+      about_what_title: "O que somos",
+      about_what_text: "Um movimento cristão global focado em oração, crescimento espiritual e recursos que fortalecem os crentes no mundo todo.",
+      about_do_title: "O que fazemos",
+      about_do_1: "Encontros de oração e intercessão",
+      about_do_2: "Comunidade e apoio",
+      about_do_3: "Recursos e alcance baseados na fé",
+      leaders_title: "Fundadores",
+      leaders_founder: "Fundadora",
+      leaders_president: "Presidente",
+      leaders_note: "A liderança do Prayer & Fire está comprometida em servir o corpo de Cristo global por meio da oração e da fé.",
+
+      beliefs_title: "Crenças e Valores",
+      beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
+      beliefs_beliefs_title: "Crenças",
+      beliefs_values_title: "Valores",
+      beliefs_b1: "Jesus Cristo é Senhor e Salvador.",
+      beliefs_b2: "A Bíblia é a Palavra de Deus.",
+      beliefs_b3: "A salvação é pela graça mediante a fé em Cristo.",
+      beliefs_b4: "A oração transforma vidas e nos alinha à vontade de Deus.",
+      beliefs_v1: "Fé e obediência",
+      beliefs_v2: "Integridade e humildade",
+      beliefs_v3: "Amor, compaixão, unidade",
+      beliefs_v4: "Excelência no servir",
+      beliefs_v5: "Visão global",
+
+      app_title: "Baixar o App",
+      app_subtitle: "Prayer & Fire Mobile estará disponível em breve.",
+      app_card_title: "Prayer & Fire Mobile",
+      app_btn_disabled: "Em breve",
+      app_android: "Versão Android em breve.",
+
       store_title: "Loja P&F",
       store_subtitle: "Roupas e produtos disponíveis no mundo todo via Etsy. O livro está disponível na Amazon.",
       store_etsy_title: "Roupas e Produtos (Etsy)",
       store_etsy_text: "Compre na nossa loja oficial Prayer & Fire.",
       store_etsy_btn: "Abrir Loja Etsy",
       store_etsy_note: "Itens sob demanda: camisetas, canecas e mais.",
-
       store_books_title: "Livros (Amazon)",
       store_books_text: "Veja todos os livros disponíveis. Toque em um livro para ver na Amazon.",
       store_books_btn: "Ver Livros",
@@ -1399,26 +1437,6 @@
       admin_amazon_url: "Link da Amazon",
       admin_add: "Adicionar livro",
       admin_hint: "Dica: Use um link direto de imagem para a capa (você pode hospedar no seu site ou em qualquer lugar público).",
-
-      beliefs_title: "Crenças e Valores",
-      beliefs_subtitle: "Nosso fundamento é Jesus Cristo e a Palavra de Deus.",
-      beliefs_beliefs_title: "Crenças",
-      beliefs_values_title: "Valores",
-      beliefs_b1: "Jesus Cristo é Senhor e Salvador.",
-      beliefs_b2: "A Bíblia é a Palavra de Deus.",
-      beliefs_b3: "A salvação é pela graça mediante a fé em Cristo.",
-      beliefs_b4: "A oração transforma vidas e nos alinha à vontade de Deus.",
-      beliefs_v1: "Fé e obediência",
-      beliefs_v2: "Integridade e humildade",
-      beliefs_v3: "Amor, compaixão, unidade",
-      beliefs_v4: "Excelência no servir",
-      beliefs_v5: "Visão global",
-
-      app_title: "Baixar o App",
-      app_subtitle: "Prayer & Fire Mobile estará disponível em breve.",
-      app_card_title: "Prayer & Fire Mobile",
-      app_btn_disabled: "Em breve",
-      app_android: "Versão Android em breve.",
 
       social_title: "Redes Sociais",
       social_subtitle: "Siga Prayer & Fire em nossas plataformas oficiais.",
@@ -1474,7 +1492,6 @@
     const dict = I18N[lang] || I18N.en;
     document.querySelectorAll("[data-i18n]").forEach(el=>{
       const key = el.getAttribute("data-i18n");
-      if (!key) return;
       if (dict[key]) el.textContent = dict[key];
     });
     const sel = document.getElementById("langSelect");
@@ -1482,36 +1499,29 @@
     try { localStorage.setItem("pf_lang", lang); } catch(e){}
     document.documentElement.lang = lang;
   }
-
   function detectInitialLang(){
     try {
       const saved = localStorage.getItem("pf_lang");
       if (saved && I18N[saved]) return saved;
     } catch(e){}
     const nav = (navigator.language || "en").slice(0,2).toLowerCase();
-    if (I18N[nav]) return nav;
-    return "en";
+    return I18N[nav] ? nav : "en";
   }
-
   applyTranslations(detectInitialLang());
-
   const langSelect = document.getElementById("langSelect");
-  if (langSelect) {
-    langSelect.addEventListener("change", (e)=> applyTranslations(e.target.value));
-  }
+  if (langSelect) langSelect.addEventListener("change", (e)=> applyTranslations(e.target.value));
 
   /* ===============================
-     ✅ SUPABASE (FIXED KEY)
+     ✅ SUPABASE VIP: 2 clients
   ================================ */
   const SUPABASE_URL = "https://xikmhnulxksadgvzajdk.supabase.co";
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
 
-  let supabaseClient = null;
-  let booksInitDone = false;
-  let adminPanelOpen = false;
+  let sbPublic = null;
+  let sbAdmin = null;
 
-  async function waitForSupabase(maxMs = 8000){
+  async function waitForSupabase(maxMs = 12000){
     const start = Date.now();
     while (Date.now() - start < maxMs){
       if (window.supabase && typeof window.supabase.createClient === "function") return true;
@@ -1520,14 +1530,88 @@
     return false;
   }
 
-  async function initSupabase(){
-    if (supabaseClient) return supabaseClient;
-    const ok = await waitForSupabase();
-    if (!ok) return null;
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    return supabaseClient;
+  // Safe storage wrapper (avoid crash if storage blocked)
+  function makeSafeStorage(preferred){
+    const mem = new Map();
+    function canUse(store){
+      try{
+        const k="__pf__test__";
+        store.setItem(k,"1");
+        store.removeItem(k);
+        return true;
+      }catch(e){ return false; }
+    }
+    const store = (preferred && canUse(preferred)) ? preferred : null;
+
+    return {
+      getItem: (key) => {
+        try{
+          if (store) return store.getItem(key);
+          return mem.get(key) ?? null;
+        }catch(e){ return mem.get(key) ?? null; }
+      },
+      setItem: (key, value) => {
+        try{
+          if (store) store.setItem(key, value);
+          else mem.set(key, value);
+        }catch(e){ mem.set(key, value); }
+      },
+      removeItem: (key) => {
+        try{
+          if (store) store.removeItem(key);
+          mem.delete(key);
+        }catch(e){ mem.delete(key); }
+      }
+    };
   }
 
+  async function initSupabasePublic(){
+    if (sbPublic) return sbPublic;
+    const ok = await waitForSupabase();
+    if (!ok) return null;
+
+    // PUBLIC = no sessions, no refresh tokens (most stable)
+    sbPublic = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY,
+      {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+        }
+      }
+    );
+    return sbPublic;
+  }
+
+  async function initSupabaseAdmin(){
+    if (sbAdmin) return sbAdmin;
+    const ok = await waitForSupabase();
+    if (!ok) return null;
+
+    // ADMIN = remember session (VIP)
+    const safeLocal = makeSafeStorage(window.localStorage);
+
+    sbAdmin = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false,
+          storage: safeLocal,
+          storageKey: "pf_admin_auth"
+        }
+      }
+    );
+    return sbAdmin;
+  }
+
+  /* ===============================
+     Books rendering
+  ================================ */
   function renderBooks(items){
     const grid = document.getElementById("booksGrid");
     if (!grid) return;
@@ -1566,57 +1650,92 @@
     }
 
     applyTranslations(document.documentElement.lang || "en");
-
-    if (isAdminMode()){
-      grid.querySelectorAll("button[data-del]").forEach(btn=>{
-        btn.addEventListener("click", async ()=>{
-          const id = btn.getAttribute("data-del");
-          if (!id || !supabaseClient) return;
-          const ok = confirm("Delete this book?");
-          if (!ok) return;
-          const { error } = await supabaseClient.from("books").delete().eq("id", id);
-          if (error){
-            alert("Error deleting: " + error.message);
-            return;
-          }
-          await loadBooks();
-        });
-      });
-    }
   }
 
-  async function loadBooks(){
+  function withTimeout(promise, ms){
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), ms))
+    ]);
+  }
+
+  async function loadBooks(attempt = 1){
     const status = document.getElementById("booksStatus");
-    if (status) status.textContent = "";
+    if (status) status.textContent = (attempt === 1) ? "Loading books..." : `Loading books... (retry ${attempt}/3)`;
 
-    if (!supabaseClient){
-      status && (status.textContent = "Supabase not ready yet. Refresh the page.");
+    const client = await initSupabasePublic();
+    if (!client){
+      status && (status.textContent = "Supabase not ready yet. Please refresh the page.");
       return;
     }
 
-    const { data, error } = await supabaseClient
-      .from("books")
-      .select("id,title,author,cover_url,amazon_url,created_at")
-      .order("created_at", { ascending: false });
+    try{
+      const q = client
+        .from("books")
+        .select("id,title,author,cover_url,amazon_url,created_at")
+        .order("created_at", { ascending: false });
 
-    if (error){
-      status && (status.textContent = "Books could not be loaded. " + error.message);
-      return;
+      const { data, error } = await withTimeout(q, 12000);
+      if (error) throw error;
+
+      status && (status.textContent = "");
+      renderBooks(data);
+
+      // bind delete buttons (needs admin client session)
+      if (isAdminMode()){
+        const grid = document.getElementById("booksGrid");
+        grid && grid.querySelectorAll("button[data-del]").forEach(btn=>{
+          btn.onclick = async ()=>{
+            const id = btn.getAttribute("data-del");
+            if (!id) return;
+
+            const ok = confirm("Delete this book?");
+            if (!ok) return;
+
+            const admin = await initSupabaseAdmin();
+            if (!admin){
+              alert("Admin not ready. Refresh the page.");
+              return;
+            }
+
+            const { data: sess } = await admin.auth.getSession();
+            if (!sess?.session){
+              alert("Please login first.");
+              return;
+            }
+
+            const { error: delErr } = await admin.from("books").delete().eq("id", id);
+            if (delErr){
+              alert("Error deleting: " + delErr.message);
+              return;
+            }
+            await loadBooks();
+          };
+        });
+      }
+    }catch(e){
+      if (attempt < 3){
+        setTimeout(()=> loadBooks(attempt + 1), 1800);
+        return;
+      }
+      status && (status.textContent = "We’re having trouble loading the books right now. Please refresh the page.");
+      console.error(e);
     }
-    renderBooks(data);
   }
 
-  async function initBooksPage(){
-    if (booksInitDone) return;
-    booksInitDone = true;
-
+  /* ===============================
+     ✅ VIP books page init
+  ================================ */
+  let booksListenersDone = false;
+  async function initBooksPageVIP(){
+    // Show admin button only if admin=1
     const adminBtn = document.getElementById("adminToggleBtn");
-    if (adminBtn && isAdminMode()){
-      adminBtn.style.display = "inline-flex";
-    }
+    if (adminBtn && isAdminMode()) adminBtn.style.display = "inline-flex";
 
-    await initSupabase();
     await loadBooks();
+
+    if (booksListenersDone) return;
+    booksListenersDone = true;
 
     const adminWrap = document.getElementById("adminWrap");
     const adminToggle = document.getElementById("adminToggleBtn");
@@ -1631,39 +1750,48 @@
 
     const emailEl = document.getElementById("adminEmail");
     const passEl = document.getElementById("adminPassword");
-
     const titleEl = document.getElementById("bookTitle");
     const authorEl = document.getElementById("bookAuthor");
     const coverEl = document.getElementById("bookCoverUrl");
     const amazonEl = document.getElementById("bookAmazonUrl");
 
+    let adminOpen = false;
+
     async function refreshAdminState(){
-      if (!supabaseClient) return;
-      const { data } = await supabaseClient.auth.getSession();
+      const admin = await initSupabaseAdmin();
+      if (!admin) return;
+
+      const { data } = await admin.auth.getSession();
       const hasSession = !!data?.session;
+
       if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
       if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
     }
 
     if (adminToggle && isAdminMode()){
       adminToggle.addEventListener("click", async ()=>{
+        adminOpen = !adminOpen;
         if (!adminWrap) return;
-        adminPanelOpen = !adminPanelOpen;
-        adminWrap.classList.toggle("active", adminPanelOpen);
-        await refreshAdminState();
+        adminWrap.classList.toggle("active", adminOpen);
+
+        if (adminOpen){
+          await initSupabaseAdmin();
+          await refreshAdminState();
+        }
       });
     }
 
     if (loginBtn){
       loginBtn.addEventListener("click", async ()=>{
-        if (!supabaseClient) return;
+        const admin = await initSupabaseAdmin();
+        if (!admin) return;
+
         const email = (emailEl?.value || "").trim();
         const password = (passEl?.value || "").trim();
 
         adminMsg && (adminMsg.textContent = "Logging in...");
 
-        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
+        const { error } = await admin.auth.signInWithPassword({ email, password });
         if (error){
           adminMsg && (adminMsg.textContent = `Login failed: ${error.message}`);
           return;
@@ -1677,8 +1805,10 @@
 
     if (logoutBtn){
       logoutBtn.addEventListener("click", async ()=>{
-        if (!supabaseClient) return;
-        await supabaseClient.auth.signOut();
+        const admin = await initSupabaseAdmin();
+        if (!admin) return;
+
+        await admin.auth.signOut();
         adminManageMsg && (adminManageMsg.textContent = "Logged out.");
         await refreshAdminState();
         await loadBooks();
@@ -1687,7 +1817,14 @@
 
     if (addBookBtn){
       addBookBtn.addEventListener("click", async ()=>{
-        if (!supabaseClient) return;
+        const admin = await initSupabaseAdmin();
+        if (!admin) return;
+
+        const { data } = await admin.auth.getSession();
+        if (!data?.session){
+          adminManageMsg && (adminManageMsg.textContent = "Please login first.");
+          return;
+        }
 
         adminManageMsg && (adminManageMsg.textContent = "Saving...");
 
@@ -1701,9 +1838,12 @@
           return;
         }
 
-        const { error } = await supabaseClient
-          .from("books")
-          .insert([{ title, author: author || null, cover_url, amazon_url }]);
+        const { error } = await admin.from("books").insert([{
+          title,
+          author: author || null,
+          cover_url,
+          amazon_url
+        }]);
 
         if (error){
           adminManageMsg && (adminManageMsg.textContent = "Error: " + error.message);
@@ -1715,22 +1855,24 @@
         if (authorEl) authorEl.value = "";
         if (coverEl) coverEl.value = "";
         if (amazonEl) amazonEl.value = "";
-
         await loadBooks();
       });
     }
 
+    // If admin mode, open panel automatically
     if (isAdminMode()){
-      adminPanelOpen = true;
+      adminOpen = true;
       adminWrap && adminWrap.classList.add("active");
+      await initSupabaseAdmin();
       await refreshAdminState();
     }
 
-    if (supabaseClient){
-      supabaseClient.auth.onAuthStateChange(async ()=>{
+    // Keep UI updated if token refresh / login changes
+    const admin = await initSupabaseAdmin();
+    if (admin){
+      admin.auth.onAuthStateChange(async ()=>{
         if (isAdminMode()){
           await refreshAdminState();
-          await loadBooks();
         }
       });
     }
@@ -1747,7 +1889,6 @@
         statusEl.className = "status";
         statusEl.textContent = "Sending...";
       }
-
       try{
         const formData = new FormData(form);
         const res = await fetch(form.action, {
@@ -1755,7 +1896,6 @@
           body: formData,
           headers: { "Accept": "application/json" }
         });
-
         if (res.ok){
           if (statusEl){
             statusEl.className = "status ok";
@@ -1764,7 +1904,6 @@
           form.reset();
           return;
         }
-
         if (statusEl){
           statusEl.className = "status bad";
           statusEl.textContent = "❌ Could not send";
