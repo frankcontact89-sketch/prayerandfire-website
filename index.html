@@ -697,13 +697,35 @@
       align-items:center;
       justify-content:center;
       max-width:100%;
-      word-break:break-word;
+      overflow-wrap:anywhere;
+      word-break:normal;
+      line-height:1.25;
+      text-align:center;
       padding:12px 15px;
       border-radius:16px;
       font-weight:850;
       text-decoration:none;
     }
     .contactAction:hover{text-decoration:none;transform:translateY(-2px);filter:brightness(1.04);}
+
+    .contactEmailCard{
+      width:100%;
+    }
+    .contactEmailCard .contactAction{
+      width:100%;
+      max-width:420px;
+      white-space:normal;
+      word-break:normal;
+      overflow-wrap:anywhere;
+      font-size:clamp(12px, 3.6vw, 15px);
+      padding-left:12px;
+      padding-right:12px;
+      line-height:1.25;
+    }
+    .contactEmailCard > div:last-child{
+      min-width:0;
+      width:100%;
+    }
     .contactActionsRow{display:flex;gap:10px;flex-wrap:wrap;}
     .contactMiniStrip{
       margin-top:16px;
@@ -721,6 +743,16 @@
     }
     .contactMiniStrip strong{display:block;color:#ffb15d;font-size:18px;}
     .contactMiniStrip span{display:block;color:var(--muted);font-size:12px;margin-top:3px;}
+
+    @media(max-width:520px){
+      .contactAction{font-size:14px;padding:11px 12px;}
+      .largeContactCard{gap:12px;}
+
+      .contactEmailCard{align-items:stretch;text-align:center;}
+      .contactEmailCard .contactIcon{margin:0 auto;}
+      .contactEmailCard .contactAction{max-width:100%;}
+
+    }
 
 
 
@@ -1024,8 +1056,6 @@
             <button id="booksRetryBtn" class="btn" type="button" style="display:none;">Retry</button>
           </div>
 
-          <div id="booksGrid" class="booksGrid" aria-live="polite"></div>
-
           <div id="adminWrap" class="adminWrap" aria-label="Books admin">
             <h3 style="margin:0 0 8px;" data-i18n="admin_title">Books Admin</h3>
             <p class="note" style="margin:0;" data-i18n="admin_note">
@@ -1090,6 +1120,8 @@
               </div>
             </div>
           </div>
+
+          <div id="booksGrid" class="booksGrid" aria-live="polite"></div>
         </div>
       </section>
 
@@ -1157,8 +1189,8 @@
       <!-- CONTACT -->
       <section class="page" data-page="contact">
         <div class="pageHeader contactHero">
-          <span class="heroBadge" data-i18n="ct_badge">Official Contact</span>
-          <h1 data-i18n="ct_title">Contact Prayer & Fire</h1>
+          <span class="heroBadge" data-i18n="ct_badge">Official Channel</span>
+          <h1 data-i18n="ct_title">Connect with Prayer & Fire</h1>
           <p data-i18n="ct_subtitle">Use our official email for ministry communication, partnership questions, and support.</p>
         </div>
 
@@ -1323,14 +1355,13 @@
 
       ct_title: "Connect with Prayer & Fire",
       ct_subtitle: "Use our official email for ministry communication, partnership questions, and support.",
-      ct_email_title: "Email oficial",
-      ct_email_text: "Envie uma mensagem direta para a equipe Prayer & Fire.",
-      ct_badge: "Canais oficiais",
-      ct_email_text: "Envie-nos uma mensagem direta.",
-      ct_instagram_text: "Siga as páginas oficiais do Prayer & Fire.",
-      ct_strip_1: "países representados",
-      ct_strip_2: "visão de oração",
-      ct_strip_3: "conexão global",
+      ct_email_title: "Official Email",
+      ct_email_text: "Send a direct message to the Prayer & Fire team.",
+      ct_badge: "Official Channel",
+      ct_instagram_text: "Follow the official Prayer & Fire pages.",
+      ct_strip_1: "countries represented",
+      ct_strip_2: "prayer vision",
+      ct_strip_3: "global connection",
 
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacy Policy",
@@ -1469,8 +1500,7 @@
       ct_subtitle: "Usa nuestros canales oficiales para recursos, apoyo y conexión global del movimiento de oración.",
       ct_email_title: "Correo oficial",
       ct_email_text: "Envía un mensaje directo al equipo de Prayer & Fire.",
-      ct_badge: "Canales oficiales",
-      ct_email_text: "Envíanos un mensaje directo.",
+      ct_badge: "Canal oficial",
       ct_instagram_text: "Sigue las páginas oficiales de Prayer & Fire.",
       ct_strip_1: "países representados",
       ct_strip_2: "visión de oración",
@@ -1612,8 +1642,7 @@
       ct_subtitle: "Use nossos canais oficiais para recursos, apoio e conexão global do movimento de oração.",
       ct_email_title: "Email oficial",
       ct_email_text: "Envie uma mensagem direta para a equipe Prayer & Fire.",
-      ct_badge: "Canais oficiais",
-      ct_email_text: "Envie-nos uma mensagem direta.",
+      ct_badge: "Canal oficial",
       ct_instagram_text: "Siga as páginas oficiais do Prayer & Fire.",
       ct_strip_1: "países representados",
       ct_strip_2: "visão de oração",
@@ -1768,8 +1797,12 @@
         await initBooksPageVIP();
         const email = document.getElementById('adminEmail');
         if (email && !email.value) email.value = 'frankcontact89@gmail.com';
-        const adminWrap = document.getElementById('adminWrap');
-        if (adminWrap) adminWrap.scrollIntoView({behavior:'smooth', block:'start'});
+        setTimeout(()=>{
+          const adminWrap = document.getElementById('adminWrap');
+          const pass = document.getElementById('adminPassword');
+          if (adminWrap) adminWrap.scrollIntoView({behavior:'smooth', block:'start'});
+          if (pass) pass.focus();
+        }, 350);
       }
     });
   })();
@@ -1922,7 +1955,7 @@
   /* ===============================
      Books rendering
   ================================ */
-  function renderBooks(items){
+  function renderBooks(items, canManage = false){
     const grid = document.getElementById("booksGrid");
     if (!grid) return;
     grid.innerHTML = "";
@@ -1953,7 +1986,7 @@
             <a class="btn btnPrimary" href="${amazon}" target="_blank" rel="noopener">
               <span data-i18n="books_view_amazon">View on Amazon</span>
             </a>
-            ${isAdminMode() ? `<button class="btn" type="button" data-edit="${b.id}" data-title="${String(title).replace(/"/g, "&quot;")}" data-author="${String(author).replace(/"/g, "&quot;")}" data-cover="${String(coverRaw).replace(/"/g, "&quot;")}" data-amazon="${String(amazon).replace(/"/g, "&quot;")}">Edit</button><button class="btn" type="button" data-del="${b.id}"><span data-i18n="admin_delete">Delete</span></button>` : ``}
+            ${canManage ? `<button class="btn" type="button" data-edit="${b.id}" data-title="${String(title).replace(/"/g, "&quot;")}" data-author="${String(author).replace(/"/g, "&quot;")}" data-cover="${String(coverRaw).replace(/"/g, "&quot;")}" data-amazon="${String(amazon).replace(/"/g, "&quot;")}">Edit</button><button class="btn" type="button" data-del="${b.id}"><span data-i18n="admin_delete">Delete</span></button>` : ``}
           </div>
         </div>
       `;
@@ -1996,9 +2029,19 @@
       if (error) throw error;
 
       setBooksStatus("", false);
-      renderBooks(data);
 
+      let canManageBooks = false;
       if (isAdminMode()){
+        const adminCheck = await initSupabaseAdmin();
+        if (adminCheck){
+          const { data: sessionCheck } = await adminCheck.auth.getSession();
+          canManageBooks = !!sessionCheck?.session;
+        }
+      }
+
+      renderBooks(data, canManageBooks);
+
+      if (isAdminMode() && canManageBooks){
         const grid = document.getElementById("booksGrid");
         grid && grid.querySelectorAll("button[data-edit]").forEach(btn=>{
           btn.onclick = async ()=>{
@@ -2066,7 +2109,9 @@
   let booksListenersDone = false;
   async function initBooksPageVIP(){
     const adminBtn = document.getElementById("adminToggleBtn");
+    const earlyAdminWrap = document.getElementById("adminWrap");
     if (adminBtn && isAdminMode()) adminBtn.style.display = "inline-flex";
+    if (earlyAdminWrap && isAdminMode()) earlyAdminWrap.classList.add("active");
 
     await loadBooks();
 
@@ -2109,6 +2154,7 @@
 
       if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
       if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
+      if (!hasSession && adminMsg) adminMsg.textContent = "Login to manage books.";
     }
 
     if (adminToggle && isAdminMode()){
@@ -2227,6 +2273,7 @@
       admin.auth.onAuthStateChange(async ()=>{
         if (isAdminMode()){
           await refreshAdminState();
+          await loadBooks();
         }
       });
     }
