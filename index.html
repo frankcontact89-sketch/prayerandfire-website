@@ -726,6 +726,24 @@
       min-width:0;
       width:100%;
     }
+    .emailSafe{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      white-space:normal !important;
+      word-break:keep-all !important;
+      overflow-wrap:normal !important;
+      font-size:clamp(13px, 4vw, 18px) !important;
+      letter-spacing:-.2px;
+    }
+    .emailSafe span{
+      display:block;
+      max-width:100%;
+    }
+    @media(max-width:420px){
+      .emailSafe{font-size:clamp(12px, 3.7vw, 15px) !important;padding-left:8px;padding-right:8px;}
+    }
+
     .contactActionsRow{display:flex;gap:10px;flex-wrap:wrap;}
     .contactMiniStrip{
       margin-top:16px;
@@ -1107,8 +1125,9 @@
 
               <div class="adminRow">
                 <button id="addBookBtn" class="btn btnPrimary" type="button">
-                  <span data-i18n="admin_add">Add book</span>
+                  <span id="addBookBtnText" data-i18n="admin_add">Add book</span>
                 </button>
+                <button id="cancelEditBtn" class="btn" type="button" style="display:none;">Cancel edit</button>
                 <button id="adminLogoutBtn" class="btn" type="button">
                   <span data-i18n="admin_logout">Logout</span>
                 </button>
@@ -1197,12 +1216,12 @@
         <div class="content contactContent">
           <div class="contactGrid singleContactGrid">
             <div class="contactCard contactEmailCard largeContactCard">
-              <div class="contactIcon flameIcon">✉</div>
+              <div class="contactIcon flameIcon">@</div>
               <div>
                 <h3 data-i18n="ct_email_title">Official Email</h3>
                 <p data-i18n="ct_email_text">Send a direct message to the Prayer & Fire team.</p>
-                <a class="contactAction fireBtn" href="mailto:prayerandfireglobal@gmail.com">
-                  prayerandfireglobal@gmail.com
+                <a class="contactAction fireBtn emailSafe" href="mailto:prayerandfireglobal@gmail.com" aria-label="Email prayerandfireglobal@gmail.com">
+                  <span>prayerandfireglobal</span><span>@gmail.com</span>
                 </a>
               </div>
             </div>
@@ -1953,11 +1972,33 @@
   }
 
   /* ===============================
-     Books rendering
+     Books rendering + Admin manager v16
+     - Edit/Delete hidden until login
+     - Add/Edit saves through Supabase with visible errors
+     - Logout works with direct handler
   ================================ */
+  let editingBookId = null;
+  let lastBooksData = [];
+
+  function esc(v){
+    return String(v ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function setMsg(el, msg, good=false){
+    if (!el) return;
+    el.textContent = msg || "";
+    el.style.color = good ? "#9fe6b8" : "";
+  }
+
   function renderBooks(items, canManage = false){
     const grid = document.getElementById("booksGrid");
     if (!grid) return;
+    lastBooksData = Array.isArray(items) ? items : [];
     grid.innerHTML = "";
 
     if (!items || items.length === 0){
@@ -1977,20 +2018,39 @@
       el.className = "bookCard";
       el.innerHTML = `
         <div class="bookCover">
-          ${cover ? `<img loading="lazy" src="${cover}" alt="${title} cover">` : `<div class="note">No cover</div>`}
+          ${cover ? `<img loading="lazy" src="${esc(cover)}" alt="${esc(title)} cover">` : `<div class="note">No cover</div>`}
         </div>
         <div class="bookBody">
-          <p class="bookTitle">${title}</p>
-          ${author ? `<p class="bookMeta">${author}</p>` : ``}
+          <p class="bookTitle">${esc(title)}</p>
+          ${author ? `<p class="bookMeta">${esc(author)}</p>` : ``}
           <div class="bookActions">
-            <a class="btn btnPrimary" href="${amazon}" target="_blank" rel="noopener">
+            <a class="btn btnPrimary" href="${esc(amazon)}" target="_blank" rel="noopener">
               <span data-i18n="books_view_amazon">View on Amazon</span>
             </a>
-            ${canManage ? `<button class="btn" type="button" data-edit="${b.id}" data-title="${String(title).replace(/"/g, "&quot;")}" data-author="${String(author).replace(/"/g, "&quot;")}" data-cover="${String(coverRaw).replace(/"/g, "&quot;")}" data-amazon="${String(amazon).replace(/"/g, "&quot;")}">Edit</button><button class="btn" type="button" data-del="${b.id}"><span data-i18n="admin_delete">Delete</span></button>` : ``}
+            ${canManage ? `
+              <button class="btn" type="button" data-edit-book="${esc(b.id)}">Edit</button>
+              <button class="btn" type="button" data-delete-book="${esc(b.id)}"><span data-i18n="admin_delete">Delete</span></button>
+            ` : ``}
           </div>
         </div>
       `;
       grid.appendChild(el);
+    }
+
+    if (canManage){
+      grid.querySelectorAll("button[data-edit-book]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id = btn.getAttribute("data-edit-book");
+          const book = lastBooksData.find(x => String(x.id) === String(id));
+          if (book) startEditBook(book);
+        });
+      });
+      grid.querySelectorAll("button[data-delete-book]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          const id = btn.getAttribute("data-delete-book");
+          await deleteBookById(id);
+        });
+      });
     }
 
     applyTranslations(document.documentElement.lang || "en");
@@ -2008,6 +2068,13 @@
     const retry = document.getElementById("booksRetryBtn");
     if (status) status.textContent = msg || "";
     if (retry) retry.style.display = showRetry ? "inline-flex" : "none";
+  }
+
+  async function isLoggedInAdmin(){
+    const admin = await initSupabaseAdmin();
+    if (!admin) return false;
+    const { data } = await admin.auth.getSession();
+    return !!data?.session;
   }
 
   async function loadBooks(attempt = 1){
@@ -2029,77 +2096,134 @@
       if (error) throw error;
 
       setBooksStatus("", false);
-
-      let canManageBooks = false;
-      if (isAdminMode()){
-        const adminCheck = await initSupabaseAdmin();
-        if (adminCheck){
-          const { data: sessionCheck } = await adminCheck.auth.getSession();
-          canManageBooks = !!sessionCheck?.session;
-        }
-      }
-
-      renderBooks(data, canManageBooks);
-
-      if (isAdminMode() && canManageBooks){
-        const grid = document.getElementById("booksGrid");
-        grid && grid.querySelectorAll("button[data-edit]").forEach(btn=>{
-          btn.onclick = async ()=>{
-            const id = btn.getAttribute("data-edit");
-            if (!id) return;
-            const admin = await initSupabaseAdmin();
-            if (!admin){ alert("Admin not ready. Refresh the page."); return; }
-            const { data: sess } = await admin.auth.getSession();
-            if (!sess?.session){ alert("Please login first."); return; }
-            const title = prompt("Book title", btn.getAttribute("data-title") || "");
-            if (title === null) return;
-            const author = prompt("Author", btn.getAttribute("data-author") || "") || "";
-            const cover_url = prompt("Cover image URL", btn.getAttribute("data-cover") || "");
-            if (cover_url === null) return;
-            const amazon_url = prompt("Amazon link", btn.getAttribute("data-amazon") || "");
-            if (amazon_url === null) return;
-            const { error: updErr } = await admin.from("books").update({title, author: author || null, cover_url, amazon_url}).eq("id", id);
-            if (updErr){ alert("Error editing: " + updErr.message); return; }
-            await loadBooks();
-          };
-        });
-
-        grid && grid.querySelectorAll("button[data-del]").forEach(btn=>{
-          btn.onclick = async ()=>{
-            const id = btn.getAttribute("data-del");
-            if (!id) return;
-
-            const ok = confirm("Delete this book?");
-            if (!ok) return;
-
-            const admin = await initSupabaseAdmin();
-            if (!admin){
-              alert("Admin not ready. Refresh the page.");
-              return;
-            }
-
-            const { data: sess } = await admin.auth.getSession();
-            if (!sess?.session){
-              alert("Please login first.");
-              return;
-            }
-
-            const { error: delErr } = await admin.from("books").delete().eq("id", id);
-            if (delErr){
-              alert("Error deleting: " + delErr.message);
-              return;
-            }
-            await loadBooks();
-          };
-        });
-      }
+      const canManageBooks = isAdminMode() ? await isLoggedInAdmin() : false;
+      renderBooks(data || [], canManageBooks);
     }catch(e){
       console.error(e);
       if (attempt < 3){
-        setTimeout(()=> loadBooks(attempt + 1), 1400);
+        setTimeout(()=> loadBooks(attempt + 1), 1200);
         return;
       }
       setBooksStatus("We’re having trouble loading the books right now. Tap Retry or refresh.", true);
+    }
+  }
+
+  function resetBookForm(){
+    editingBookId = null;
+    const titleEl = document.getElementById("bookTitle");
+    const authorEl = document.getElementById("bookAuthor");
+    const coverEl = document.getElementById("bookCoverUrl");
+    const amazonEl = document.getElementById("bookAmazonUrl");
+    const coverFileEl = document.getElementById("bookCoverFile");
+    const addText = document.getElementById("addBookBtnText");
+    const cancelBtn = document.getElementById("cancelEditBtn");
+    if (titleEl) titleEl.value = "";
+    if (authorEl) authorEl.value = "";
+    if (coverEl) coverEl.value = "";
+    if (amazonEl) amazonEl.value = "";
+    if (coverFileEl) coverFileEl.value = "";
+    if (addText) addText.textContent = "Add book";
+    if (cancelBtn) cancelBtn.style.display = "none";
+  }
+
+  function startEditBook(book){
+    editingBookId = book.id;
+    const titleEl = document.getElementById("bookTitle");
+    const authorEl = document.getElementById("bookAuthor");
+    const coverEl = document.getElementById("bookCoverUrl");
+    const amazonEl = document.getElementById("bookAmazonUrl");
+    const addText = document.getElementById("addBookBtnText");
+    const cancelBtn = document.getElementById("cancelEditBtn");
+    const adminWrap = document.getElementById("adminWrap");
+    if (titleEl) titleEl.value = book.title || "";
+    if (authorEl) authorEl.value = book.author || "";
+    if (coverEl) coverEl.value = book.cover_url || "";
+    if (amazonEl) amazonEl.value = book.amazon_url || "";
+    if (addText) addText.textContent = "Save changes";
+    if (cancelBtn) cancelBtn.style.display = "inline-flex";
+    if (adminWrap) adminWrap.scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+
+  async function deleteBookById(id){
+    const adminManageMsg = document.getElementById("adminManageMsg");
+    if (!id) return;
+    if (!confirm("Delete this book?")) return;
+    const admin = await initSupabaseAdmin();
+    if (!admin){ setMsg(adminManageMsg, "Admin not ready. Refresh the page."); return; }
+    const { data } = await admin.auth.getSession();
+    if (!data?.session){ setMsg(adminManageMsg, "Please login first."); return; }
+
+    setMsg(adminManageMsg, "Deleting...");
+    const { error } = await admin.from("books").delete().eq("id", id);
+    if (error){
+      setMsg(adminManageMsg, "Delete failed: " + error.message);
+      alert("Delete failed: " + error.message);
+      return;
+    }
+    setMsg(adminManageMsg, "Book deleted.", true);
+    resetBookForm();
+    await loadBooks();
+  }
+
+  async function uploadCoverIfSelected(admin, currentCoverUrl){
+    const coverFileEl = document.getElementById("bookCoverFile");
+    const file = coverFileEl?.files?.[0];
+    if (!file) return currentCoverUrl;
+    const safeName = `${Date.now()}-${file.name}`.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const { error: upErr } = await admin.storage.from("book-covers").upload(safeName, file, { upsert:false });
+    if (upErr) throw new Error("Image upload error: " + upErr.message + " — create a public bucket named book-covers or use Cover image URL.");
+    const { data: pub } = admin.storage.from("book-covers").getPublicUrl(safeName);
+    return pub?.publicUrl || currentCoverUrl;
+  }
+
+  async function saveBookFromForm(){
+    const adminManageMsg = document.getElementById("adminManageMsg");
+    const admin = await initSupabaseAdmin();
+    if (!admin){ setMsg(adminManageMsg, "Admin not ready. Refresh the page."); return; }
+
+    const { data } = await admin.auth.getSession();
+    if (!data?.session){ setMsg(adminManageMsg, "Please login first."); return; }
+
+    const titleEl = document.getElementById("bookTitle");
+    const authorEl = document.getElementById("bookAuthor");
+    const coverEl = document.getElementById("bookCoverUrl");
+    const amazonEl = document.getElementById("bookAmazonUrl");
+
+    const title = (titleEl?.value || "").trim();
+    const author = (authorEl?.value || "").trim();
+    let cover_url = (coverEl?.value || "").trim();
+    const amazon_url = (amazonEl?.value || "").trim();
+
+    if (!title || !amazon_url){
+      setMsg(adminManageMsg, "Title and Amazon URL are required.");
+      return;
+    }
+
+    setMsg(adminManageMsg, editingBookId ? "Saving changes..." : "Adding book...");
+
+    try{
+      cover_url = await uploadCoverIfSelected(admin, cover_url);
+      if (!cover_url){
+        setMsg(adminManageMsg, "Cover image URL or uploaded cover is required.");
+        return;
+      }
+
+      const payload = { title, author: author || null, cover_url, amazon_url };
+      let result;
+      if (editingBookId){
+        result = await admin.from("books").update(payload).eq("id", editingBookId).select("id").maybeSingle();
+      } else {
+        result = await admin.from("books").insert([payload]).select("id").maybeSingle();
+      }
+
+      if (result.error) throw result.error;
+      setMsg(adminManageMsg, editingBookId ? "Changes saved." : "Book added.", true);
+      resetBookForm();
+      await loadBooks();
+    }catch(error){
+      const msg = error?.message || String(error);
+      setMsg(adminManageMsg, "Save failed: " + msg);
+      alert("Save failed: " + msg + "\n\nIf this says permission/RLS, Supabase needs insert/update/delete policies for authenticated admin users.");
     }
   }
 
@@ -2121,72 +2245,58 @@
       retryBtn.addEventListener("click", ()=> loadBooks());
     }
 
-    if (booksListenersDone) return;
+    if (booksListenersDone){
+      if (window.refreshAdminStateSafe) await window.refreshAdminStateSafe();
+      return;
+    }
     booksListenersDone = true;
 
     const adminWrap = document.getElementById("adminWrap");
     const adminToggle = document.getElementById("adminToggleBtn");
-    const adminLogin = document.getElementById("adminLogin");
-    const adminManage = document.getElementById("adminManage");
-    const adminMsg = document.getElementById("adminMsg");
-    const adminManageMsg = document.getElementById("adminManageMsg");
-
     const loginBtn = document.getElementById("adminLoginBtn");
     const logoutBtn = document.getElementById("adminLogoutBtn");
     const addBookBtn = document.getElementById("addBookBtn");
-
-    const emailEl = document.getElementById("adminEmail");
-    const passEl = document.getElementById("adminPassword");
-    const titleEl = document.getElementById("bookTitle");
-    const authorEl = document.getElementById("bookAuthor");
-    const coverEl = document.getElementById("bookCoverUrl");
-    const amazonEl = document.getElementById("bookAmazonUrl");
-    const coverFileEl = document.getElementById("bookCoverFile");
-
-    let adminOpen = false;
+    const cancelBtn = document.getElementById("cancelEditBtn");
 
     async function refreshAdminState(){
+      const adminLogin = document.getElementById("adminLogin");
+      const adminManage = document.getElementById("adminManage");
+      const adminMsg = document.getElementById("adminMsg");
+      const emailEl = document.getElementById("adminEmail");
+      if (emailEl && !emailEl.value) emailEl.value = "frankcontact89@gmail.com";
+
       const admin = await initSupabaseAdmin();
       if (!admin) return;
-
       const { data } = await admin.auth.getSession();
       const hasSession = !!data?.session;
-
       if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
       if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
       if (!hasSession && adminMsg) adminMsg.textContent = "Login to manage books.";
     }
+    window.refreshAdminStateSafe = refreshAdminState;
 
     if (adminToggle && isAdminMode()){
       adminToggle.addEventListener("click", async ()=>{
-        adminOpen = !adminOpen;
         if (!adminWrap) return;
-        adminWrap.classList.toggle("active", adminOpen);
-
-        if (adminOpen){
-          await initSupabaseAdmin();
-          await refreshAdminState();
-        }
+        adminWrap.classList.toggle("active");
+        await initSupabaseAdmin();
+        await refreshAdminState();
       });
     }
 
     if (loginBtn){
       loginBtn.addEventListener("click", async ()=>{
+        const adminMsg = document.getElementById("adminMsg");
+        const emailEl = document.getElementById("adminEmail");
+        const passEl = document.getElementById("adminPassword");
         const admin = await initSupabaseAdmin();
-        if (!admin) return;
-
+        if (!admin){ setMsg(adminMsg, "Admin not ready. Refresh the page."); return; }
         const email = (emailEl?.value || "").trim();
         const password = (passEl?.value || "").trim();
-
-        adminMsg && (adminMsg.textContent = "Logging in...");
-
+        setMsg(adminMsg, "Logging in...");
         const { error } = await admin.auth.signInWithPassword({ email, password });
-        if (error){
-          adminMsg && (adminMsg.textContent = `Login failed: ${error.message}`);
-          return;
-        }
-
-        adminMsg && (adminMsg.textContent = "Logged in.");
+        if (error){ setMsg(adminMsg, `Login failed: ${error.message}`); return; }
+        setMsg(adminMsg, "Logged in.", true);
         await refreshAdminState();
         await loadBooks();
       });
@@ -2194,75 +2304,31 @@
 
     if (logoutBtn){
       logoutBtn.addEventListener("click", async ()=>{
+        const adminManageMsg = document.getElementById("adminManageMsg");
         const admin = await initSupabaseAdmin();
-        if (!admin) return;
-
-        await admin.auth.signOut();
-        adminManageMsg && (adminManageMsg.textContent = "Logged out.");
+        if (!admin){ setMsg(adminManageMsg, "Admin not ready. Refresh the page."); return; }
+        setMsg(adminManageMsg, "Logging out...");
+        const { error } = await admin.auth.signOut();
+        if (error){ setMsg(adminManageMsg, "Logout failed: " + error.message); return; }
+        resetBookForm();
+        setMsg(adminManageMsg, "Logged out.", true);
         await refreshAdminState();
         await loadBooks();
       });
     }
 
     if (addBookBtn){
-      addBookBtn.addEventListener("click", async ()=>{
-        const admin = await initSupabaseAdmin();
-        if (!admin) return;
-
-        const { data } = await admin.auth.getSession();
-        if (!data?.session){
-          adminManageMsg && (adminManageMsg.textContent = "Please login first.");
-          return;
-        }
-
-        adminManageMsg && (adminManageMsg.textContent = "Saving...");
-
-        const title = (titleEl?.value || "").trim();
-        const author = (authorEl?.value || "").trim();
-        let cover_url = (coverEl?.value || "").trim();
-        const amazon_url = (amazonEl?.value || "").trim();
-
-        const file = coverFileEl?.files?.[0];
-        if (file){
-          const safeName = `${Date.now()}-${file.name}`.replace(/[^a-zA-Z0-9._-]/g, "-");
-          const { error: upErr } = await admin.storage.from("book-covers").upload(safeName, file, { upsert:false });
-          if (upErr){
-            adminManageMsg && (adminManageMsg.textContent = "Image upload error: " + upErr.message + " — use a Cover image URL instead or create the book-covers bucket.");
-            return;
-          }
-          const { data: pub } = admin.storage.from("book-covers").getPublicUrl(safeName);
-          cover_url = pub?.publicUrl || cover_url;
-        }
-
-        if (!title || !cover_url || !amazon_url){
-          adminManageMsg && (adminManageMsg.textContent = "Title, cover image/URL, and Amazon URL are required.");
-          return;
-        }
-
-        const { error } = await admin.from("books").insert([{
-          title,
-          author: author || null,
-          cover_url,
-          amazon_url
-        }]);
-
-        if (error){
-          adminManageMsg && (adminManageMsg.textContent = "Error: " + error.message);
-          return;
-        }
-
-        adminManageMsg && (adminManageMsg.textContent = "Book added.");
-        if (titleEl) titleEl.value = "";
-        if (authorEl) authorEl.value = "";
-        if (coverEl) coverEl.value = "";
-        if (amazonEl) amazonEl.value = "";
-        if (coverFileEl) coverFileEl.value = "";
-        await loadBooks();
+      addBookBtn.addEventListener("click", saveBookFromForm);
+    }
+    if (cancelBtn){
+      cancelBtn.addEventListener("click", ()=>{
+        resetBookForm();
+        const adminManageMsg = document.getElementById("adminManageMsg");
+        setMsg(adminManageMsg, "Edit canceled.");
       });
     }
 
     if (isAdminMode()){
-      adminOpen = true;
       adminWrap && adminWrap.classList.add("active");
       await initSupabaseAdmin();
       await refreshAdminState();
