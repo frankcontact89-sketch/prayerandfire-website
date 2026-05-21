@@ -733,7 +733,7 @@
       white-space:normal !important;
       word-break:keep-all !important;
       overflow-wrap:normal !important;
-      font-size:clamp(13px, 4vw, 18px) !important;
+      font-size:clamp(13px, 3.8vw, 17px) !important;
       letter-spacing:-.2px;
     }
     .emailSafe span{
@@ -741,7 +741,7 @@
       max-width:100%;
     }
     @media(max-width:420px){
-      .emailSafe{font-size:clamp(12px, 3.7vw, 15px) !important;padding-left:8px;padding-right:8px;}
+      .emailSafe{font-size:clamp(12px, 3.45vw, 14px) !important;padding-left:8px;padding-right:8px;}
     }
 
     .contactActionsRow{display:flex;gap:10px;flex-wrap:wrap;}
@@ -1972,7 +1972,7 @@
   }
 
   /* ===============================
-     Books rendering + Admin manager v16
+     Books rendering + Admin manager v17
      - Edit/Delete hidden until login
      - Add/Edit saves through Supabase with visible errors
      - Logout works with direct handler
@@ -2223,7 +2223,7 @@
     }catch(error){
       const msg = error?.message || String(error);
       setMsg(adminManageMsg, "Save failed: " + msg);
-      alert("Save failed: " + msg + "\n\nIf this says permission/RLS, Supabase needs insert/update/delete policies for authenticated admin users.");
+      alert("Save failed: " + msg + "\n\nIf the message says permission denied, RLS, row-level security, or policy, the website code is OK but Supabase needs admin policies for frankcontact89@gmail.com.");
     }
   }
 
@@ -2272,6 +2272,7 @@
       if (adminLogin) adminLogin.style.display = hasSession ? "none" : "block";
       if (adminManage) adminManage.style.display = hasSession ? "block" : "none";
       if (!hasSession && adminMsg) adminMsg.textContent = "Login to manage books.";
+      await loadBooks();
     }
     window.refreshAdminStateSafe = refreshAdminState;
 
@@ -2303,16 +2304,30 @@
     }
 
     if (logoutBtn){
-      logoutBtn.addEventListener("click", async ()=>{
+      logoutBtn.addEventListener("click", async (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
         const adminManageMsg = document.getElementById("adminManageMsg");
-        const admin = await initSupabaseAdmin();
-        if (!admin){ setMsg(adminManageMsg, "Admin not ready. Refresh the page."); return; }
         setMsg(adminManageMsg, "Logging out...");
-        const { error } = await admin.auth.signOut();
-        if (error){ setMsg(adminManageMsg, "Logout failed: " + error.message); return; }
+        try{
+          const admin = await initSupabaseAdmin();
+          if (admin) await admin.auth.signOut({ scope: "local" });
+        }catch(err){
+          console.warn("Logout warning", err);
+        }
+        try{
+          localStorage.removeItem("pf_admin_auth");
+          Object.keys(localStorage).forEach(k=>{
+            if (k.includes("supabase") || k.includes("sb-") || k.includes("pf_admin_auth")) localStorage.removeItem(k);
+          });
+        }catch(e){}
+        sbAdmin = null;
         resetBookForm();
+        const adminLogin = document.getElementById("adminLogin");
+        const adminManage = document.getElementById("adminManage");
+        if (adminLogin) adminLogin.style.display = "block";
+        if (adminManage) adminManage.style.display = "none";
         setMsg(adminManageMsg, "Logged out.", true);
-        await refreshAdminState();
         await loadBooks();
       });
     }
