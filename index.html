@@ -59,8 +59,8 @@
       --border:#25253a;
       --text:#f4f4fb;
       --muted:#b8b8cc;
-      --accent:#ff6a00;
-      --accentSoft:rgba(255,106,0,.14);
+      --accent:#e85d04;
+      --accentSoft:rgba(232,93,4,.15);
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 18px;
       --radius2: 24px;
@@ -182,24 +182,46 @@
     }
     .nav button{
       appearance:none;
-      border:1px solid rgba(37,37,58,.9);
-      background: rgba(16,16,24,.65);
+      position:relative;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(16,16,24,.72);
       color:var(--text);
-      padding:10px 12px;
+      padding:10px 13px;
       border-radius:999px;
       font-size:13px;
+      font-weight:750;
+      letter-spacing:.15px;
       cursor:pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      transition: background .22s ease, transform .16s ease, border-color .22s ease, box-shadow .22s ease, color .22s ease;
     }
     .nav button:hover{
-      border-color: rgba(255,255,255,.18);
-      background: rgba(20,20,34,.7);
-      transform: translateY(-1px);
+      border-color: rgba(255,106,0,.38);
+      background: rgba(255,106,0,.10);
+      transform: translateY(-2px);
+      box-shadow: 0 0 16px rgba(255,106,0,.18), inset 0 1px 0 rgba(255,255,255,.06);
       text-decoration:none;
     }
     .nav button.active{
-      border-color: rgba(255,106,0,.6);
-      background: rgba(255,106,0,.12);
+      color:#ffffff;
+      border-color: rgba(255,174,90,.90);
+      background: linear-gradient(135deg, #ff5a00 0%, #ff7a00 48%, #ff9d2e 100%);
+      box-shadow: 0 0 0 1px rgba(255,106,0,.16), 0 0 22px rgba(255,106,0,.48), 0 10px 24px rgba(255,106,0,.24);
+      transform: translateY(-1px);
+    }
+    .nav button.active::after{
+      content:"";
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:-7px;
+      height:3px;
+      border-radius:999px;
+      background: rgba(255,140,0,.95);
+      box-shadow: 0 0 14px rgba(255,106,0,.75);
+    }
+    .nav button:active{
+      transform: translateY(0) scale(.98);
     }
 
     .main{
@@ -288,13 +310,6 @@
     .btnPrimary{
       border-color: rgba(255,106,0,.55);
       background: rgba(255,106,0,.14);
-    }
-    .btnDisabled{
-      opacity:.55;
-      cursor:not-allowed;
-      pointer-events:none;
-      border-color: rgba(37,37,58,.9);
-      background: rgba(20,20,34,.45);
     }
 
     .managePanel{
@@ -478,6 +493,343 @@
       margin:0;
     }
 
+
+
+    /* ===== Prayer & Fire Real Visual Upgrade ===== */
+    body{
+      background:
+        radial-gradient(900px 500px at 12% 0%, rgba(255,106,0,.26), transparent 60%),
+        radial-gradient(700px 420px at 88% 8%, rgba(255,196,87,.14), transparent 60%),
+        linear-gradient(180deg, #08080c 0%, #11111a 46%, #07070a 100%);
+    }
+    .topbar{ background: rgba(8,8,12,.78); border-bottom:1px solid rgba(255,106,0,.18); }
+    .brandLogo{
+      width:54px;height:54px;border-radius:18px;
+      border:1px solid rgba(255,122,24,.45);
+      background: radial-gradient(circle at 50% 35%, rgba(255,106,0,.28), rgba(0,0,0,.18));
+      box-shadow: 0 0 26px rgba(255,106,0,.20);
+    }
+    .brandLogo img{ object-fit:contain; padding:3px; }
+    .brandTitle strong{font-size:15px;}
+    .brandTitle span{color:#ffd2ad;}
+    .nav{ justify-content:center; }
+    .nav button{ border-color:rgba(255,106,0,.18); background:rgba(255,255,255,.045); }
+    .nav button.active{ color:#fff; border-color:rgba(255,106,0,.75); background:linear-gradient(135deg, rgba(255,106,0,.28), rgba(255,190,80,.10)); }
+    .page{ border-color:rgba(255,106,0,.16); background:rgba(12,12,18,.72); }
+    .homePage{ overflow:hidden; }
+    .heroShell{
+      position:relative;
+      min-height:410px;
+      padding:54px 26px 34px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.18), rgba(20,20,34,.08) 50%, transparent),
+        radial-gradient(420px 260px at 50% 12%, rgba(255,106,0,.28), transparent 70%);
+    }
+    .heroShell:before{
+      content:""; position:absolute; inset:auto auto -110px 50%; transform:translateX(-50%);
+      width:480px; height:220px; border-radius:999px;
+      background:rgba(255,106,0,.18); filter:blur(60px); pointer-events:none;
+    }
+    .heroBadge{
+      position:relative;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:9px 14px; border-radius:999px;
+      border:1px solid rgba(255,174,77,.36);
+      background:rgba(255,106,0,.12);
+      color:#ffd7b8; font-weight:800; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    }
+    .heroShell h1{
+      position:relative;
+      margin:16px 0 0;
+      font-size:clamp(34px, 7vw, 72px);
+      line-height:.98;
+      letter-spacing:-2px;
+      max-width:860px;
+      text-shadow:0 18px 46px rgba(0,0,0,.5);
+    }
+    .heroShell p{
+      position:relative;
+      max-width:720px;
+      margin:18px auto 0;
+      color:#d8d8e8;
+      font-size:clamp(15px, 2.1vw, 18px);
+    }
+    .heroActions{ position:relative; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:24px; }
+    .fireBtn, .platformBtn.amazonBtn{
+      border:0;
+      background:linear-gradient(135deg, #ff6a00 0%, #ff9d2e 55%, #ffd080 100%);
+      color:#17100a;
+      box-shadow:0 14px 30px rgba(255,106,0,.24);
+    }
+    .glassBtn{
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.07);
+      backdrop-filter:blur(10px);
+    }
+    .heroStats{
+      position:relative;
+      width:min(880px,100%);
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:28px;
+    }
+    .heroStats div, .glowCard, .platformCard{
+      border:1px solid rgba(255,106,0,.18);
+      background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+      box-shadow:0 18px 45px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .heroStats div{ border-radius:18px; padding:14px 12px; }
+    .heroStats strong{ display:block; color:#ffb15d; font-size:18px; }
+    .heroStats span{ display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+    .homeContent{ padding-top:18px; }
+    .glowCard{ transition:.18s ease; }
+    .glowCard:hover{ transform:translateY(-2px); border-color:rgba(255,106,0,.34); box-shadow:0 22px 55px rgba(0,0,0,.35), 0 0 0 4px rgba(255,106,0,.055); }
+    .brandGrid{display:grid; grid-template-columns:1fr; gap:16px;}
+    @media(min-width:820px){.brandGrid{grid-template-columns:1fr 1fr}.social .brandGrid{grid-template-columns:1fr}}
+    .platformCard{ border-radius:24px; padding:22px; min-height:220px; position:relative; overflow:hidden; }
+    .platformCard:after{content:"";position:absolute;right:-70px;top:-70px;width:180px;height:180px;border-radius:999px;background:rgba(255,255,255,.08);}
+    .platformMark{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;margin-bottom:12px;}
+    .amazonCard .platformMark{background:#111;color:#ff9900;border:1px solid rgba(255,153,0,.35)}
+    .etsyCard .platformMark{background:#F1641E;color:white;}
+    .platformBtn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:16px;font-weight:850;text-decoration:none;transition:.18s ease;border:1px solid transparent;cursor:pointer;}
+    .platformBtn:hover{transform:translateY(-2px);text-decoration:none;filter:brightness(1.05)}
+    .etsyBtn{background:#F1641E;color:white;box-shadow:0 14px 30px rgba(241,100,30,.22)}
+    .instagramBtn{background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45);color:white;box-shadow:0 14px 30px rgba(225,48,108,.22)}
+    .instagramOutlineBtn{background:rgba(255,255,255,.06);color:white;border-color:rgba(255,255,255,.16)}
+    .instagramGlyph{width:54px;height:54px;border-radius:18px;margin-bottom:12px;background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45);position:relative;box-shadow:0 16px 34px rgba(225,48,108,.20)}
+    .instagramGlyph:before{content:"";position:absolute;inset:13px;border:3px solid white;border-radius:14px;}
+    .instagramGlyph:after{content:"";position:absolute;right:13px;top:13px;width:6px;height:6px;border-radius:999px;background:white;box-shadow:-12px 12px 0 6px transparent;}
+
+
+    /* CONTACT PREMIUM */
+    .contactHero{
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+      padding:34px 22px 28px;
+      background:
+        radial-gradient(520px 220px at 50% -40%, rgba(255,106,0,.42), transparent 70%),
+        linear-gradient(180deg, rgba(255,106,0,.16), rgba(20,20,34,.18));
+    }
+    .contactHero:after{
+      content:"";
+      position:absolute;
+      inset:auto -80px -170px -80px;
+      height:240px;
+      background:radial-gradient(circle, rgba(255,106,0,.18), transparent 62%);
+      pointer-events:none;
+    }
+    .contactHero h1{
+      margin-top:14px;
+      font-size:clamp(28px, 5vw, 52px);
+      line-height:1;
+      letter-spacing:-1.4px;
+    }
+    .contactHero p{
+      margin-left:auto;
+      margin-right:auto;
+      font-size:15px;
+      color:#dedeee;
+    }
+    .contactContent{padding-top:20px;}
+    .contactGrid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+    @media(min-width:860px){.contactGrid{grid-template-columns:1fr 1.15fr;}}
+    .contactCard{
+      position:relative;
+      overflow:hidden;
+      border-radius:26px;
+      padding:22px;
+      border:1px solid rgba(255,106,0,.22);
+      background:linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.032));
+      box-shadow:0 22px 60px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.07);
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .contactCard:hover{
+      transform:translateY(-3px);
+      border-color:rgba(255,106,0,.42);
+      box-shadow:0 28px 70px rgba(0,0,0,.42), 0 0 0 4px rgba(255,106,0,.055);
+    }
+    .contactCard:after{
+      content:"";
+      position:absolute;
+      right:-70px;
+      top:-70px;
+      width:190px;
+      height:190px;
+      border-radius:999px;
+      background:rgba(255,106,0,.09);
+      pointer-events:none;
+    }
+    .contactCard h3{font-size:18px;margin-bottom:6px;}
+    .contactCard p{color:var(--muted);margin-bottom:14px;}
+    .contactIcon{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:26px;
+      font-weight:900;
+    }
+    .flameIcon{
+      background:linear-gradient(135deg,#ff5a00,#ff9d2e);
+      color:#1b1007;
+      box-shadow:0 16px 34px rgba(255,106,0,.24);
+    }
+    .smallGlyph{width:54px;height:54px;flex:0 0 auto;margin-bottom:0;}
+    .contactAction{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      max-width:100%;
+      word-break:break-word;
+      padding:12px 15px;
+      border-radius:16px;
+      font-weight:850;
+      text-decoration:none;
+    }
+    .contactAction:hover{text-decoration:none;transform:translateY(-2px);filter:brightness(1.04);}
+    .contactActionsRow{display:flex;gap:10px;flex-wrap:wrap;}
+    .contactMiniStrip{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    @media(min-width:760px){.contactMiniStrip{grid-template-columns:repeat(3,1fr);}}
+    .contactMiniStrip div{
+      border-radius:18px;
+      border:1px solid rgba(255,106,0,.18);
+      background:rgba(255,106,0,.075);
+      padding:14px 12px;
+      text-align:center;
+    }
+    .contactMiniStrip strong{display:block;color:#ffb15d;font-size:18px;}
+    .contactMiniStrip span{display:block;color:var(--muted);font-size:12px;margin-top:3px;}
+
+
+
+    /* Visual fix v11: LightSlateBlue hero title + no emoji icons */
+    .heroShell h1{
+      color:#8470FF;
+      text-shadow:0 0 24px rgba(132,112,255,.34);
+    }
+    .heroShell h1::selection{background:rgba(132,112,255,.26);}
+    .supportIcon{font-size:0;}
+    .supportIcon::before{
+      content:"";
+      display:block;
+      width:22px;
+      height:22px;
+      border-radius:8px;
+      background:linear-gradient(135deg,#d94f00,#ff9b3d);
+      box-shadow:0 0 18px rgba(217,79,0,.38);
+    }
+    .supportIcon.globeMark::before{
+      border-radius:999px;
+      background:radial-gradient(circle at 32% 30%, #9fd8ff 0 20%, #2f82d9 22% 58%, #0f2b52 60% 100%);
+      box-shadow:0 0 18px rgba(47,130,217,.32);
+    }
+    .supportIcon.settingsMark::before{
+      border-radius:999px;
+      background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(255,255,255,.32));
+      box-shadow:0 0 16px rgba(255,255,255,.14);
+    }
+
+    /* Final polish v8: darker orange, separated pages, no duplicate social in Contact */
+    .nav button.active{
+      background: linear-gradient(135deg, #d94f00, #f97316);
+      color:#fff;
+      border-color: rgba(255,156,74,.9);
+      box-shadow: 0 0 20px rgba(232,93,4,.42), 0 10px 24px rgba(232,93,4,.20);
+    }
+    .nav button:hover{
+      border-color: rgba(232,93,4,.55);
+      box-shadow: 0 0 16px rgba(232,93,4,.22);
+    }
+    .supportHero{
+      background:
+        radial-gradient(600px 240px at 15% 10%, rgba(232,93,4,.26), transparent 65%),
+        linear-gradient(135deg, rgba(232,93,4,.16), rgba(20,20,34,.72));
+    }
+    .supportContent{padding-top:22px;}
+    .supportGrid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+    @media(min-width:900px){.supportGrid{grid-template-columns:1.1fr 1fr 1fr;}}
+    .supportCard{
+      position:relative;
+      overflow:hidden;
+      padding:20px;
+      min-height:245px;
+      border-radius:24px;
+      border:1px solid rgba(232,93,4,.28);
+      background: linear-gradient(180deg, rgba(28,22,20,.92), rgba(15,15,23,.92));
+      box-shadow:0 18px 40px rgba(0,0,0,.28);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .supportCard::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:radial-gradient(420px 120px at 18% 0%, rgba(232,93,4,.26), transparent 58%);
+      pointer-events:none;
+    }
+    .supportCard > *{position:relative;z-index:1;}
+    .featuredSupportCard{
+      border-color:rgba(249,115,22,.52);
+      box-shadow:0 20px 48px rgba(232,93,4,.18), 0 18px 40px rgba(0,0,0,.3);
+    }
+    .supportIcon{
+      width:44px;height:44px;border-radius:16px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(232,93,4,.14);
+      border:1px solid rgba(232,93,4,.36);
+      box-shadow:0 0 18px rgba(232,93,4,.18);
+      font-size:21px;
+    }
+    .supportCard h3{margin:0;font-size:18px;}
+    .supportCard p{margin:0;color:var(--muted);font-size:14px;}
+    .supportBtn{
+      margin-top:auto;
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:46px;padding:12px 15px;border-radius:16px;
+      font-weight:800;text-decoration:none;transition:.2s ease;
+    }
+    .supportBtn:hover{transform:translateY(-2px);text-decoration:none;}
+    .supportPrimaryBtn{background:linear-gradient(135deg,#d94f00,#f97316);color:white;box-shadow:0 12px 28px rgba(232,93,4,.25);}
+    .supportOutlineBtn{border:1px solid rgba(232,93,4,.55);color:#ffb07a;background:rgba(232,93,4,.10);}
+    .supportGhostBtn{border:1px solid rgba(255,255,255,.12);color:var(--text);background:rgba(255,255,255,.045);}
+    .singleContactGrid{grid-template-columns:1fr;max-width:760px;margin:0 auto;}
+    .largeContactCard{min-height:220px;align-items:center;}
+    .largeContactCard .contactIcon{font-size:28px;}
+
+    @media(max-width:720px){
+      .heroShell{padding:38px 18px 28px;min-height:360px;}
+      .heroStats{grid-template-columns:1fr;}
+      .nav{gap:8px;justify-content:flex-start;overflow:auto;flex-wrap:nowrap;padding-bottom:12px;}
+      .nav button{white-space:nowrap;}
+    }
+
     @media(max-width: 720px){
       .brandLink{min-width:auto}
       .langWrap span{display:none;}
@@ -520,12 +872,8 @@
     <div class="nav" role="navigation" aria-label="Primary">
       <button class="navBtn active" data-go="home" data-i18n="nav_home" type="button">Home</button>
       <button class="navBtn" data-go="about" data-i18n="nav_about" type="button">Who we are</button>
-      <button class="navBtn" data-go="beliefs" data-i18n="nav_beliefs" type="button">Beliefs & Values</button>
-      <button class="navBtn" data-go="app" data-i18n="nav_app" type="button">Download App</button>
       <button class="navBtn" data-go="store" data-i18n="nav_store" type="button">P&F Store</button>
       <button class="navBtn" data-go="social" data-i18n="nav_social" type="button">Social Media</button>
-      <button class="navBtn" data-go="volunteers" data-i18n="nav_volunteers" type="button">Volunteers</button>
-      <button class="navBtn" data-go="salvation" data-i18n="nav_salvation" type="button">Salvation</button>
       <button class="navBtn" data-go="support" data-i18n="nav_support" type="button">Support</button>
       <button class="navBtn" data-go="contact" data-i18n="nav_contact" type="button">Contact</button>
     </div>
@@ -535,28 +883,36 @@
     <div class="pages" id="pages">
 
       <!-- HOME -->
-      <section class="page active" data-page="home">
-        <div class="pageHeader">
-          <h1 data-i18n="home_title">Prayer & Fire – Global Movement</h1>
+      <section class="page active homePage" data-page="home">
+        <div class="heroShell">
+          <div class="heroBadge" data-i18n="hero_badge">Global Prayer Movement</div>
+          <h1 data-i18n="home_title">Prayer that connects nations.</h1>
           <p data-i18n="home_subtitle">
-            A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.
+            Prayer & Fire is a global movement of prayer, intercession, and faith-centered resources serving believers across nations and languages.
           </p>
-          <div class="homeStat" data-i18n="home_stat">
-            40+ countries represented, praying 24/7 in different languages.
+          <div class="heroActions">
+            <button class="btn fireBtn navBtn" data-go="about" type="button"><span data-i18n="home_learn_more">Who we are</span></button>
+            <button class="btn glassBtn navBtn" data-go="support" type="button"><span data-i18n="hero_support">Support the mission</span></button>
+          </div>
+          <div class="heroStats" aria-label="Prayer & Fire global vision">
+            <div><strong>40+</strong><span data-i18n="hero_stat_1">countries represented</span></div>
+            <div><strong>24/7</strong><span data-i18n="hero_stat_2">prayer vision</span></div>
           </div>
         </div>
-        <div class="content">
+
+        <div class="content homeContent">
           <div class="grid">
-            <div class="card">
+            <div class="card glowCard">
               <h3 data-i18n="home_mission_title">Mission</h3>
-              <p data-i18n="home_mission_text">
-                Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.
-              </p>
-              <div class="btnRow">
-                <button class="btn btnPrimary navBtn" data-go="about" type="button">
-                  <span data-i18n="home_learn_more">Learn more</span>
-                </button>
-              </div>
+              <p data-i18n="home_mission_text">To strengthen believers through prayer, intercession, biblical encouragement, and global faith-centered resources.</p>
+            </div>
+            <div class="card glowCard">
+              <h3 data-i18n="home_focus_title">Our focus</h3>
+              <ul class="list">
+                <li data-i18n="home_focus_1">Prayer and intercession</li>
+                <li data-i18n="home_focus_2">Global unity among believers</li>
+                <li data-i18n="home_focus_3">Faith resources, books, and outreach</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -616,85 +972,31 @@
         </div>
       </section>
 
-      <!-- BELIEFS -->
-      <section class="page" data-page="beliefs">
-        <div class="pageHeader">
-          <h1 data-i18n="beliefs_title">Beliefs & Values</h1>
-          <p data-i18n="beliefs_subtitle">Our foundation is Jesus Christ and the Word of God.</p>
-        </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="beliefs_beliefs_title">Beliefs</h3>
-              <ul class="list">
-                <li data-i18n="beliefs_b1">Jesus Christ is Lord and Savior.</li>
-                <li data-i18n="beliefs_b2">The Bible is the Word of God.</li>
-                <li data-i18n="beliefs_b3">Salvation is by grace through faith in Christ.</li>
-                <li data-i18n="beliefs_b4">Prayer transforms lives and aligns us with God’s will.</li>
-              </ul>
-            </div>
-            <div class="card">
-              <h3 data-i18n="beliefs_values_title">Values</h3>
-              <ul class="list">
-                <li data-i18n="beliefs_v1">Faith and obedience</li>
-                <li data-i18n="beliefs_v2">Integrity and humility</li>
-                <li data-i18n="beliefs_v3">Love, compassion, unity</li>
-                <li data-i18n="beliefs_v4">Excellence in service</li>
-                <li data-i18n="beliefs_v5">Global vision</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- APP -->
-      <section class="page" data-page="app">
-        <div class="pageHeader">
-          <h1 data-i18n="app_title">Download the App</h1>
-          <p data-i18n="app_subtitle">Prayer & Fire Mobile is coming soon.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="app_card_title">Prayer & Fire Mobile</h3>
-            <div class="btnRow">
-              <span class="btn btnPrimary btnDisabled" data-i18n="app_btn_disabled">Coming soon</span>
-            </div>
-          </div>
-          <div class="note" data-i18n="app_android">Android version coming soon.</div>
-        </div>
-      </section>
-
       <!-- STORE -->
       <section class="page" data-page="store">
-        <div class="pageHeader">
+        <div class="pageHeader storeHeader">
           <h1 data-i18n="store_title">P&F Store</h1>
-          <p data-i18n="store_subtitle">
-            Apparel & products are available worldwide via Etsy. The book is available on Amazon.
-          </p>
+          <p data-i18n="store_subtitle">Official Prayer & Fire resources, books, apparel, and products.</p>
         </div>
 
         <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="store_etsy_title">Apparel & Products (Etsy)</h3>
-              <p data-i18n="store_etsy_text">Shop our official Prayer & Fire store.</p>
+          <div class="brandGrid">
+            <div class="platformCard amazonCard">
+              <div class="platformMark">a</div>
+              <h3 data-i18n="store_books_title">Books on Amazon</h3>
+              <p data-i18n="store_books_text">Browse available Prayer & Fire books and open them securely on Amazon.</p>
               <div class="btnRow">
-                <a class="btn btnPrimary" href="https://prayerandfire.etsy.com" target="_blank" rel="noopener">
-                  <span data-i18n="store_etsy_btn">Open Etsy Store</span>
-                </a>
+                <button class="platformBtn amazonBtn navBtn" data-go="books" type="button"><span data-i18n="store_books_btn">View Books</span></button>
               </div>
-              <div class="note" data-i18n="store_etsy_note">Print-on-demand items: shirts, mugs, and more.</div>
             </div>
 
-            <div class="card">
-              <h3 data-i18n="store_books_title">Books (Amazon)</h3>
-              <p data-i18n="store_books_text">Browse all available books. Tap a book to view it on Amazon.</p>
+            <div class="platformCard etsyCard">
+              <div class="platformMark">E</div>
+              <h3 data-i18n="store_etsy_title">Apparel & Products</h3>
+              <p data-i18n="store_etsy_text">Shop official Prayer & Fire products through our Etsy store.</p>
               <div class="btnRow">
-                <button class="btn btnPrimary navBtn" data-go="books" type="button">
-                  <span data-i18n="store_books_btn">View Books</span>
-                </button>
+                <a class="platformBtn etsyBtn" href="https://prayerandfire.etsy.com" target="_blank" rel="noopener"><span data-i18n="store_etsy_btn">Open Etsy Store</span></a>
               </div>
-              <div class="note" data-i18n="store_books_note">You will see covers and titles first, then Amazon.</div>
             </div>
           </div>
         </div>
@@ -734,7 +1036,7 @@
               <div class="adminGrid">
                 <div class="field">
                   <label data-i18n="admin_email">Email</label>
-                  <input id="adminEmail" type="email" autocomplete="email" />
+                  <input id="adminEmail" type="email" autocomplete="email" value="frankcontact89@gmail.com" />
                 </div>
                 <div class="field">
                   <label data-i18n="admin_password">Password</label>
@@ -764,6 +1066,10 @@
                   <input id="bookCoverUrl" placeholder="https://..." />
                 </div>
                 <div class="field">
+                  <label>Upload cover image</label>
+                  <input id="bookCoverFile" type="file" accept="image/*" />
+                </div>
+                <div class="field">
                   <label data-i18n="admin_amazon_url">Amazon link</label>
                   <input id="bookAmazonUrl" placeholder="https://a.co/..." />
                 </div>
@@ -789,166 +1095,59 @@
 
       <!-- SOCIAL -->
       <section class="page" data-page="social">
-        <div class="pageHeader">
+        <div class="pageHeader socialHeader">
           <h1 data-i18n="social_title">Social Media</h1>
           <p data-i18n="social_subtitle">Follow Prayer & Fire on our official platforms.</p>
         </div>
         <div class="content">
-          <div class="grid">
-            <div class="card">
+          <div class="brandGrid">
+            <div class="platformCard instagramCard">
+              <div class="instagramGlyph" aria-hidden="true"></div>
               <h3>Instagram</h3>
+              <p data-i18n="social_subtitle">Follow Prayer & Fire on our official platforms.</p>
               <div class="btnRow">
-                <a class="btn btnPrimary" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
-                <a class="btn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
+                <a class="platformBtn instagramBtn" href="https://www.instagram.com/prayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@prayerandfire</a>
+                <a class="platformBtn instagramOutlineBtn" href="https://www.instagram.com/seloprayerandfire?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">@seloprayerandfire</a>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- VOLUNTEERS -->
-      <section class="page" data-page="volunteers">
-        <div class="pageHeader">
-          <h1 data-i18n="vol_title">Volunteers</h1>
-          <p data-i18n="vol_subtitle">Serve with Prayer & Fire. Send your request and we will contact you.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="vol_card_title">Volunteer Request</h3>
-            <p data-i18n="vol_card_text">Fill the form and submit. No login required.</p>
-
-            <form class="pfForm" action="https://formspree.io/f/mojwrbaj" method="POST">
-              <input type="text" name="_gotcha" style="display:none">
-              <input type="hidden" name="form" value="Volunteer Request">
-              <div class="formGrid">
-                <div class="field">
-                  <label data-i18n="f_fullname_label">Full name</label>
-                  <input name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_email_label">Email</label>
-                  <input name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_phone_label">Phone (optional)</label>
-                  <input name="phone" autocomplete="tel" />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_location_label">City / Country</label>
-                  <input name="location" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_message_label">Message</label>
-                  <textarea name="message" required></textarea>
-                </div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn btnPrimary" type="submit">
-                  <span data-i18n="vol_send">Send Volunteer Request</span>
-                </button>
-              </div>
-
-              <div class="status" data-status></div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- SALVATION -->
-      <section class="page" data-page="salvation">
-        <div class="pageHeader">
-          <h1 data-i18n="sal_title">Salvation</h1>
-          <p data-i18n="sal_subtitle">If you decided to accept Christ, we want to pray with you and help you take the next step.</p>
-        </div>
-        <div class="content">
-          <div class="card">
-            <h3 data-i18n="sal_prayer_title">Prayer</h3>
-            <p data-i18n="sal_prayer_text">
-              Lord Jesus, I believe You died and rose again. Forgive my sins. I receive You as my Savior and Lord.
-              Lead my life and make me new. Amen.
-            </p>
-          </div>
-
-          <div class="card" style="margin-top:14px;">
-            <h3 data-i18n="sal_next_title">Next step</h3>
-            <p data-i18n="sal_next_text">Send us a message. We will pray with you.</p>
-
-            <form class="pfForm" action="https://formspree.io/f/mojwrbaj" method="POST">
-              <input type="text" name="_gotcha" style="display:none">
-              <input type="hidden" name="form" value="Salvation Request">
-              <div class="formGrid">
-                <div class="field">
-                  <label data-i18n="f_fullname_label">Full name</label>
-                  <input name="name" autocomplete="name" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_email_label">Email</label>
-                  <input name="email" type="email" autocomplete="email" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_location_label">City / Country</label>
-                  <input name="location" required />
-                </div>
-                <div class="field">
-                  <label data-i18n="f_message_label">Message</label>
-                  <textarea name="message" placeholder="I want to be saved / I need prayer" required></textarea>
-                </div>
-              </div>
-
-              <div class="btnRow">
-                <button class="btn btnPrimary" type="submit">
-                  <span data-i18n="sal_send">I Want to Follow Jesus</span>
-                </button>
-              </div>
-
-              <div class="status" data-status></div>
-            </form>
           </div>
         </div>
       </section>
 
       <!-- SUPPORT -->
       <section class="page" data-page="support">
-        <div class="pageHeader">
-          <h1 data-i18n="sup_title">Support</h1>
-          <p data-i18n="sup_subtitle">Your generosity helps support prayer initiatives and global outreach.</p>
+        <div class="pageHeader supportHero">
+          <span class="heroBadge" data-i18n="sup_badge">Support the Mission</span>
+          <h1 data-i18n="sup_title">Fuel the global prayer movement.</h1>
+          <p data-i18n="sup_subtitle">Your generosity helps support prayer initiatives, global outreach, faith resources, and the Prayer & Fire mission.</p>
         </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
+        <div class="content supportContent">
+          <div class="supportGrid">
+            <div class="supportCard featuredSupportCard">
+              <div class="supportIcon flameMark" aria-hidden="true"></div>
               <h3 data-i18n="sup_one_title">One-time giving</h3>
-              <p data-i18n="sup_one_text">Give securely via Stripe.</p>
-              <div class="btnRow">
-                <a class="btn btnPrimary" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
-                  <span data-i18n="sup_one_btn">Giving</span>
-                </a>
-              </div>
+              <p data-i18n="sup_one_text">Give securely through Stripe to support Prayer & Fire.</p>
+              <a class="supportBtn supportPrimaryBtn" href="https://buy.stripe.com/9B66oHco06AqdX9dab7bW01" target="_blank" rel="noopener">
+                <span data-i18n="sup_one_btn">Give once</span>
+              </a>
             </div>
 
-            <div class="card">
+            <div class="supportCard">
+              <div class="supportIcon globeMark" aria-hidden="true"></div>
               <h3 data-i18n="sup_month_title">Monthly support ($8.99)</h3>
-              <p data-i18n="sup_month_text">Become a monthly supporter.</p>
-              <div class="btnRow">
-                <a class="btn" href="https://buy.stripe.com/6oU14ngEgcYO8CPfij7bW05" target="_blank" rel="noopener">
-                  <span data-i18n="sup_month_btn">Start Monthly Support</span>
-                </a>
-              </div>
+              <p data-i18n="sup_month_text">Become a monthly supporter of the global prayer vision.</p>
+              <a class="supportBtn supportOutlineBtn" href="https://buy.stripe.com/6oU14ngEgcYO8CPfij7bW05" target="_blank" rel="noopener">
+                <span data-i18n="sup_month_btn">Start monthly support</span>
+              </a>
             </div>
 
-            <div class="card managePanel">
-              <h3 data-i18n="sup_manage_title">Manage your subscription</h3>
-              <p data-i18n="sup_manage_text">
-                If you need to update your payment method or cancel your monthly support, use the secure customer portal.
-              </p>
-              <div class="btnRow">
-                <a class="btn btnPrimary"
-                   href="https://billing.stripe.com/p/login/cNi00j3Ru6Aq5qD1rt7bW00"
-                   target="_blank"
-                   rel="noopener">
-                  <span data-i18n="sup_manage_btn">Manage / Cancel Subscription</span>
-                </a>
-              </div>
+            <div class="supportCard manageSupportCard">
+              <div class="supportIcon settingsMark" aria-hidden="true"></div>
+              <h3 data-i18n="sup_manage_title">Manage subscription</h3>
+              <p data-i18n="sup_manage_text">Update your payment method or cancel monthly support through the secure Stripe portal.</p>
+              <a class="supportBtn supportGhostBtn" href="https://billing.stripe.com/p/login/cNi00j3Ru6Aq5qD1rt7bW00" target="_blank" rel="noopener">
+                <span data-i18n="sup_manage_btn">Manage subscription</span>
+              </a>
               <div class="note" data-i18n="sup_manage_note">You can cancel anytime.</div>
             </div>
           </div>
@@ -957,15 +1156,23 @@
 
       <!-- CONTACT -->
       <section class="page" data-page="contact">
-        <div class="pageHeader">
-          <h1 data-i18n="ct_title">Contact</h1>
-          <p data-i18n="ct_subtitle">Reach us directly.</p>
+        <div class="pageHeader contactHero">
+          <span class="heroBadge" data-i18n="ct_badge">Official Contact</span>
+          <h1 data-i18n="ct_title">Contact Prayer & Fire</h1>
+          <p data-i18n="ct_subtitle">Use our official email for ministry communication, partnership questions, and support.</p>
         </div>
-        <div class="content">
-          <div class="grid">
-            <div class="card">
-              <h3 data-i18n="ct_email_title">Email</h3>
-              <p><a href="mailto:prayerandfireglobal@gmail.com">prayerandfireglobal@gmail.com</a></p>
+
+        <div class="content contactContent">
+          <div class="contactGrid singleContactGrid">
+            <div class="contactCard contactEmailCard largeContactCard">
+              <div class="contactIcon flameIcon">✉</div>
+              <div>
+                <h3 data-i18n="ct_email_title">Official Email</h3>
+                <p data-i18n="ct_email_text">Send a direct message to the Prayer & Fire team.</p>
+                <a class="contactAction fireBtn" href="mailto:prayerandfireglobal@gmail.com">
+                  prayerandfireglobal@gmail.com
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -1003,12 +1210,20 @@
       nav_support: "Support",
       nav_contact: "Contact",
 
-      home_title: "Prayer & Fire – Global Movement",
-      home_subtitle: "A global Christian movement where believers unite in prayer and faith-centered resources with a global vision.",
+      home_title: "Prayer that connects nations.",
+      home_subtitle: "Prayer & Fire is a global movement of prayer, intercession, and faith-centered resources serving believers across nations and languages.",
       home_stat: "40+ countries represented, praying 24/7 in different languages.",
       home_mission_title: "Mission",
-      home_mission_text: "Prayer & Fire exists to strengthen believers through prayer and faith-centered resources with a global vision.",
-      home_learn_more: "Learn more",
+      home_mission_text: "To strengthen believers through prayer, intercession, biblical encouragement, and global faith-centered resources.",
+      home_learn_more: "Who we are",
+      hero_badge: "Global Prayer Movement",
+      hero_support: "Support the mission",
+      hero_stat_1: "countries represented",
+      hero_stat_2: "prayer vision",
+      home_focus_title: "Our focus",
+      home_focus_1: "Prayer and intercession",
+      home_focus_2: "Global unity among believers",
+      home_focus_3: "Faith resources, books, and outreach",
 
       about_title: "Who we are",
       about_subtitle: "Prayer & Fire was founded on September 13, 2024 — a word directed by the Lord to raise a global movement of prayer and faith.",
@@ -1038,10 +1253,10 @@
       beliefs_v5: "Global vision",
 
       app_title: "Download the App",
-      app_subtitle: "Prayer & Fire Mobile is coming soon.",
+      app_subtitle: "Prayer & Fire mobile resources are available through official channels.",
       app_card_title: "Prayer & Fire Mobile",
-      app_btn_disabled: "Coming soon",
-      app_android: "Android version coming soon.",
+      app_btn_disabled: "Official channel",
+      app_android: "Android resources will be shared through official channels.",
 
       store_title: "P&F Store",
       store_subtitle: "Apparel & products are available worldwide via Etsy. The book is available on Amazon.",
@@ -1092,22 +1307,30 @@
       sal_next_text: "Send us a message. We will pray with you.",
       sal_send: "I Want to Follow Jesus",
 
-      sup_title: "Support",
-      sup_subtitle: "Your generosity helps support prayer initiatives and global outreach.",
+      sup_badge: "Support the Mission",
+      sup_title: "Fuel the global prayer movement.",
+      sup_subtitle: "Your generosity helps support prayer initiatives, global outreach, faith resources, and the Prayer & Fire mission.",
       sup_one_title: "One-time giving",
       sup_one_text: "Give securely via Stripe.",
-      sup_one_btn: "Giving",
+      sup_one_btn: "Give once",
       sup_month_title: "Monthly support ($8.99)",
-      sup_month_text: "Become a monthly supporter.",
-      sup_month_btn: "Start Monthly Support",
-      sup_manage_title: "Manage your subscription",
-      sup_manage_text: "If you need to update your payment method or cancel your monthly support, use the secure customer portal.",
-      sup_manage_btn: "Manage / Cancel Subscription",
+      sup_month_text: "Become a monthly supporter of the global prayer vision.",
+      sup_month_btn: "Start monthly support",
+      sup_manage_title: "Manage subscription",
+      sup_manage_text: "Update your payment method or cancel monthly support through the secure Stripe portal.",
+      sup_manage_btn: "Manage subscription",
       sup_manage_note: "You can cancel anytime.",
 
-      ct_title: "Contact",
-      ct_subtitle: "Reach us directly.",
-      ct_email_title: "Email",
+      ct_title: "Connect with Prayer & Fire",
+      ct_subtitle: "Use our official email for ministry communication, partnership questions, and support.",
+      ct_email_title: "Email oficial",
+      ct_email_text: "Envie uma mensagem direta para a equipe Prayer & Fire.",
+      ct_badge: "Canais oficiais",
+      ct_email_text: "Envie-nos uma mensagem direta.",
+      ct_instagram_text: "Siga as páginas oficiais do Prayer & Fire.",
+      ct_strip_1: "países representados",
+      ct_strip_2: "visão de oração",
+      ct_strip_3: "conexão global",
 
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacy Policy",
@@ -1130,12 +1353,21 @@
       nav_support: "Apoyo",
       nav_contact: "Contacto",
 
-      home_title: "Prayer & Fire – Movimiento Global",
-      home_subtitle: "Un movimiento cristiano global donde los creyentes se unen en oración y recursos centrados en la fe con una visión global.",
+      home_title: "Oración que conecta naciones.",
+      home_subtitle: "Prayer & Fire es un movimiento global de oración, intercesión y recursos de fe sirviendo a creyentes en diferentes naciones e idiomas.",
       home_stat: "40+ países representados, orando 24/7 en diferentes idiomas.",
       home_mission_title: "Misión",
-      home_mission_text: "Prayer & Fire existe para fortalecer a los creyentes a través de la oración y recursos centrados en la fe con una visión global.",
-      home_learn_more: "Conocer más",
+      home_mission_text: "Fortalecer a los creyentes por medio de la oración, intercesión, ánimo bíblico y recursos globales de fe.",
+      home_learn_more: "Quiénes somos",
+      hero_badge: "Movimiento Global de Oración",
+      hero_support: "Apoyar la misión",
+      hero_stat_1: "países representados",
+      hero_stat_2: "visión de oración",
+      hero_stat_3: "diferentes idiomas, un mismo fuego",
+      home_focus_title: "Nuestro enfoque",
+      home_focus_1: "Oración e intercesión",
+      home_focus_2: "Unidad global entre creyentes",
+      home_focus_3: "Recursos de fe, libros y alcance",
 
       about_title: "Quiénes somos",
       about_subtitle: "Prayer & Fire fue fundado el 13 de septiembre de 2024 — una palabra dirigida por el Señor para levantar un movimiento global de oración y fe.",
@@ -1165,10 +1397,10 @@
       beliefs_v5: "Visión global",
 
       app_title: "Descargar la App",
-      app_subtitle: "Prayer & Fire Mobile viene pronto.",
+      app_subtitle: "Prayer & Fire Mobile está disponible por canales oficiales.",
       app_card_title: "Prayer & Fire Mobile",
-      app_btn_disabled: "Próximamente",
-      app_android: "Versión Android próximamente.",
+      app_btn_disabled: "Canal oficial",
+      app_android: "Recursos de Android se compartirán por canales oficiales.",
 
       store_title: "Tienda P&F",
       store_subtitle: "Ropa y productos disponibles en todo el mundo por Etsy. El libro está disponible en Amazon.",
@@ -1219,22 +1451,30 @@
       sal_next_text: "Envíanos un mensaje. Oramos contigo.",
       sal_send: "Quiero seguir a Jesús",
 
-      sup_title: "Apoyo",
-      sup_subtitle: "Tu generosidad ayuda a apoyar iniciativas de oración y alcance global.",
+      sup_badge: "Apoya la misión",
+      sup_title: "Impulsa el movimiento global de oración.",
+      sup_subtitle: "Tu generosidad ayuda a apoyar iniciativas de oración, alcance global, recursos de fe y la misión de Prayer & Fire.",
       sup_one_title: "Ofrenda única",
       sup_one_text: "Da de forma segura por Stripe.",
-      sup_one_btn: "Dar",
+      sup_one_btn: "Dar una vez",
       sup_month_title: "Apoyo mensual ($8.99)",
-      sup_month_text: "Hazte colaborador mensual.",
+      sup_month_text: "Hazte colaborador mensual de la visión global de oración.",
       sup_month_btn: "Comenzar apoyo mensual",
       sup_manage_title: "Administrar suscripción",
-      sup_manage_text: "Si necesitas actualizar tu pago o cancelar tu apoyo mensual, usa el portal seguro.",
-      sup_manage_btn: "Administrar / Cancelar suscripción",
+      sup_manage_text: "Actualiza tu método de pago o cancela el apoyo mensual desde el portal seguro de Stripe.",
+      sup_manage_btn: "Administrar suscripción",
       sup_manage_note: "Puedes cancelar en cualquier momento.",
 
-      ct_title: "Contacto",
-      ct_subtitle: "Contáctanos directamente.",
-      ct_email_title: "Correo",
+      ct_title: "Conecta con Prayer & Fire",
+      ct_subtitle: "Usa nuestros canales oficiales para recursos, apoyo y conexión global del movimiento de oración.",
+      ct_email_title: "Correo oficial",
+      ct_email_text: "Envía un mensaje directo al equipo de Prayer & Fire.",
+      ct_badge: "Canales oficiales",
+      ct_email_text: "Envíanos un mensaje directo.",
+      ct_instagram_text: "Sigue las páginas oficiales de Prayer & Fire.",
+      ct_strip_1: "países representados",
+      ct_strip_2: "visión de oración",
+      ct_strip_3: "conexión global",
 
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacidad",
@@ -1257,12 +1497,20 @@
       nav_support: "Apoio",
       nav_contact: "Contato",
 
-      home_title: "Prayer & Fire – Movimento Global",
-      home_subtitle: "Um movimento cristão global onde crentes se unem em oração e recursos centrados na fé com uma visão global.",
+      home_title: "Oração que conecta nações.",
+      home_subtitle: "Prayer & Fire é um movimento global de oração, intercessão e recursos de fé servindo crentes em diferentes nações e idiomas.",
       home_stat: "40+ países representados, orando 24/7 em diferentes idiomas.",
       home_mission_title: "Missão",
-      home_mission_text: "Prayer & Fire existe para fortalecer os crentes por meio da oração e recursos centrados na fé com uma visão global.",
-      home_learn_more: "Saiba mais",
+      home_mission_text: "Fortalecer os crentes por meio da oração, intercessão, encorajamento bíblico e recursos globais de fé.",
+      home_learn_more: "Quem somos",
+      hero_badge: "Movimento Global de Oração",
+      hero_support: "Apoiar a missão",
+      hero_stat_1: "países representados",
+      hero_stat_2: "visão de oração",
+      home_focus_title: "Nosso foco",
+      home_focus_1: "Oração e intercessão",
+      home_focus_2: "Unidade global entre crentes",
+      home_focus_3: "Recursos de fé, livros e alcance",
 
       about_title: "Quem somos",
       about_subtitle: "Prayer & Fire foi fundado em 13 de setembro de 2024 — uma palavra dirigida pelo Senhor para levantar um movimento global de oração e fé.",
@@ -1292,10 +1540,10 @@
       beliefs_v5: "Visão global",
 
       app_title: "Baixar o App",
-      app_subtitle: "Prayer & Fire Mobile em breve.",
+      app_subtitle: "Prayer & Fire Mobile pelos canais oficiais.",
       app_card_title: "Prayer & Fire Mobile",
-      app_btn_disabled: "Em breve",
-      app_android: "Versão Android em breve.",
+      app_btn_disabled: "Canal oficial",
+      app_android: "Versão Android pelos canais oficiais.",
 
       store_title: "Loja P&F",
       store_subtitle: "Roupas e produtos disponíveis no mundo todo via Etsy. O livro está disponível na Amazon.",
@@ -1346,22 +1594,30 @@
       sal_next_text: "Envie-nos uma mensagem. Nós vamos orar com você.",
       sal_send: "Quero seguir Jesus",
 
-      sup_title: "Apoio",
-      sup_subtitle: "Sua generosidade ajuda a apoiar iniciativas de oração e alcance global.",
+      sup_badge: "Apoie a missão",
+      sup_title: "Impulsione o movimento global de oração.",
+      sup_subtitle: "Sua generosidade ajuda a apoiar iniciativas de oração, alcance global, recursos de fé e a missão Prayer & Fire.",
       sup_one_title: "Doação única",
       sup_one_text: "Doe com segurança via Stripe.",
-      sup_one_btn: "Doar",
+      sup_one_btn: "Doar uma vez",
       sup_month_title: "Apoio mensal ($8.99)",
-      sup_month_text: "Torne-se um apoiador mensal.",
+      sup_month_text: "Torne-se um apoiador mensal da visão global de oração.",
       sup_month_btn: "Iniciar apoio mensal",
       sup_manage_title: "Gerenciar assinatura",
-      sup_manage_text: "Se você precisa atualizar o pagamento ou cancelar o apoio mensal, use o portal seguro.",
-      sup_manage_btn: "Gerenciar / Cancelar assinatura",
+      sup_manage_text: "Atualize seu método de pagamento ou cancele o apoio mensal pelo portal seguro da Stripe.",
+      sup_manage_btn: "Gerenciar assinatura",
       sup_manage_note: "Você pode cancelar a qualquer momento.",
 
-      ct_title: "Contato",
-      ct_subtitle: "Fale conosco diretamente.",
-      ct_email_title: "Email",
+      ct_title: "Conecte-se com Prayer & Fire",
+      ct_subtitle: "Use nossos canais oficiais para recursos, apoio e conexão global do movimento de oração.",
+      ct_email_title: "Email oficial",
+      ct_email_text: "Envie uma mensagem direta para a equipe Prayer & Fire.",
+      ct_badge: "Canais oficiais",
+      ct_email_text: "Envie-nos uma mensagem direta.",
+      ct_instagram_text: "Siga as páginas oficiais do Prayer & Fire.",
+      ct_strip_1: "países representados",
+      ct_strip_2: "visão de oração",
+      ct_strip_3: "conexão global",
 
       footer_brand: "Prayer & Fire",
       footer_privacy: "Privacidade",
@@ -1377,17 +1633,24 @@
   const isGithubPages = location.hostname.endsWith("github.io");
   const repoName = isGithubPages ? location.pathname.split("/")[1] : "";
   const BASE = isGithubPages ? (repoName ? `/${repoName}` : "") : "";
-  const PF_CACHE = "20260224-VIP-2CLIENTS-FIX1";
+  const PF_CACHE = "20260521-REAL-VISUAL-NO-FAKE-BUTTONS";
 
   /* assets */
   const logoEl = document.getElementById("pfLogo");
   const logoFallback = document.getElementById("logoFallback");
   if (logoEl) {
-    logoEl.src = `${BASE}/logo.jpg?v=${PF_CACHE}`;
+    const logoFiles = ["logo.png", "logo.jpg", "prayer-fire-logo.png", "icon.png"];
+    let logoIndex = 0;
+    const tryLogo = () => { logoEl.src = `${BASE}/${logoFiles[logoIndex]}?v=${PF_CACHE}`; };
     logoEl.onerror = () => {
-      logoEl.style.display = "none";
-      if (logoFallback) logoFallback.style.display = "flex";
+      logoIndex += 1;
+      if (logoIndex < logoFiles.length) tryLogo();
+      else {
+        logoEl.style.display = "none";
+        if (logoFallback) logoFallback.style.display = "flex";
+      }
     };
+    tryLogo();
   }
   const f32 = document.getElementById("pfFavicon32");
   const f16 = document.getElementById("pfFavicon16");
@@ -1485,6 +1748,31 @@
   buttons.forEach(b=>{
     b.addEventListener('click', ()=> navigateTo(b.dataset.go));
   });
+
+  /* Hidden admin unlock: 10 logo clicks within 8 seconds. No visible public hint. */
+  (function setupHiddenAdminUnlock(){
+    const brand = document.querySelector('.brandLink');
+    if (!brand) return;
+    let clicks = 0;
+    let timer = null;
+    brand.addEventListener('click', async ()=>{
+      clicks += 1;
+      clearTimeout(timer);
+      timer = setTimeout(()=>{ clicks = 0; }, 8000);
+      if (clicks >= 10){
+        clicks = 0;
+        clearTimeout(timer);
+        history.pushState({page:'books'}, '', '#books?admin=1');
+        showPage('books', { smooth:true });
+        trackPageView();
+        await initBooksPageVIP();
+        const email = document.getElementById('adminEmail');
+        if (email && !email.value) email.value = 'frankcontact89@gmail.com';
+        const adminWrap = document.getElementById('adminWrap');
+        if (adminWrap) adminWrap.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  })();
 
   window.addEventListener("popstate", ()=>{
     const key = parseHash();
@@ -1665,7 +1953,7 @@
             <a class="btn btnPrimary" href="${amazon}" target="_blank" rel="noopener">
               <span data-i18n="books_view_amazon">View on Amazon</span>
             </a>
-            ${isAdminMode() ? `<button class="btn" type="button" data-del="${b.id}"><span data-i18n="admin_delete">Delete</span></button>` : ``}
+            ${isAdminMode() ? `<button class="btn" type="button" data-edit="${b.id}" data-title="${String(title).replace(/"/g, "&quot;")}" data-author="${String(author).replace(/"/g, "&quot;")}" data-cover="${String(coverRaw).replace(/"/g, "&quot;")}" data-amazon="${String(amazon).replace(/"/g, "&quot;")}">Edit</button><button class="btn" type="button" data-del="${b.id}"><span data-i18n="admin_delete">Delete</span></button>` : ``}
           </div>
         </div>
       `;
@@ -1712,6 +2000,27 @@
 
       if (isAdminMode()){
         const grid = document.getElementById("booksGrid");
+        grid && grid.querySelectorAll("button[data-edit]").forEach(btn=>{
+          btn.onclick = async ()=>{
+            const id = btn.getAttribute("data-edit");
+            if (!id) return;
+            const admin = await initSupabaseAdmin();
+            if (!admin){ alert("Admin not ready. Refresh the page."); return; }
+            const { data: sess } = await admin.auth.getSession();
+            if (!sess?.session){ alert("Please login first."); return; }
+            const title = prompt("Book title", btn.getAttribute("data-title") || "");
+            if (title === null) return;
+            const author = prompt("Author", btn.getAttribute("data-author") || "") || "";
+            const cover_url = prompt("Cover image URL", btn.getAttribute("data-cover") || "");
+            if (cover_url === null) return;
+            const amazon_url = prompt("Amazon link", btn.getAttribute("data-amazon") || "");
+            if (amazon_url === null) return;
+            const { error: updErr } = await admin.from("books").update({title, author: author || null, cover_url, amazon_url}).eq("id", id);
+            if (updErr){ alert("Error editing: " + updErr.message); return; }
+            await loadBooks();
+          };
+        });
+
         grid && grid.querySelectorAll("button[data-del]").forEach(btn=>{
           btn.onclick = async ()=>{
             const id = btn.getAttribute("data-del");
@@ -1787,6 +2096,7 @@
     const authorEl = document.getElementById("bookAuthor");
     const coverEl = document.getElementById("bookCoverUrl");
     const amazonEl = document.getElementById("bookAmazonUrl");
+    const coverFileEl = document.getElementById("bookCoverFile");
 
     let adminOpen = false;
 
@@ -1863,11 +2173,23 @@
 
         const title = (titleEl?.value || "").trim();
         const author = (authorEl?.value || "").trim();
-        const cover_url = (coverEl?.value || "").trim();
+        let cover_url = (coverEl?.value || "").trim();
         const amazon_url = (amazonEl?.value || "").trim();
 
+        const file = coverFileEl?.files?.[0];
+        if (file){
+          const safeName = `${Date.now()}-${file.name}`.replace(/[^a-zA-Z0-9._-]/g, "-");
+          const { error: upErr } = await admin.storage.from("book-covers").upload(safeName, file, { upsert:false });
+          if (upErr){
+            adminManageMsg && (adminManageMsg.textContent = "Image upload error: " + upErr.message + " — use a Cover image URL instead or create the book-covers bucket.");
+            return;
+          }
+          const { data: pub } = admin.storage.from("book-covers").getPublicUrl(safeName);
+          cover_url = pub?.publicUrl || cover_url;
+        }
+
         if (!title || !cover_url || !amazon_url){
-          adminManageMsg && (adminManageMsg.textContent = "Title, cover URL, and Amazon URL are required.");
+          adminManageMsg && (adminManageMsg.textContent = "Title, cover image/URL, and Amazon URL are required.");
           return;
         }
 
@@ -1888,6 +2210,7 @@
         if (authorEl) authorEl.value = "";
         if (coverEl) coverEl.value = "";
         if (amazonEl) amazonEl.value = "";
+        if (coverFileEl) coverFileEl.value = "";
         await loadBooks();
       });
     }
@@ -1930,19 +2253,19 @@
         if (res.ok){
           if (statusEl){
             statusEl.className = "status ok";
-            statusEl.textContent = "✅ Sent successfully";
+            statusEl.textContent = "Sent successfully";
           }
           form.reset();
           return;
         }
         if (statusEl){
           statusEl.className = "status bad";
-          statusEl.textContent = "❌ Could not send";
+          statusEl.textContent = "Could not send";
         }
       }catch(err){
         if (statusEl){
           statusEl.className = "status bad";
-          statusEl.textContent = "❌ Network error";
+          statusEl.textContent = "Network error";
         }
       }
     });
