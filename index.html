@@ -63,8 +63,7 @@
     "logo":"https://prayerandfire.org/logo.jpg",
     "description":"A global Christian movement impacting nations and new generations through prayer, faith, unity, missions and global outreach.",
     "sameAs":[
-      "https://www.instagram.com/prayerandfire/",
-      "https://www.instagram.com/seloprayerandfire/"
+      "https://www.instagram.com/prayerandfireglobal/"
     ],
     "founder":[
       {
@@ -320,6 +319,44 @@ img{
   transform:scaleX(1);
 }
 
+.liveNav{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#fff !important;
+}
+
+.liveCamera{
+  width:24px;
+  height:17px;
+  border:2px solid currentColor;
+  border-radius:5px;
+  position:relative;
+}
+
+.liveCamera::after{
+  content:"";
+  position:absolute;
+  right:-8px;
+  top:3px;
+  border-width:4px 0 4px 6px;
+  border-style:solid;
+  border-color:transparent transparent transparent currentColor;
+}
+
+.liveDot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 0 4px rgba(239,68,68,.16);
+  animation:livePulse 1.7s ease-in-out infinite;
+}
+
+@keyframes livePulse{
+  50%{opacity:.45}
+}
+
 .headerRight{
   display:flex;
 
@@ -568,7 +605,6 @@ img{
       rgba(4,5,7,.05),
       rgba(4,5,7,.95)
     ),
-    url('./hero-global.jpg'),
     #050608;
 
   background-size:cover;
@@ -754,6 +790,7 @@ img{
 }
 
 .impactImage{
+  display:none;
   height:300px;
 
   background:#0b0d10;
@@ -767,6 +804,10 @@ img{
   overflow:hidden;
 
   cursor:pointer;
+}
+
+.impactCard .impactIcon{
+  margin-top:0;
 }
 
 .impactImage img{
@@ -852,6 +893,31 @@ img{
   object-fit:cover;
 
   transition:.3s ease;
+}
+
+.galleryImage video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#000;
+}
+
+.recordPreview{
+  width:100%;
+  max-height:300px;
+  margin-top:14px;
+  border-radius:14px;
+  background:#000;
+  display:none;
+}
+
+.recordPreview.show{
+  display:block;
+}
+
+.recordingDot{
+  color:#ff7474;
+  font-weight:900;
 }
 
 .galleryCard:hover img{
@@ -1573,7 +1639,6 @@ textarea.field{
         rgba(4,5,7,.65),
         rgba(4,5,7,.98)
       ),
-      url('./hero-global.jpg'),
       #050608;
 
     background-size:cover;
@@ -1699,10 +1764,14 @@ textarea.field{
       </button>
 
       <button
-        class="navBtn"
-        data-go="about"
+        class="liveNav"
+        id="liveMeetingBtn"
+        type="button"
+        aria-label="Open live meeting"
       >
-        Who we are
+        <span class="liveCamera" aria-hidden="true"></span>
+        <span class="liveDot" aria-hidden="true"></span>
+        <span>LIVE</span>
       </button>
 
       <button
@@ -1804,32 +1873,6 @@ textarea.field{
         65 churches connected through faith, missions,
         unity, prayer and global impact.
       </p>
-
-      <div class="btnRow">
-
-        <button
-          class="btn fireBtn navBtn"
-          data-go="about"
-        >
-          Who we are
-        </button>
-
-        <button
-          class="btn navBtn"
-          data-go="gallery"
-        >
-          View Gallery
-        </button>
-
-        <button
-          class="btn navBtn"
-          data-go="support"
-        >
-          Support the mission
-        </button>
-
-      </div>
-
 
       <div class="heroStats">
 
@@ -2138,81 +2181,30 @@ textarea.field{
   </section>
 
 
-  <!-- GALLERY PREVIEW -->
+  <!-- WHO WE ARE -->
 
-  <section class="section">
+  <section class="section" id="who-we-are">
 
     <div class="sectionInner">
 
       <div class="sectionIntro">
 
         <div>
-
-          <div class="eyebrow">
-            Prayer & Fire
-          </div>
-
-          <h2>
-            Our Gallery
-          </h2>
-
+          <div class="eyebrow">Prayer & Fire</div>
+          <h2>Who we are</h2>
         </div>
 
         <p>
-          Real moments of prayer, mission, outreach,
-          fellowship and service across the nations.
+          Prayer & Fire was founded on September 13, 2024
+          as a global Christian movement devoted to prayer,
+          faith, unity, missions and service across nations.
         </p>
 
       </div>
 
-      <div
-        id="homeGalleryGrid"
-        class="galleryGrid"
-      ></div>
-
-      <div class="btnRow">
-
-        <button
-          class="btn primaryBtn navBtn"
-          data-go="gallery"
-        >
-          View Full Gallery
-        </button>
-
-      </div>
-
     </div>
-    
 
   </section>
-
-</section>
-  <!-- =======================
-     ABOUT
-======================= -->
-
-<section
-  class="page"
-  data-page="about"
->
-
-  <div class="pageHeader">
-
-    <div class="pageHeaderInner">
-
-      <h1>
-        Who we are
-      </h1>
-
-      <p>
-        Prayer & Fire was founded on September 13, 2024
-        as a global Christian movement devoted to prayer,
-        faith, unity, missions and service across nations.
-      </p>
-
-    </div>
-
-  </div>
 
 
   <section class="section">
@@ -2274,161 +2266,6 @@ textarea.field{
           </ul>
 
         </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="sectionInner">
-
-      <div class="sectionIntro">
-
-        <div>
-
-          <div class="eyebrow">
-            Prayer & Fire
-          </div>
-
-          <h2>
-            Global Meetings
-          </h2>
-
-        </div>
-
-        <p>
-          A visual testimony of prayer, unity, meetings
-          and connection across nations.
-        </p>
-
-      </div>
-
-
-      <div class="grid grid2">
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./who-1.jpg"
-              alt="Prayer and Fire prayer meeting"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🔥
-            </div>
-
-            <h3>
-              Prayer Meeting
-            </h3>
-
-            <p>
-              Gathering in prayer, faith and unity.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./who-2.JPG"
-              alt="Prayer and Fire global ministry connection"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🤝
-            </div>
-
-            <h3>
-              Global Connection
-            </h3>
-
-            <p>
-              Leaders and believers connected
-              through the vision.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./who-3.JPG"
-              alt="Prayer and Fire believers united in faith"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🌎
-            </div>
-
-            <h3>
-              United in Faith
-            </h3>
-
-            <p>
-              One movement serving many nations.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./who-4.JPG"
-              alt="Prayer and Fire international gathering"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              ✨
-            </div>
-
-            <h3>
-              Movement Gathering
-            </h3>
-
-            <p>
-              Moments of prayer, fellowship and mission.
-            </p>
-
-          </div>
-
-        </article>
 
       </div>
 
@@ -2540,7 +2377,7 @@ textarea.field{
       </h1>
 
       <p>
-        Real photos from Prayer & Fire missions,
+        Real photos and videos from Prayer & Fire missions,
         meetings, prayer gatherings, education,
         outreach and service across nations.
       </p>
@@ -2958,6 +2795,14 @@ textarea.field{
         <form id="subscribeForm">
 
           <input
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            style="display:none"
+          >
+
+          <input
             class="field"
             name="name"
             placeholder="Name"
@@ -3004,27 +2849,18 @@ textarea.field{
         </h3>
 
         <p>
-          Follow the official Prayer & Fire accounts.
+          Follow the official Prayer & Fire account.
         </p>
 
         <div class="btnRow">
 
           <a
             class="platformBtn primaryBtn"
-            href="https://www.instagram.com/prayerandfire/"
+            href="https://www.instagram.com/prayerandfireglobal/"
             target="_blank"
             rel="noopener"
           >
-            @prayerandfire
-          </a>
-
-          <a
-            class="platformBtn"
-            href="https://www.instagram.com/seloprayerandfire/"
-            target="_blank"
-            rel="noopener"
-          >
-            @seloprayerandfire
+            @prayerandfireglobal
           </a>
 
         </div>
@@ -3109,9 +2945,10 @@ textarea.field{
 
       <p>
         <a
-          href="#about"
+          href="#who-we-are"
           class="navBtn"
-          data-go="about"
+          data-go="home"
+          data-scroll="who-we-are"
         >
           Who we are
         </a>
@@ -3633,14 +3470,14 @@ textarea.field{
         <input
           class="field"
           id="galleryTitle"
-          placeholder="Photo title"
+          placeholder="Photo or video title"
         >
 
 
         <textarea
           class="field"
           id="galleryDescription"
-          placeholder="Photo description"
+          placeholder="Photo or video description"
         ></textarea>
 
 
@@ -3668,24 +3505,25 @@ textarea.field{
         <input
           class="field"
           id="galleryImage"
-          placeholder="Image URL"
+          placeholder="Photo or video URL"
         >
 
 
         <div class="uploadBox">
 
           <strong>
-            Upload gallery photo
+            Upload a photo or video
           </strong>
 
           <p style="color:var(--muted)">
-            Choose a real Prayer & Fire photo from your iPhone.
+            Choose media from your iPhone, paste a link above,
+            or record with your camera and microphone.
           </p>
 
           <input
             id="galleryImageFile"
             type="file"
-            accept="image/*"
+            accept="image/*,video/*"
           >
 
           <img
@@ -3693,6 +3531,24 @@ textarea.field{
             class="uploadPreview"
             alt="Gallery preview"
           >
+
+          <video
+            id="galleryVideoPreview"
+            class="recordPreview"
+            controls
+            playsinline
+          ></video>
+
+          <div class="btnRow">
+            <button class="adminBtn" id="startGalleryRecording" type="button">
+              Record Camera &amp; Microphone
+            </button>
+            <button class="adminBtn danger" id="stopGalleryRecording" type="button" disabled>
+              Stop Recording
+            </button>
+          </div>
+
+          <p class="status" id="galleryRecordingStatus"></p>
 
         </div>
 
@@ -3706,7 +3562,7 @@ textarea.field{
           >
 
           <span>
-            Publish photo
+            Show publicly in Gallery
           </span>
 
         </label>
@@ -3716,7 +3572,7 @@ textarea.field{
           class="adminBtn primaryBtn"
           id="saveGallery"
         >
-          Add Photo
+          Add Media
         </button>
 
 
@@ -3891,12 +3747,19 @@ textarea.field{
           placeholder="Prayer, example 24/7"
         >
 
+        <input
+          class="field"
+          id="setLiveMeetingUrl"
+          type="url"
+          placeholder="LIVE meeting link"
+        >
+
 
         <button
           class="adminBtn primaryBtn"
           id="saveSettings"
         >
-          Save Statistics
+          Save Website Settings
         </button>
 
 
@@ -3986,6 +3849,7 @@ const STORAGE_BUCKET =
   "prayer-fire-media";
 
 let sb = null;
+let liveMeetingUrl = "";
 
 
 /* =========================================================
@@ -4255,6 +4119,14 @@ function bindNavigation(){
 
             if(key){
               navTo(key);
+
+              if(button.dataset.scroll){
+                requestAnimationFrame(
+                  () => document
+                    .getElementById(button.dataset.scroll)
+                    ?.scrollIntoView({behavior:"smooth"})
+                );
+              }
             }
 
           }
@@ -4267,6 +4139,31 @@ function bindNavigation(){
 
 
 bindNavigation();
+
+const liveMeetingBtn =
+  document.getElementById(
+    "liveMeetingBtn"
+  );
+
+if(liveMeetingBtn){
+  liveMeetingBtn.addEventListener(
+    "click",
+    () => {
+      const url = safeUrl(liveMeetingUrl);
+
+      if(url === "#"){
+        alert("The LIVE meeting link has not been configured yet.");
+        return;
+      }
+
+      window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  );
+}
 
 
 window.addEventListener(
@@ -4533,6 +4430,11 @@ async function loadSettings(){
     )
     .forEach(
       row => {
+
+        if(row.key === "live_meeting_url"){
+          liveMeetingUrl = row.value || "";
+          return;
+        }
 
         document
           .querySelectorAll(
@@ -4941,11 +4843,6 @@ async function loadGallery(){
       "galleryGrid"
     );
 
-  const homeGrid =
-    document.getElementById(
-      "homeGalleryGrid"
-    );
-
   const status =
     document.getElementById(
       "galleryStatus"
@@ -4981,14 +4878,14 @@ async function loadGallery(){
     }
 
 
-    const photos =
+    const mediaItems =
       (
         data ||
         []
       )
       .filter(
-        photo =>
-          photo.active !== false
+        item =>
+          item.active !== false
       );
 
 
@@ -5020,7 +4917,7 @@ async function loadGallery(){
 
 
       items.forEach(
-        photo => {
+        item => {
 
           const card =
             document.createElement(
@@ -5032,25 +4929,33 @@ async function loadGallery(){
 
 
           const altText =
-            photo.alt_text ||
+            item.alt_text ||
             (
-              `${photo.title || "Prayer & Fire"} ${photo.country || ""}`
+              `${item.title || "Prayer & Fire"} ${item.country || ""}`
             );
+
+          const mediaUrl =
+            item.image_url || "";
+
+          const isVideo =
+            /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(mediaUrl) ||
+            /youtube\.com|youtu\.be|vimeo\.com/i.test(mediaUrl);
+
+          const directVideo =
+            /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(mediaUrl);
 
 
           card.innerHTML = `
 
-            <div
-              class="galleryImage"
-              role="button"
-              tabindex="0"
-            >
+            <div class="galleryImage">
 
-              <img
-                src="${esc(photo.image_url || "")}"
-                alt="${esc(altText)}"
-                loading="lazy"
-              >
+              ${
+                isVideo
+                  ? directVideo
+                    ? `<video src="${esc(mediaUrl)}" controls playsinline preload="metadata"></video>`
+                    : `<a class="btn" href="${esc(safeUrl(mediaUrl))}" target="_blank" rel="noopener noreferrer">Play video</a>`
+                  : `<img src="${esc(mediaUrl)}" alt="${esc(altText)}" loading="lazy">`
+              }
 
             </div>
 
@@ -5058,30 +4963,30 @@ async function loadGallery(){
             <div class="galleryCaption">
 
               ${
-                photo.title
+                item.title
                   ?
                     `<strong>
-                      ${esc(photo.title)}
+                      ${esc(item.title)}
                     </strong>`
                   :
                     ""
               }
 
               ${
-                photo.country
+                item.country
                   ?
                     `<span>
-                      ${esc(photo.country)}
+                      ${esc(item.country)}
                     </span>`
                   :
                     ""
               }
 
               ${
-                photo.description
+                item.description
                   ?
                     `<p>
-                      ${esc(photo.description)}
+                      ${esc(item.description)}
                     </p>`
                   :
                     ""
@@ -5091,19 +4996,15 @@ async function loadGallery(){
           `;
 
 
-          const imageBox =
-            card.querySelector(
-              ".galleryImage"
+          if(!isVideo){
+            const imageBox = card.querySelector(".galleryImage");
+            imageBox.setAttribute("role","button");
+            imageBox.setAttribute("tabindex","0");
+            imageBox.addEventListener(
+              "click",
+              () => openLightbox(mediaUrl,altText)
             );
-
-          imageBox.addEventListener(
-            "click",
-            () =>
-              openLightbox(
-                photo.image_url,
-                altText
-              )
-          );
+          }
 
 
           target.appendChild(
@@ -5118,13 +5019,7 @@ async function loadGallery(){
 
     renderGallery(
       fullGrid,
-      photos
-    );
-
-
-    renderGallery(
-      homeGrid,
-      photos.slice(0,6)
+      mediaItems
     );
 
 
@@ -5155,19 +5050,6 @@ async function loadGallery(){
 
     }
 
-
-    if(
-      homeGrid &&
-      !homeGrid.children.length
-    ){
-
-      homeGrid.innerHTML = `
-        <div class="galleryEmpty">
-          Prayer & Fire gallery coming soon.
-        </div>
-      `;
-
-    }
 
   }
 
@@ -5396,39 +5278,25 @@ if(subscribeForm){
 
       try{
 
-        const {
-          error
-        } =
-          await s
-            .from("subscribers")
-            .insert({
+        const payload = {
+          name:String(formData.get("name") || "").trim(),
+          email:String(formData.get("email") || "").trim().toLowerCase(),
+          country:String(formData.get("country") || "").trim(),
+          website:String(formData.get("website") || "").trim()
+        };
 
-              name:
-                String(
-                  formData.get("name") ||
-                  ""
-                )
-                .trim(),
-
-              email:
-                String(
-                  formData.get("email") ||
-                  ""
-                )
-                .trim(),
-
-              country:
-                String(
-                  formData.get("country") ||
-                  ""
-                )
-                .trim()
-
-            });
-
+        const {data,error} =
+          await s.functions.invoke(
+            "subscribe",
+            {body:payload}
+          );
 
         if(error){
           throw error;
+        }
+
+        if(!data?.success){
+          throw new Error(data?.error || "Subscription failed.");
         }
 
 
@@ -5437,7 +5305,9 @@ if(subscribeForm){
 
         setStatus(
           status,
-          "Thank you. You are subscribed.",
+          data.alreadySubscribed
+            ? "You are already subscribed. Your information is up to date."
+            : "Thank you. You are subscribed.",
           "ok"
         );
 
@@ -5451,7 +5321,7 @@ if(subscribeForm){
 
         setStatus(
           status,
-          "Unable to subscribe right now.",
+          error?.message || "Unable to subscribe right now.",
           "error"
         );
 
@@ -5824,7 +5694,7 @@ async function uploadImage(
   if(!file){
 
     throw new Error(
-      "Please choose an image."
+      "Please choose a media file."
     );
 
   }
@@ -5879,7 +5749,7 @@ async function uploadImage(
   if(uploadError){
 
     throw new Error(
-      "Photo upload failed: " +
+      "Media upload failed: " +
       uploadError.message
     );
 
@@ -5904,7 +5774,7 @@ async function uploadImage(
   ){
 
     throw new Error(
-      "Could not create public image URL."
+      "Could not create the public media URL."
     );
 
   }
@@ -5984,6 +5854,93 @@ setupPreview(
   "galleryImageFile",
   "galleryPreview"
 );
+
+let recordedGalleryFile = null;
+let galleryMediaRecorder = null;
+let galleryRecordingStream = null;
+let galleryRecordingChunks = [];
+
+const galleryVideoPreview =
+  document.getElementById("galleryVideoPreview");
+
+galleryImageFile.addEventListener(
+  "change",
+  () => {
+    const file = galleryImageFile.files?.[0];
+    recordedGalleryFile = null;
+
+    if(!file){
+      return;
+    }
+
+    if(file.type.startsWith("video/")){
+      galleryPreview.classList.remove("show");
+      galleryVideoPreview.src = URL.createObjectURL(file);
+      galleryVideoPreview.classList.add("show");
+    }
+    else{
+      galleryVideoPreview.classList.remove("show");
+      galleryVideoPreview.removeAttribute("src");
+    }
+  }
+);
+
+startGalleryRecording.onclick =
+async () => {
+  try{
+    if(!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder){
+      throw new Error("Recording is not supported in this browser.");
+    }
+
+    galleryRecordingStream =
+      await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+
+    galleryRecordingChunks = [];
+    galleryMediaRecorder = new MediaRecorder(galleryRecordingStream);
+
+    galleryMediaRecorder.ondataavailable = event => {
+      if(event.data?.size){
+        galleryRecordingChunks.push(event.data);
+      }
+    };
+
+    galleryMediaRecorder.onstop = () => {
+      const type = galleryMediaRecorder.mimeType || "video/webm";
+      const blob = new Blob(galleryRecordingChunks,{type});
+      recordedGalleryFile = new File(
+        [blob],
+        `prayer-fire-recording-${Date.now()}.webm`,
+        {type}
+      );
+      galleryVideoPreview.src = URL.createObjectURL(blob);
+      galleryVideoPreview.classList.add("show");
+      galleryRecordingStream?.getTracks().forEach(track => track.stop());
+      galleryRecordingStream = null;
+      setStatus(galleryRecordingStatus,"Recording ready to publish.","ok");
+    };
+
+    galleryVideoPreview.srcObject = galleryRecordingStream;
+    galleryVideoPreview.muted = true;
+    galleryVideoPreview.classList.add("show");
+    galleryMediaRecorder.start();
+    startGalleryRecording.disabled = true;
+    stopGalleryRecording.disabled = false;
+    galleryRecordingStatus.innerHTML = '<span class="recordingDot">● Recording…</span>';
+  }
+  catch(error){
+    setStatus(galleryRecordingStatus,error.message,"error");
+  }
+};
+
+stopGalleryRecording.onclick = () => {
+  if(galleryMediaRecorder?.state === "recording"){
+    galleryMediaRecorder.stop();
+  }
+  galleryVideoPreview.srcObject = null;
+  galleryVideoPreview.muted = false;
+  startGalleryRecording.disabled = false;
+  stopGalleryRecording.disabled = true;
+};
 
 setupPreview(
   "impactImageFile",
@@ -6915,19 +6872,15 @@ async function adminGallery(){
           <div>
 
             ${
-              photo.image_url
-                ?
-                  `<img
-                    class="adminThumb"
-                    src="${esc(photo.image_url)}"
-                    alt=""
-                  >`
-                :
-                  ""
+              /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(photo.image_url || "")
+                ? "<span class=\"adminThumb\" style=\"display:inline-grid;place-items:center;background:#000\">▶</span>"
+                : photo.image_url
+                  ? `<img class="adminThumb" src="${esc(photo.image_url)}" alt="">`
+                  : ""
             }
 
             <strong>
-              ${esc(photo.title || "Photo")}
+              ${esc(photo.title || "Gallery media")}
             </strong>
 
             <br>
@@ -6984,14 +6937,15 @@ async () => {
 
 
     const file =
-      galleryImageFile.files?.[0];
+      galleryImageFile.files?.[0] ||
+      recordedGalleryFile;
 
 
     if(file){
 
       setStatus(
         status,
-        "Uploading gallery photo..."
+        "Uploading gallery media..."
       );
 
 
@@ -7007,7 +6961,7 @@ async () => {
     if(!imageUrl){
 
       throw new Error(
-        "Please upload a photo or enter an image URL."
+        "Please upload media, record a video, or enter a media URL."
       );
 
     }
@@ -7076,9 +7030,9 @@ async () => {
       status,
       editId
         ?
-          "Gallery photo updated."
+          "Gallery media updated."
         :
-          "Gallery photo published.",
+          "Gallery media published.",
       "ok"
     );
 
@@ -7125,6 +7079,7 @@ function resetGalleryForm(){
 
 
   galleryImageFile.value = "";
+  recordedGalleryFile = null;
 
   galleryActive.checked =
     true;
@@ -7134,9 +7089,14 @@ function resetGalleryForm(){
     "show"
   );
 
+  galleryVideoPreview.pause();
+  galleryVideoPreview.removeAttribute("src");
+  galleryVideoPreview.classList.remove("show");
+  setStatus(galleryRecordingStatus,"");
+
 
   saveGallery.textContent =
-    "Add Photo";
+    "Add Media";
 
 
   cancelGalleryEdit.style.display =
@@ -7199,7 +7159,14 @@ async id => {
     data.active !== false;
 
 
-  if(data.image_url){
+  if(/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(data.image_url || "")){
+
+    galleryVideoPreview.src = data.image_url;
+    galleryVideoPreview.classList.add("show");
+    galleryPreview.classList.remove("show");
+
+  }
+  else if(data.image_url){
 
     galleryPreview.src =
       data.image_url;
@@ -7644,6 +7611,17 @@ async function adminFillSettings(){
 
       }
 
+
+      if(
+        row.key ===
+        "live_meeting_url"
+      ){
+
+        setLiveMeetingUrl.value =
+          row.value || "";
+
+      }
+
     }
   );
 
@@ -7687,6 +7665,12 @@ async () => {
         key:"stat_prayer",
         value:
           setPrayer.value.trim()
+      },
+
+      {
+        key:"live_meeting_url",
+        value:
+          setLiveMeetingUrl.value.trim()
       }
 
     ];
@@ -7715,7 +7699,7 @@ async () => {
 
     setStatus(
       status,
-      "Statistics saved successfully.",
+      "Website settings saved successfully.",
       "ok"
     );
 
