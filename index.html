@@ -49,7 +49,7 @@
 
   <script
     defer
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"
   ></script>
 
   <!-- Google / Search Engine structured information -->
@@ -791,32 +791,10 @@ img{
 
 .impactImage{
   display:none;
-  height:300px;
-
-  background:#0b0d10;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  overflow:hidden;
-
-  cursor:pointer;
 }
 
 .impactCard .impactIcon{
   margin-top:0;
-}
-
-.impactImage img{
-  width:100%;
-  height:100%;
-
-  object-fit:contain;
-
-  background:#0b0d10;
 }
 
 .impactBody{
@@ -854,6 +832,29 @@ img{
 /* =========================
    GALLERY
 ========================= */
+
+.galleryFilters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.galleryFilter{
+  min-height:44px;
+  padding:10px 18px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-weight:900;
+}
+
+.galleryFilter.active{
+  border-color:transparent;
+  background:linear-gradient(135deg,var(--orange),#ff7b21);
+  box-shadow:0 12px 30px rgba(255,90,31,.22);
+}
 
 .galleryGrid{
   display:grid;
@@ -1981,200 +1982,10 @@ textarea.field{
 
       </div>
 
-
       <div
         id="impactGrid"
         class="grid grid3"
-      >
-
-        <!-- Existing fallback cards -->
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./children-feeding-india.JPG"
-              alt="Prayer and Fire India food outreach feeding children"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🤲
-            </div>
-
-            <h3>
-              India Food Outreach
-            </h3>
-
-            <p>
-              Supporting children through meals, care
-              and local ministry partnership in India.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./impact-africa-food-1.PNG"
-              alt="Prayer and Fire Africa food outreach serving children"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🌍
-            </div>
-
-            <h3>
-              Africa Food Outreach
-            </h3>
-
-            <p>
-              Serving children and families through food
-              assistance and ministry care in Africa.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./impact-asia-classroom-1.PNG"
-              alt="Prayer and Fire children's education and classroom outreach"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🎓
-            </div>
-
-            <h3>
-              Children's Education
-            </h3>
-
-            <p>
-              Helping children learn through classes,
-              school support and community education.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./impact-family-support-1.PNG"
-              alt="Prayer and Fire family support mission outreach"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              🤝
-            </div>
-
-            <h3>
-              Family Support
-            </h3>
-
-            <p>
-              Serving vulnerable families through practical
-              help and local ministry partnerships.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./impact-asia-food-1.PNG"
-              alt="Prayer and Fire community meals outreach"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              ☕
-            </div>
-
-            <h3>
-              Community Meals
-            </h3>
-
-            <p>
-              Practical compassion expressed through food
-              assistance and local outreach.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article class="card impactCard">
-
-          <div class="impactImage">
-
-            <img
-              src="./impact-asia-education-1.PNG"
-              alt="Prayer and Fire learning support and education"
-            >
-
-          </div>
-
-          <div class="impactBody">
-
-            <div class="impactIcon">
-              📚
-            </div>
-
-            <h3>
-              Learning Support
-            </h3>
-
-            <p>
-              Encouraging children through learning,
-              mentorship and community development.
-            </p>
-
-          </div>
-
-        </article>
-
-      </div>
+      ></div>
 
     </div>
 
@@ -2390,6 +2201,36 @@ textarea.field{
   <section class="section">
 
     <div class="sectionInner">
+
+      <div
+        class="galleryFilters"
+        role="group"
+        aria-label="Filter gallery media"
+      >
+        <button
+          class="galleryFilter active"
+          type="button"
+          data-gallery-filter="all"
+        >
+          All
+        </button>
+
+        <button
+          class="galleryFilter"
+          type="button"
+          data-gallery-filter="photos"
+        >
+          Photos
+        </button>
+
+        <button
+          class="galleryFilter"
+          type="button"
+          data-gallery-filter="videos"
+        >
+          Videos
+        </button>
+      </div>
 
       <div
         id="galleryGrid"
@@ -3751,8 +3592,22 @@ textarea.field{
           class="field"
           id="setLiveMeetingUrl"
           type="url"
-          placeholder="LIVE meeting link"
+          placeholder="LIVE Zoom meeting link"
         >
+
+        <input
+          class="field"
+          id="setLiveMeetingPasscode"
+          type="password"
+          autocomplete="new-password"
+          placeholder="LIVE meeting passcode (leave blank to keep current)"
+        >
+
+        <p style="color:var(--muted)">
+          The LIVE button opens Zoom inside prayerandfire.org.
+          The passcode is stored privately and is never added
+          to the public page source.
+        </p>
 
 
         <button
@@ -4149,18 +4004,13 @@ if(liveMeetingBtn){
   liveMeetingBtn.addEventListener(
     "click",
     () => {
-      const url = safeUrl(liveMeetingUrl);
-
-      if(url === "#"){
+      if(safeUrl(liveMeetingUrl) === "#"){
         alert("The LIVE meeting link has not been configured yet.");
         return;
       }
 
-      window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
-      );
+      window.location.href =
+        "./meeting.html";
     }
   );
 }
@@ -4836,18 +4686,242 @@ async function loadBooks(){
    GALLERY
 ========================================================= */
 
-async function loadGallery(){
+let publicGalleryItems = [];
+let activeGalleryFilter = "all";
 
-  const fullGrid =
+
+function galleryMediaType(item){
+
+  const mediaUrl =
+    String(item?.image_url || "");
+
+  const declaredType =
+    String(item?.media_type || "")
+      .toLowerCase();
+
+  if(declaredType === "video"){
+    return "videos";
+  }
+
+  if(declaredType === "image"){
+    return "photos";
+  }
+
+  const isVideo =
+    /\.(mp4|webm|mov|m4v)(\?|#|$)/i
+      .test(mediaUrl) ||
+    /youtube\.com|youtu\.be|vimeo\.com/i
+      .test(mediaUrl);
+
+  return isVideo
+    ? "videos"
+    : "photos";
+
+}
+
+
+function renderPublicGallery(){
+
+  const target =
     document.getElementById(
       "galleryGrid"
     );
+
+  if(!target){
+    return;
+  }
+
+  const items =
+    activeGalleryFilter === "all"
+      ? publicGalleryItems
+      : publicGalleryItems.filter(
+          item =>
+            galleryMediaType(item) ===
+            activeGalleryFilter
+        );
+
+  target.innerHTML = "";
+
+  if(!items.length){
+
+    const emptyLabel =
+      activeGalleryFilter === "videos"
+        ? "No videos have been published yet."
+        : activeGalleryFilter === "photos"
+          ? "No photos have been published yet."
+          : "Gallery media will appear here.";
+
+    target.innerHTML = `
+      <div class="galleryEmpty">
+        ${emptyLabel}
+      </div>
+    `;
+
+    return;
+  }
+
+  items.forEach(
+    item => {
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "galleryCard";
+
+      const altText =
+        item.alt_text ||
+        (
+          `${item.title || "Prayer & Fire"} ${item.country || ""}`
+        );
+
+      const mediaUrl =
+        item.image_url || "";
+
+      const type =
+        galleryMediaType(item);
+
+      const directVideo =
+        /\.(mp4|webm|mov|m4v)(\?|#|$)/i
+          .test(mediaUrl);
+
+      card.innerHTML = `
+
+        <div class="galleryImage">
+
+          ${
+            type === "videos"
+              ? directVideo
+                ? `<video src="${esc(mediaUrl)}" controls playsinline preload="metadata"></video>`
+                : `<a class="btn" href="${esc(safeUrl(mediaUrl))}" target="_blank" rel="noopener noreferrer">Play video</a>`
+              : `<img src="${esc(mediaUrl)}" alt="${esc(altText)}" loading="lazy">`
+          }
+
+        </div>
+
+        <div class="galleryCaption">
+
+          ${
+            item.title
+              ? `<strong>${esc(item.title)}</strong>`
+              : ""
+          }
+
+          ${
+            item.country
+              ? `<span>${esc(item.country)}</span>`
+              : ""
+          }
+
+          ${
+            item.description
+              ? `<p>${esc(item.description)}</p>`
+              : ""
+          }
+
+        </div>
+      `;
+
+      if(type === "photos"){
+
+        const imageBox =
+          card.querySelector(
+            ".galleryImage"
+          );
+
+        const showImage =
+          () =>
+            openLightbox(
+              mediaUrl,
+              altText
+            );
+
+        imageBox.setAttribute(
+          "role",
+          "button"
+        );
+
+        imageBox.setAttribute(
+          "tabindex",
+          "0"
+        );
+
+        imageBox.addEventListener(
+          "click",
+          showImage
+        );
+
+        imageBox.addEventListener(
+          "keydown",
+          event => {
+
+            if(
+              event.key === "Enter" ||
+              event.key === " "
+            ){
+
+              event.preventDefault();
+              showImage();
+
+            }
+
+          }
+        );
+
+      }
+
+      target.appendChild(card);
+
+    }
+  );
+
+}
+
+
+document
+  .querySelectorAll(
+    "[data-gallery-filter]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          activeGalleryFilter =
+            button.dataset.galleryFilter ||
+            "all";
+
+          document
+            .querySelectorAll(
+              "[data-gallery-filter]"
+            )
+            .forEach(
+              item =>
+                item.classList.toggle(
+                  "active",
+                  item === button
+                )
+            );
+
+          renderPublicGallery();
+
+        }
+      );
+
+    }
+  );
+
+
+async function loadGallery(){
 
   const status =
     document.getElementById(
       "galleryStatus"
     );
-
 
   const s =
     await getSb();
@@ -4856,6 +4930,10 @@ async function loadGallery(){
     return;
   }
 
+  setStatus(
+    status,
+    "Loading gallery..."
+  );
 
   try{
 
@@ -4877,151 +4955,18 @@ async function loadGallery(){
       throw error;
     }
 
-
-    const mediaItems =
+    publicGalleryItems =
       (
         data ||
         []
       )
       .filter(
         item =>
-          item.active !== false
+          item.active !== false &&
+          item.image_url
       );
 
-
-    function renderGallery(
-      target,
-      items
-    ){
-
-      if(!target){
-        return;
-      }
-
-      target.innerHTML = "";
-
-
-      if(
-        !items.length
-      ){
-
-        target.innerHTML = `
-          <div class="galleryEmpty">
-            Gallery photos will appear here.
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      items.forEach(
-        item => {
-
-          const card =
-            document.createElement(
-              "article"
-            );
-
-          card.className =
-            "galleryCard";
-
-
-          const altText =
-            item.alt_text ||
-            (
-              `${item.title || "Prayer & Fire"} ${item.country || ""}`
-            );
-
-          const mediaUrl =
-            item.image_url || "";
-
-          const isVideo =
-            /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(mediaUrl) ||
-            /youtube\.com|youtu\.be|vimeo\.com/i.test(mediaUrl);
-
-          const directVideo =
-            /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(mediaUrl);
-
-
-          card.innerHTML = `
-
-            <div class="galleryImage">
-
-              ${
-                isVideo
-                  ? directVideo
-                    ? `<video src="${esc(mediaUrl)}" controls playsinline preload="metadata"></video>`
-                    : `<a class="btn" href="${esc(safeUrl(mediaUrl))}" target="_blank" rel="noopener noreferrer">Play video</a>`
-                  : `<img src="${esc(mediaUrl)}" alt="${esc(altText)}" loading="lazy">`
-              }
-
-            </div>
-
-
-            <div class="galleryCaption">
-
-              ${
-                item.title
-                  ?
-                    `<strong>
-                      ${esc(item.title)}
-                    </strong>`
-                  :
-                    ""
-              }
-
-              ${
-                item.country
-                  ?
-                    `<span>
-                      ${esc(item.country)}
-                    </span>`
-                  :
-                    ""
-              }
-
-              ${
-                item.description
-                  ?
-                    `<p>
-                      ${esc(item.description)}
-                    </p>`
-                  :
-                    ""
-              }
-
-            </div>
-          `;
-
-
-          if(!isVideo){
-            const imageBox = card.querySelector(".galleryImage");
-            imageBox.setAttribute("role","button");
-            imageBox.setAttribute("tabindex","0");
-            imageBox.addEventListener(
-              "click",
-              () => openLightbox(mediaUrl,altText)
-            );
-          }
-
-
-          target.appendChild(
-            card
-          );
-
-        }
-      );
-
-    }
-
-
-    renderGallery(
-      fullGrid,
-      mediaItems
-    );
-
+    renderPublicGallery();
 
     setStatus(
       status,
@@ -5036,20 +4981,14 @@ async function loadGallery(){
       error
     );
 
+    publicGalleryItems = [];
+    renderPublicGallery();
 
-    if(
-      fullGrid &&
-      !fullGrid.children.length
-    ){
-
-      fullGrid.innerHTML = `
-        <div class="galleryEmpty">
-          Gallery photos will appear here soon.
-        </div>
-      `;
-
-    }
-
+    setStatus(
+      status,
+      "We are having trouble loading the gallery right now.",
+      "error"
+    );
 
   }
 
@@ -5059,8 +4998,8 @@ async function loadGallery(){
 /* =========================================================
    GLOBAL IMPACT FROM DATABASE
 
-   Existing HTML cards remain as fallback.
-   Database cards replace them only when records exist.
+   Impact cards are text-only. All public photos and videos
+   are published exclusively in the Gallery.
 ========================================================= */
 
 async function loadImpact(){
@@ -5074,14 +5013,12 @@ async function loadImpact(){
     return;
   }
 
-
   const s =
     await getSb();
 
   if(!s){
     return;
   }
-
 
   try{
 
@@ -5103,7 +5040,6 @@ async function loadImpact(){
       throw error;
     }
 
-
     const items =
       (
         data ||
@@ -5114,18 +5050,18 @@ async function loadImpact(){
           item.active !== false
       );
 
-
-    if(
-      !items.length
-    ){
-
-      return;
-
-    }
-
-
     grid.innerHTML = "";
 
+    if(!items.length){
+
+      grid.innerHTML = `
+        <div class="galleryEmpty">
+          Global impact updates will appear here.
+        </div>
+      `;
+
+      return;
+    }
 
     items.forEach(
       item => {
@@ -5138,28 +5074,7 @@ async function loadImpact(){
         article.className =
           "card impactCard";
 
-
         article.innerHTML = `
-
-          <div class="impactImage">
-
-            ${
-              item.image_url
-                ?
-                  `<img
-                    src="${esc(item.image_url)}"
-                    alt="${esc(
-                      item.title ||
-                      "Prayer & Fire global impact"
-                    )}"
-                    loading="lazy"
-                  >`
-                :
-                  ""
-            }
-
-          </div>
-
 
           <div class="impactBody">
 
@@ -5172,37 +5087,19 @@ async function loadImpact(){
             </h3>
 
             ${
+              item.country
+                ? `<p><strong>${esc(item.country)}</strong></p>`
+                : ""
+            }
+
+            ${
               item.description
-                ?
-                  `<p>
-                    ${esc(item.description)}
-                  </p>`
-                :
-                  ""
+                ? `<p>${esc(item.description)}</p>`
+                : ""
             }
 
           </div>
         `;
-
-
-        const image =
-          article.querySelector(
-            ".impactImage img"
-          );
-
-        if(image){
-
-          image.addEventListener(
-            "click",
-            () =>
-              openLightbox(
-                image.src,
-                image.alt
-              )
-          );
-
-        }
-
 
         grid.appendChild(
           article
@@ -5214,9 +5111,16 @@ async function loadImpact(){
   }
   catch(error){
 
-    console.log(
-      "Impact database not available; using existing static impact cards."
+    console.error(
+      "Impact load error:",
+      error
     );
+
+    grid.innerHTML = `
+      <div class="galleryEmpty">
+        Global impact updates will appear here.
+      </div>
+    `;
 
   }
 
@@ -7634,20 +7538,17 @@ async () => {
   const status =
     settingsStatus;
 
-
   setStatus(
     status,
     "Saving..."
   );
 
-
   const s =
     await getSb();
 
-
   try{
 
-    const rows = [
+    const statisticRows = [
 
       {
         key:"stat_countries",
@@ -7665,41 +7566,68 @@ async () => {
         key:"stat_prayer",
         value:
           setPrayer.value.trim()
-      },
-
-      {
-        key:"live_meeting_url",
-        value:
-          setLiveMeetingUrl.value.trim()
       }
 
     ];
 
-
     const {
-      error
+      error:statisticsError
     } =
       await s
         .from("site_settings")
         .upsert(
-          rows,
+          statisticRows,
           {
             onConflict:"key"
           }
         );
 
-
-    if(error){
-      throw error;
+    if(statisticsError){
+      throw statisticsError;
     }
 
+    const meetingUrl =
+      setLiveMeetingUrl.value.trim();
+
+    if(meetingUrl){
+
+      const {
+        data:meetingData,
+        error:meetingError
+      } =
+        await s.functions.invoke(
+          "zoom-meeting-settings",
+          {
+            body:{
+              meetingUrl,
+              meetingPasscode:
+                setLiveMeetingPasscode
+                  .value
+                  .trim()
+            }
+          }
+        );
+
+      if(meetingError){
+        throw meetingError;
+      }
+
+      if(!meetingData?.success){
+        throw new Error(
+          meetingData?.error ||
+          "Unable to save the LIVE meeting."
+        );
+      }
+
+      setLiveMeetingPasscode.value = "";
+
+    }
 
     await loadSettings();
 
-
     setStatus(
       status,
-      "Website settings saved successfully.",
+      "Statistics and LIVE meeting settings saved successfully.",
       "ok"
     );
 
@@ -7708,11 +7636,30 @@ async () => {
 
     console.error(error);
 
+    let message =
+      error?.message ||
+      "Unable to save website settings.";
+
+    if(error?.context){
+
+      try{
+
+        const details =
+          await error.context.json();
+
+        message =
+          details?.error ||
+          message;
+
+      }
+      catch(parseError){}
+
+    }
 
     setStatus(
       status,
       "Could not save: " +
-      error.message,
+      message,
       "error"
     );
 
