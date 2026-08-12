@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+  >
+  <meta name="theme-color" content="#050608">
+  <title>LIVE Meeting – Prayer & Fire</title>
+  <meta
+    name="description"
+    content="Join the Prayer & Fire LIVE Zoom meeting securely inside prayerandfire.org."
+  >
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"
+  ></script>
+  <script defer src="https://source.zoom.us/6.2.0/lib/vendor/react.min.js"></script>
+  <script defer src="https://source.zoom.us/6.2.0/lib/vendor/react-dom.min.js"></script>
+  <script defer src="https://source.zoom.us/6.2.0/lib/vendor/redux.min.js"></script>
+  <script defer src="https://source.zoom.us/6.2.0/lib/vendor/redux-thunk.min.js"></script>
+  <script defer src="https://source.zoom.us/6.2.0/lib/vendor/lodash.min.js"></script>
+  <script defer src="https://source.zoom.us/zoom-meeting-6.2.0.min.js"></script>
+  <style>
+    :root{
+      color-scheme:dark;
+      --orange:#ff5a1f;
+      --text:#fff7ee;
+      --muted:#b9bcc7;
+    }
+
+    html,
+    body{
+      min-height:100%;
+    }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(
+          850px 500px at 70% 0%,
+          rgba(255,90,31,.18),
+          transparent 60%
+        ),
+        #050608;
+      color:var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        Arial,
+        sans-serif;
+    }
+
+    .liveShell{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+
+    .liveCard{
+      width:min(620px,100%);
+      padding:30px;
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:24px;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.08),
+          rgba(255,255,255,.03)
+        );
+      box-shadow:0 28px 90px rgba(0,0,0,.52);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:28px;
+    }
+
+    .brand img{
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      border-radius:14px;
+      border:1px solid rgba(255,90,31,.38);
+    }
+
+    .brand strong{
+      display:block;
+      font-size:18px;
+    }
+
+    .brand span{
+      color:#ffb283;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      margin:0 0 12px;
+      font-size:clamp(38px,8vw,64px);
+      line-height:1;
+      letter-spacing:-2px;
+    }
+
+    p{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    label{
+      display:block;
+      margin-top:24px;
+      font-weight:800;
+    }
+
+    input{
+      width:100%;
+      box-sizing:border-box;
+      margin:8px 0 16px;
+      padding:14px 16px;
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:14px;
+      background:rgba(255,255,255,.07);
+      color:#fff;
+      font:inherit;
+      font-size:16px;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    button,
+    a{
+      min-height:50px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      box-sizing:border-box;
+      padding:13px 20px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      font:inherit;
+      font-weight:900;
+      text-decoration:none;
+      cursor:pointer;
+    }
+
+    button{
+      border:0;
+      background:
+        linear-gradient(
+          135deg,
+          var(--orange),
+          #ff7b21
+        );
+    }
+
+    button:disabled{
+      cursor:wait;
+      opacity:.65;
+    }
+
+    #liveStatus{
+      min-height:22px;
+      margin:16px 0 0;
+      color:#ffb283;
+      font-size:14px;
+    }
+
+    #liveStatus.error{
+      color:#ff8181;
+    }
+
+    #zmmtg-root{
+      display:none;
+    }
+
+    @media(max-width:640px){
+      .liveShell{
+        align-items:start;
+        padding:18px 14px;
+      }
+
+      .liveCard{
+        margin-top:24px;
+        padding:22px;
+      }
+
+      .actions > *{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="liveShell" id="liveShell">
+
+    <section class="liveCard">
+
+      <div class="brand">
+        <img
+          src="./logo.jpg"
+          alt="Prayer & Fire logo"
+        >
+        <div>
+          <strong>Prayer & Fire</strong>
+          <span>Global Movement</span>
+        </div>
+      </div>
+
+      <div aria-hidden="true">● LIVE</div>
+
+      <h1>Join the LIVE meeting</h1>
+
+      <p>
+        Enter the name you want other participants to see.
+        Zoom will open securely inside this website.
+      </p>
+
+      <label for="participantName">
+        Your name
+      </label>
+
+      <input
+        id="participantName"
+        type="text"
+        autocomplete="name"
+        maxlength="80"
+        placeholder="Enter your name"
+        required
+      >
+
+      <div class="actions">
+        <button
+          id="joinMeeting"
+          type="button"
+        >
+          Join LIVE
+        </button>
+
+        <a href="./#home">
+          Back to Prayer & Fire
+        </a>
+      </div>
+
+      <p
+        id="liveStatus"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+    </section>
+
+  </main>
+
+  <script>
+    const SUPABASE_URL =
+      "https://xikmhnulxksadgvzajdk.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhpa21obnVseGtzYWRndnphamRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTQxMjgsImV4cCI6MjA4MTQzMDEyOH0.ItlRdBJFk_sNkxS3ghggifNXaMc2sRFx-B8P4afFIjI";
+
+    let sb = null;
+
+    const participantName =
+      document.getElementById(
+        "participantName"
+      );
+
+    const joinMeeting =
+      document.getElementById(
+        "joinMeeting"
+      );
+
+    const liveStatus =
+      document.getElementById(
+        "liveStatus"
+      );
+
+    function setLiveStatus(
+      message,
+      isError = false
+    ){
+      liveStatus.textContent =
+        message || "";
+
+      liveStatus.classList.toggle(
+        "error",
+        isError
+      );
+    }
+
+    async function waitForLibraries(){
+
+      for(let i = 0; i < 160; i++){
+
+        if(
+          window.supabase?.createClient &&
+          window.ZoomMtg
+        ){
+          return true;
+        }
+
+        await new Promise(
+          resolve =>
+            setTimeout(resolve,75)
+        );
+
+      }
+
+      return false;
+    }
+
+    async function readFunctionError(
+      error,
+      fallback
+    ){
+
+      if(error?.context){
+
+        try{
+
+          const details =
+            await error.context.json();
+
+          return (
+            details?.error ||
+            details?.message ||
+            fallback
+          );
+
+        }
+        catch(parseError){}
+
+      }
+
+      return (
+        error?.message ||
+        fallback
+      );
+    }
+
+    async function startMeeting(){
+
+      const name =
+        participantName.value.trim();
+
+      if(!name){
+
+        setLiveStatus(
+          "Please enter your name.",
+          true
+        );
+
+        participantName.focus();
+        return;
+      }
+
+      joinMeeting.disabled = true;
+
+      setLiveStatus(
+        "Preparing the secure meeting..."
+      );
+
+      try{
+
+        const available =
+          await waitForLibraries();
+
+        if(!available){
+          throw new Error(
+            "The Zoom meeting library could not load."
+          );
+        }
+
+        if(!sb){
+
+          sb =
+            window.supabase.createClient(
+              SUPABASE_URL,
+              SUPABASE_ANON_KEY,
+              {
+                auth:{
+                  persistSession:false,
+                  autoRefreshToken:false,
+                  detectSessionInUrl:false
+                }
+              }
+            );
+
+        }
+
+        const {
+          data,
+          error
+        } =
+          await sb.functions.invoke(
+            "zoom-signature",
+            {
+              body:{}
+            }
+          );
+
+        if(error){
+
+          throw new Error(
+            await readFunctionError(
+              error,
+              "Unable to prepare the LIVE meeting."
+            )
+          );
+
+        }
+
+        if(
+          !data?.success ||
+          !data?.signature ||
+          !data?.sdkKey ||
+          !data?.meetingNumber
+        ){
+
+          throw new Error(
+            data?.error ||
+            "The LIVE meeting is not configured."
+          );
+
+        }
+
+        window.ZoomMtg.setZoomJSLib(
+          "https://source.zoom.us/6.2.0/lib",
+          "/av"
+        );
+
+        window.ZoomMtg.preLoadWasm();
+        window.ZoomMtg.prepareWebSDK();
+
+        const zoomRoot =
+          document.getElementById(
+            "zmmtg-root"
+          );
+
+        if(zoomRoot){
+          zoomRoot.style.display =
+            "block";
+        }
+
+        document.getElementById(
+          "liveShell"
+        ).style.display =
+          "none";
+
+        window.ZoomMtg.init({
+          leaveUrl:
+            window.location.origin +
+            "/#home",
+
+          success:() => {
+
+            window.ZoomMtg.join({
+
+              signature:
+                data.signature,
+
+              sdkKey:
+                data.sdkKey,
+
+              meetingNumber:
+                data.meetingNumber,
+
+              passWord:
+                data.passcode || "",
+
+              userName:
+                name,
+
+              userEmail:
+                "",
+
+              success:() => {
+                setLiveStatus("");
+              },
+
+              error:error => {
+
+                console.error(
+                  "Zoom join error:",
+                  error
+                );
+
+                document.getElementById(
+                  "liveShell"
+                ).style.display =
+                  "grid";
+
+                if(zoomRoot){
+                  zoomRoot.style.display =
+                    "none";
+                }
+
+                setLiveStatus(
+                  error?.reason ||
+                  "Zoom could not join the meeting.",
+                  true
+                );
+
+                joinMeeting.disabled =
+                  false;
+
+              }
+
+            });
+
+          },
+
+          error:error => {
+
+            console.error(
+              "Zoom init error:",
+              error
+            );
+
+            document.getElementById(
+              "liveShell"
+            ).style.display =
+              "grid";
+
+            if(zoomRoot){
+              zoomRoot.style.display =
+                "none";
+            }
+
+            setLiveStatus(
+              error?.reason ||
+              "Zoom could not initialize.",
+              true
+            );
+
+            joinMeeting.disabled =
+              false;
+
+          }
+
+        });
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        setLiveStatus(
+          error?.message ||
+          "Unable to join the LIVE meeting.",
+          true
+        );
+
+        joinMeeting.disabled =
+          false;
+
+      }
+
+    }
+
+    joinMeeting.addEventListener(
+      "click",
+      startMeeting
+    );
+
+    participantName.addEventListener(
+      "keydown",
+      event => {
+
+        if(event.key === "Enter"){
+          startMeeting();
+        }
+
+      }
+    );
+  </script>
+
+</body>
+</html>
