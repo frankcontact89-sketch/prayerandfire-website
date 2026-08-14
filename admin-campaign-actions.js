@@ -27,6 +27,8 @@
       .campaignActionBtn:hover{background:#22252c}
       .campaignActionBtn.hide{color:#fca5a5;border-color:rgba(239,68,68,.35)}
       .campaignActionBtn.show{color:#86efac;border-color:rgba(34,197,94,.35)}
+      .campaignActionBtn.delete{color:#fecaca;border-color:rgba(239,68,68,.55);background:rgba(127,29,29,.18)}
+      .campaignActionBtn.delete:hover{background:rgba(127,29,29,.34)}
       .campaignItem.isHidden{opacity:.62}
       .campaignHiddenTag{display:inline-flex;margin-left:7px;padding:3px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:var(--muted);font-size:9px;font-weight:800;text-transform:uppercase;vertical-align:middle}
       .campaignToolbarEnhanced{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
@@ -65,6 +67,7 @@
           <div class="campaignMeta">${esc(date)} · ${Number(item.sent_count || 0)} sent · ${Number(item.failed_count || 0)} failed · ${Number(item.recipient_count || 0)} recipients</div>
           <div class="campaignHistoryControls">
             <button type="button" class="campaignActionBtn ${hidden ? 'show' : 'hide'}" data-campaign-action="${hidden ? 'show' : 'hide'}" data-campaign-id="${esc(item.id)}">${hidden ? 'Restore' : 'Hide'}</button>
+            <button type="button" class="campaignActionBtn delete" data-campaign-action="delete" data-campaign-id="${esc(item.id)}">Delete</button>
           </div>
         </div>`;
       }).join('');
@@ -73,18 +76,24 @@
         button.addEventListener('click', async () => {
           const id = button.dataset.campaignId || '';
           const action = button.dataset.campaignAction || '';
-          if (!id || !['hide','show'].includes(action)) return;
-          const verb = action === 'hide' ? 'hide' : 'restore';
-          if (!confirm(`${verb === 'hide' ? 'Hide' : 'Restore'} this campaign in the dashboard history?`)) return;
+          if (!id || !['hide','show','delete'].includes(action)) return;
+
+          if (action === 'delete') {
+            if (!confirm('Permanently delete this campaign from the history? This cannot be undone.')) return;
+          } else {
+            const verb = action === 'hide' ? 'hide' : 'restore';
+            if (!confirm(`${verb === 'hide' ? 'Hide' : 'Restore'} this campaign in the dashboard history?`)) return;
+          }
+
           button.disabled = true;
           const old = button.textContent;
-          button.textContent = action === 'hide' ? 'Hiding...' : 'Restoring...';
+          button.textContent = action === 'hide' ? 'Hiding...' : action === 'show' ? 'Restoring...' : 'Deleting...';
           try {
             await invokeCampaigns({ action, id });
             await loadEnhancedHistory();
           } catch (error) {
             console.error(error);
-            alert(error?.message || `Unable to ${verb} this campaign.`);
+            alert(error?.message || `Unable to ${action} this campaign.`);
             button.disabled = false;
             button.textContent = old;
           }
