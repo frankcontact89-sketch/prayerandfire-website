@@ -268,12 +268,15 @@
     });
 
     const oldEmpty = list.querySelector('.subscriberListEmpty');
-    if (oldEmpty) oldEmpty.remove();
     if (rows.length && visible === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'subscriberListEmpty';
-      empty.textContent = 'No subscribers match this filter.';
-      list.appendChild(empty);
+      if (!oldEmpty) {
+        const empty = document.createElement('div');
+        empty.className = 'subscriberListEmpty';
+        empty.textContent = 'No subscribers match this filter.';
+        list.appendChild(empty);
+      }
+    } else if (oldEmpty) {
+      oldEmpty.remove();
     }
     updateStats();
   }
