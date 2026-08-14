@@ -2207,16 +2207,8 @@ textarea.field{
         role="group"
         aria-label="Filter gallery media"
       >
-        <button
+<button
           class="galleryFilter active"
-          type="button"
-          data-gallery-filter="all"
-        >
-          All
-        </button>
-
-        <button
-          class="galleryFilter"
           type="button"
           data-gallery-filter="photos"
         >
@@ -4687,7 +4679,7 @@ async function loadBooks(){
 ========================================================= */
 
 let publicGalleryItems = [];
-let activeGalleryFilter = "all";
+let activeGalleryFilter = "photos";
 
 
 function galleryMediaType(item){
@@ -4732,13 +4724,11 @@ function renderPublicGallery(){
   }
 
   const items =
-    activeGalleryFilter === "all"
-      ? publicGalleryItems
-      : publicGalleryItems.filter(
-          item =>
-            galleryMediaType(item) ===
-            activeGalleryFilter
-        );
+    publicGalleryItems.filter(
+      item =>
+        galleryMediaType(item) ===
+        activeGalleryFilter
+    );
 
   target.innerHTML = "";
 
@@ -4893,7 +4883,7 @@ document
 
           activeGalleryFilter =
             button.dataset.galleryFilter ||
-            "all";
+            "photos";
 
           document
             .querySelectorAll(
@@ -6776,7 +6766,7 @@ async function adminGallery(){
           <div>
 
             ${
-              /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(photo.image_url || "")
+              (String(photo.media_type || "").toLowerCase() === "video" || /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(photo.image_url || ""))
                 ? "<span class=\"adminThumb\" style=\"display:inline-grid;place-items:center;background:#000\">▶</span>"
                 : photo.image_url
                   ? `<img class="adminThumb" src="${esc(photo.image_url)}" alt="">`
@@ -6871,7 +6861,20 @@ async () => {
     }
 
 
+    const detectedMediaType =
+      file?.type?.startsWith("video/")
+        ? "video"
+        : file?.type?.startsWith("image/")
+          ? "image"
+          : galleryMediaType({image_url:imageUrl}) === "videos"
+            ? "video"
+            : "image";
+
+
     const payload = {
+
+      media_type:
+        detectedMediaType,
 
       title:
         galleryTitle.value.trim(),
@@ -7063,7 +7066,7 @@ async id => {
     data.active !== false;
 
 
-  if(/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(data.image_url || "")){
+  if(String(data.media_type || "").toLowerCase() === "video" || /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(data.image_url || "")){
 
     galleryVideoPreview.src = data.image_url;
     galleryVideoPreview.classList.add("show");
