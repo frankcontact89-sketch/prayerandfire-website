@@ -1,0 +1,46 @@
+name: Fix subscriber filter loop
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-subscriber-filter-loop.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch filter empty state
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path('admin-subscribers.js')
+          text = path.read_text(encoding='utf-8')
+          start = text.index("    const oldEmpty = list.querySelector('.subscriberListEmpty');")
+          end = text.index("    updateStats();", start)
+          replacement = """    const oldEmpty = list.querySelector('.subscriberListEmpty');
+    if (rows.length && visible === 0) {
+      if (!oldEmpty) {
+        const empty = document.createElement('div');
+        empty.className = 'subscriberListEmpty';
+        empty.textContent = 'No subscribers match this filter.';
+        list.appendChild(empty);
+      }
+    } else if (oldEmpty) {
+      oldEmpty.remove();
+    }
+"""
+          text = text[:start] + replacement + text[end:]
+          path.write_text(text, encoding='utf-8')
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add admin-subscribers.js
+          git commit -m "Prevent subscriber filter refresh loop"
+          git push
