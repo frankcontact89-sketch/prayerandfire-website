@@ -29,7 +29,7 @@ async function refresh(){
  const {data,error}=await client.from('prayer_requests').select('id,name,email,country,message,status,created_at,archived_at').order('created_at',{ascending:false}).limit(200);if(error)throw error;
  box.replaceChildren();const visible=(data||[]).filter(item=>showArchived?Boolean(item.archived_at):!item.archived_at);for(const item of visible){
  const row=document.createElement('div');row.className='adminRow';row.style.cssText='display:block;padding:16px;margin:12px 0;overflow-wrap:anywhere';
- const a=document.createElement('a');a.className='adminBtn';a.textContent='Reply by email: '+item.email;a.href='mailto:'+encodeURIComponent(item.email)+'?subject='+encodeURIComponent('Re: Prayer Request - Prayer & Fire');a.style.display='inline-block';
+ const a=document.createElement('a');a.className='adminBtn';a.textContent='Reply by email: '+item.email;a.href='mailto:'+item.email+'?subject='+encodeURIComponent('Re: Prayer Request - Prayer & Fire')+'&body='+encodeURIComponent('\n\n--- Original prayer request ---\nFrom: '+item.name+'\nDate: '+new Date(item.created_at).toLocaleString()+'\nCountry: '+(item.country||'')+'\n\n'+item.message);a.style.display='inline-block';
  row.innerHTML='<strong>'+esc(item.name)+'</strong> · '+esc(new Date(item.created_at).toLocaleString())+'<p>'+esc(item.country)+'</p><p style="white-space:pre-wrap">'+esc(item.message)+'</p>';
  row.appendChild(a);const label=document.createElement('label');label.textContent=' Status: ';const select=document.createElement('select');select.className='field';
  for(const [value,name] of [['new','New'],['in_progress','In progress'],['answered','Answered']]){const o=document.createElement('option');o.value=value;o.textContent=name;select.appendChild(o)}
