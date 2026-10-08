@@ -10,7 +10,7 @@
     });
   }
 
-  loadScript('/admin-subscribers-core.js?v=20260814')
+  loadScript('/admin-subscribers-core.js?v=20261008-mobile-confirm')
     .then(() => loadScript('/admin-campaign-actions.js?v=20260814'))
     .catch((error) => console.error('Unable to load subscriber admin tools:', error));
 })();
