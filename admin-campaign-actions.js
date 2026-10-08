@@ -42,6 +42,44 @@
     box.innerHTML = `<span class="status${error ? ' error' : ''}">${esc(text)}</span>`;
   }
 
+  function setCampaignError(message) {
+    const panel = document.getElementById('campaignHistory')?.closest('.subscriberPanel');
+    if (!panel) return;
+    let status = panel.querySelector('#campaignActionStatus');
+    if (!status) {
+      status = document.createElement('p');
+      status.id = 'campaignActionStatus';
+      status.className = 'status error';
+      panel.querySelector('#campaignHistory')?.before(status);
+    }
+    status.textContent = message;
+  }
+
+  function requestConfirmation(message) {
+    return new Promise(resolve => {
+      const panel = document.getElementById('campaignHistory')?.closest('.subscriberPanel');
+      if (!panel) return resolve(false);
+      let area = panel.querySelector('#campaignConfirmArea');
+      if (!area) {
+        area = document.createElement('div');
+        area.id = 'campaignConfirmArea';
+        area.style.cssText = 'border:1px solid #bb8542;border-radius:14px;padding:14px;margin:12px 0;background:#242024';
+        const line = document.createElement('p'); line.id='campaignConfirmQuestion';
+        line.style.cssText='font-weight:700;margin:0 0 12px';
+        const yes = document.createElement('button'); yes.type='button';yes.textContent='Confirm';yes.className='adminBtn primaryBtn';
+        const no = document.createElement('button');no.type='button';no.textContent='Cancel';no.className='adminBtn';
+        area.append(line,yes,no);
+        panel.querySelector('#campaignHistory')?.before(area);
+      }
+      const buttons = area.querySelectorAll('button');
+      area.querySelector('#campaignConfirmQuestion').textContent = message;
+      area.hidden = false; area.style.display='block';
+      buttons[0].onclick = () => { area.hidden=true;area.style.display='none';resolve(true); };
+      buttons[1].onclick = () => { area.hidden=true;area.style.display='none';resolve(false); };
+      area.scrollIntoView({block:'nearest',behavior:'smooth'});
+    });
+  }
+
   async function loadEnhancedHistory() {
     if (busy) return;
     const box = document.getElementById('campaignHistory');
@@ -78,22 +116,19 @@
           const action = button.dataset.campaignAction || '';
           if (!id || !['hide','show','delete'].includes(action)) return;
 
-          if (action === 'delete') {
-            if (!confirm('Permanently delete this campaign from the history? This cannot be undone.')) return;
-          } else {
-            const verb = action === 'hide' ? 'hide' : 'restore';
-            if (!confirm(`${verb === 'hide' ? 'Hide' : 'Restore'} this campaign in the dashboard history?`)) return;
-          }
+          const verb = action === 'hide' ? 'Hide' : action === 'show' ? 'Restore' : 'Delete permanently';
+          const approved = await requestConfirmation(verb + ' this campaign?' + (action === 'delete' ? ' This cannot be undone.' : ''));
+          if (!approved) return;
 
           button.disabled = true;
           const old = button.textContent;
           button.textContent = action === 'hide' ? 'Hiding...' : action === 'show' ? 'Restoring...' : 'Deleting...';
           try {
             await invokeCampaigns({ action, id });
-            await loadEnhancedHistory();
+            setTimeout(() => loadEnhancedHistory(), 0);
           } catch (error) {
             console.error(error);
-            alert(error?.message || `Unable to ${action} this campaign.`);
+            setCampaignError(error?.message || `Unable to ${action} this campaign.`);
             button.disabled = false;
             button.textContent = old;
           }
