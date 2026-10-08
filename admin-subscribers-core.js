@@ -545,7 +545,11 @@
       } else if (sent > 0) {
         setStatus($('newsletterSendStatus'), `Sent to ${sent}. ${failed} could not be delivered.`, 'error');
       } else {
-        setStatus($('newsletterSendStatus'), data.error || 'The message could not be sent.', 'error');
+        const firstFailure = Array.isArray(data.failed) ? data.failed[0]?.error : '';
+        const blocked = /unrecognised IP address|unauthorized IP|unrecognized IP/i.test(firstFailure || '');
+        setStatus($('newsletterSendStatus'),
+          blocked ? 'Brevo blocked the server IP. Open Brevo → Security → Authorized IPs and review API key IP blocking. No emails were sent.' :
+          (firstFailure || data.error || 'The message could not be sent.'), 'error');
       }
       await loadCampaignHistory();
     } catch (error) {
