@@ -145,7 +145,12 @@
         <button class="adminBtn primaryBtn" id="sendAllNewsletter" type="button">Send to All Subscribers</button>
       </div>
 
-      <p class="status" id="newsletterSendStatus"></p>
+      <div id="newsletterSendApproval" hidden style="display:none;border:1px solid #e8b25d;border-radius:16px;padding:16px;margin-top:12px">
+        <p id="newsletterApprovalText" style="margin:0 0 12px;font-weight:700"></p>
+        <button class="adminBtn primaryBtn" id="newsletterApproveYes" type="button">Confirm Send</button>
+        <button class="adminBtn" id="newsletterApproveNo" type="button">Cancel</button>
+      </div>
+      <p class="status" id="newsletterSendStatus" role="status" aria-live="polite"></p>
 
       <div class="newsletterPreview" id="newsletterPreviewBox">
         <div class="previewShell">
@@ -491,7 +496,26 @@
     }
 
     const subject = $('newsletterSubject').value.trim();
-    if (!confirm(`Send “${subject}” to ${targetCount} subscriber${targetCount === 1 ? '' : 's'}?`)) return;
+    // In-app browsers may suppress window.confirm; use an explicit inline confirmation.
+    const approval = $('newsletterSendApproval');
+    if (!approval) {
+      setStatus($('newsletterSendStatus'), 'Confirmation panel unavailable. Reload and try again.', 'error');
+      return;
+    }
+    approval.hidden = false;
+    approval.style.display = 'block';
+    $('newsletterApprovalText').textContent = 'Send “' + subject + '” to ' + targetCount + ' subscriber' + (targetCount === 1 ? '' : 's') + '?';
+    $('newsletterSendStatus').textContent = 'Please confirm your recipients below.';
+    const approved = await new Promise(resolve => {
+      $('newsletterApproveYes').onclick = () => resolve(true);
+      $('newsletterApproveNo').onclick = () => resolve(false);
+    });
+    approval.hidden = true;
+    approval.style.display = 'none';
+    if (!approved) {
+      setStatus($('newsletterSendStatus'), 'Sending cancelled. Your draft is saved.', 'error');
+      return;
+    }
 
     state.sending = true;
     const selectedButton = mode === 'all' ? $('sendAllNewsletter') : $('sendSelectedNewsletter');
