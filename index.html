@@ -3349,7 +3349,7 @@ textarea.field{
           </strong>
 
           <p style="color:var(--muted)">
-            Choose media from your iPhone, paste a link above,
+            Choose one photo or video, or two short videos together from your iPhone, paste a link above,
             or record with your camera and microphone.
           </p>
 
@@ -3357,7 +3357,10 @@ textarea.field{
             id="galleryImageFile"
             type="file"
             accept="image/*,video/*"
+            multiple
           >
+
+          <p id="gallerySelectedFiles" style="color:var(--muted)" aria-live="polite"></p>
 
           <img
             id="galleryPreview"
@@ -4777,6 +4780,9 @@ function renderPublicGallery(){
         /\.(mp4|webm|mov|m4v)(\?|#|$)/i
           .test(mediaUrl);
 
+      const secondVideoUrl = item.second_video_url || "";
+      const secondDirectVideo = /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(secondVideoUrl);
+
       card.innerHTML = `
 
         <div class="galleryImage">
@@ -4784,7 +4790,7 @@ function renderPublicGallery(){
           ${
             type === "videos"
               ? directVideo
-                ? `<video src="${esc(mediaUrl)}" controls playsinline preload="metadata"></video>`
+                ? `<video src="${esc(mediaUrl)}" controls playsinline preload="metadata"></video>${secondDirectVideo ? `<video src="${esc(secondVideoUrl)}" controls playsinline preload="metadata" style="margin-top:12px"></video>` : ""}`
                 : `<a class="btn" href="${esc(safeUrl(mediaUrl))}" target="_blank" rel="noopener noreferrer">Play video</a>`
               : `<img src="${esc(mediaUrl)}" alt="${esc(altText)}" loading="lazy">`
           }
@@ -5760,8 +5766,19 @@ const galleryVideoPreview =
 galleryImageFile.addEventListener(
   "change",
   () => {
-    const file = galleryImageFile.files?.[0];
+    const files = Array.from(galleryImageFile.files || []);
+    const file = files[0];
     recordedGalleryFile = null;
+    const selectedFiles = document.getElementById("gallerySelectedFiles");
+    if(selectedFiles){
+      selectedFiles.textContent = files.length > 1
+        ? files.length + " selected videos: " + files.map(f => f.name).join(", ")
+        : "";
+    }
+    if(files.length > 2 || (files.length === 2 && files.some(f => !f.type.startsWith("video/")))){
+      setStatus(galleryAdminStatus, "Choose one media file, or exactly two videos.", "error");
+      return;
+    }
 
     if(!file){
       return;
@@ -6830,10 +6847,19 @@ async () => {
       galleryImage.value.trim();
 
 
-    const file =
-      galleryImageFile.files?.[0] ||
-      recordedGalleryFile;
+    const selectedFiles = Array.from(galleryImageFile.files || []);
+    if(selectedFiles.length > 2 ||
+       (selectedFiles.length === 2 && selectedFiles.some(f => !f.type.startsWith("video/")))){
+      throw new Error("Choose one photo/video, or exactly two videos.");
+    }
 
+    const file = selectedFiles[0] || recordedGalleryFile;
+    let secondVideoUrl = "";
+    if(editId){
+      const existing = await s.from("gallery").select("second_video_url").eq("id",editId).single();
+      if(existing.error) throw existing.error;
+      secondVideoUrl = existing.data?.second_video_url || "";
+    }
 
     if(file){
 
@@ -6848,6 +6874,13 @@ async () => {
           file,
           "gallery"
         );
+
+      if(selectedFiles.length === 2){
+        setStatus(status, "Uploading second video...");
+        secondVideoUrl = await uploadImage(selectedFiles[1], "gallery");
+      } else if(selectedFiles.length === 1) {
+        secondVideoUrl = "";
+      }
 
     }
 
@@ -6893,6 +6926,9 @@ async () => {
 
       image_url:
         imageUrl,
+
+      second_video_url:
+        secondVideoUrl,
 
       active:
         galleryActive.checked
@@ -6986,6 +7022,8 @@ function resetGalleryForm(){
 
 
   galleryImageFile.value = "";
+  const selectedFiles = document.getElementById("gallerySelectedFiles");
+  if(selectedFiles) selectedFiles.textContent = "";
   recordedGalleryFile = null;
 
   galleryActive.checked =
@@ -7061,6 +7099,10 @@ async id => {
 
   galleryImage.value =
     data.image_url || "";
+  const selectedFiles = document.getElementById("gallerySelectedFiles");
+  if(selectedFiles) selectedFiles.textContent = data.second_video_url
+    ? "This post currently contains two videos. Selecting new files will replace its media."
+    : "";
 
   galleryActive.checked =
     data.active !== false;
