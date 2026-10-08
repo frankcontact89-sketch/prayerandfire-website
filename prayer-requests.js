@@ -18,26 +18,34 @@ const tabs=document.querySelector('.adminTabs'),parent=document.querySelector('#
 if(!tabs||!parent)return;
 const btn=document.createElement('button');btn.type='button';btn.dataset.tab='prayerRequestsAdmin';btn.textContent='Prayer Requests';tabs.appendChild(btn);
 const section=document.createElement('section');section.className='adminSection';section.dataset.adminSection='prayerRequestsAdmin';
-section.innerHTML='<h3>Prayer Requests / Inbox</h3><p>Requests sent through the website. Direct emails remain in Gmail.</p><button type="button" class="adminBtn" id="refreshPrayerInbox">Refresh Inbox</button><p class="status" id="prayerInboxStatus"></p><div id="prayerInboxList"></div>';
+section.innerHTML='<h3>Prayer Requests / Inbox</h3><p>Requests sent through the website. Direct emails remain in Gmail.</p><button type="button" class="adminBtn" id="refreshPrayerInbox">Refresh Inbox</button> <button type="button" class="adminBtn" id="toggleArchivedPrayers">View Archived</button><p class="status" id="prayerInboxStatus"></p><div id="prayerInboxList"></div>';
 const sections=parent.querySelector('.adminSection');sections?.parentNode.appendChild(section);
 const box=section.querySelector('#prayerInboxList'),info=section.querySelector('#prayerInboxStatus');
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let showArchived=false;
 async function refresh(){
  info.textContent='Loading...';
  try{const client=await getSb();const {data:{user}}=await client.auth.getUser();if(!user)throw Error('Admin sign-in required');
- const {data,error}=await client.from('prayer_requests').select('id,name,email,country,message,status,created_at').order('created_at',{ascending:false}).limit(200);if(error)throw error;
- box.replaceChildren();for(const item of data||[]){
+ const {data,error}=await client.from('prayer_requests').select('id,name,email,country,message,status,created_at,archived_at').order('created_at',{ascending:false}).limit(200);if(error)throw error;
+ box.replaceChildren();const visible=(data||[]).filter(item=>showArchived?Boolean(item.archived_at):!item.archived_at);for(const item of visible){
  const row=document.createElement('div');row.className='adminRow';row.style.cssText='display:block;padding:16px;margin:12px 0;overflow-wrap:anywhere';
  const a=document.createElement('a');a.className='adminBtn';a.textContent='Reply by email: '+item.email;a.href='mailto:'+encodeURIComponent(item.email)+'?subject='+encodeURIComponent('Re: Prayer Request - Prayer & Fire');a.style.display='inline-block';
  row.innerHTML='<strong>'+esc(item.name)+'</strong> · '+esc(new Date(item.created_at).toLocaleString())+'<p>'+esc(item.country)+'</p><p style="white-space:pre-wrap">'+esc(item.message)+'</p>';
  row.appendChild(a);const label=document.createElement('label');label.textContent=' Status: ';const select=document.createElement('select');select.className='field';
  for(const [value,name] of [['new','New'],['in_progress','In progress'],['answered','Answered']]){const o=document.createElement('option');o.value=value;o.textContent=name;select.appendChild(o)}
  select.value=item.status;select.addEventListener('change',async()=>{const {error}=await client.from('prayer_requests').update({status:select.value}).eq('id',item.id);if(error){select.value=item.status;info.textContent=error.message}else{item.status=select.value;info.textContent='Status saved.'}});
- label.appendChild(select);row.appendChild(label);box.appendChild(row)
+ label.appendChild(select);row.appendChild(label);
+ const controls=document.createElement('div');controls.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin-top:12px';
+ const archive=document.createElement('button');archive.type='button';archive.className='adminBtn';archive.textContent=item.archived_at?'Restore':'Archive';
+ archive.addEventListener('click',async()=>{archive.disabled=true;const {error}=await client.from('prayer_requests').update({archived_at:item.archived_at?null:new Date().toISOString()}).eq('id',item.id);if(error){archive.disabled=false;info.textContent='Unable to update: '+error.message}else await refresh()});
+ const remove=document.createElement('button');remove.type='button';remove.className='adminBtn danger';remove.textContent='Delete permanently';
+ remove.addEventListener('click',async()=>{if(!window.confirm('Permanently delete this prayer request? This cannot be undone.'))return;remove.disabled=true;const {error}=await client.from('prayer_requests').delete().eq('id',item.id);if(error){remove.disabled=false;info.textContent='Unable to delete: '+error.message}else await refresh()});
+ controls.append(archive,remove);row.appendChild(controls);box.appendChild(row)
  }
- info.textContent=(data||[]).length+' request(s)';
+ info.textContent=visible.length+(showArchived?' archived request(s)':' active request(s)');
  }catch(e){info.textContent='Unable to load inbox: '+e.message}
 }
 btn.addEventListener('click',()=>{tabs.querySelectorAll('button').forEach(t=>t.classList.remove('active'));btn.classList.add('active');parent.querySelectorAll('.adminSection').forEach(s=>s.classList.toggle('active',s===section));refresh()});
 section.querySelector('#refreshPrayerInbox').addEventListener('click',refresh);
+section.querySelector('#toggleArchivedPrayers').addEventListener('click',e=>{showArchived=!showArchived;e.currentTarget.textContent=showArchived?'View Active':'View Archived';refresh()});
 })();
