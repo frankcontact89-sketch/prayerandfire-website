@@ -23,6 +23,26 @@ const sections=parent.querySelector('.adminSection');sections?.parentNode.append
 const box=section.querySelector('#prayerInboxList'),info=section.querySelector('#prayerInboxStatus');
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let showArchived=false;
+function confirmPermanentDeletion(name){
+ return new Promise(resolve=>{
+  const overlay=document.createElement('div');
+  overlay.setAttribute('role','presentation');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.76);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:20px';
+  const dialog=document.createElement('div');
+  dialog.setAttribute('role','alertdialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby','confirmDeletePrayerTitle');
+  dialog.style.cssText='background:#18191c;color:#fff;border:1px solid #666;border-radius:16px;padding:24px;width:min(100%,420px);box-shadow:0 16px 45px #0008';
+  dialog.innerHTML='<h3 id="confirmDeletePrayerTitle" style="margin-top:0">Delete prayer request?</h3><p>This permanently deletes the request and cannot be undone.</p>';
+  const buttons=document.createElement('div');buttons.style.cssText='display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px';
+  const cancel=document.createElement('button');cancel.type='button';cancel.className='adminBtn';cancel.textContent='Cancel';
+  const yes=document.createElement('button');yes.type='button';yes.className='adminBtn danger';yes.textContent='Delete permanently';
+  function finish(answer){document.removeEventListener('keydown',onKey);overlay.remove();resolve(answer)}
+  function onKey(e){if(e.key==='Escape')finish(false)}
+  cancel.addEventListener('click',()=>finish(false));yes.addEventListener('click',()=>finish(true));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)finish(false)});
+  buttons.append(cancel,yes);dialog.appendChild(buttons);overlay.appendChild(dialog);document.body.appendChild(overlay);
+  document.addEventListener('keydown',onKey);cancel.focus();
+ });
+}
 async function refresh(){
  info.textContent='Loading...';
  try{const client=await getSb();const {data:{user}}=await client.auth.getUser();if(!user)throw Error('Admin sign-in required');
@@ -39,7 +59,17 @@ async function refresh(){
  const archive=document.createElement('button');archive.type='button';archive.className='adminBtn';archive.textContent=item.archived_at?'Restore':'Archive';
  archive.addEventListener('click',async()=>{archive.disabled=true;const {error}=await client.from('prayer_requests').update({archived_at:item.archived_at?null:new Date().toISOString()}).eq('id',item.id);if(error){archive.disabled=false;info.textContent='Unable to update: '+error.message}else await refresh()});
  const remove=document.createElement('button');remove.type='button';remove.className='adminBtn danger';remove.textContent='Delete permanently';
- remove.addEventListener('click',async()=>{if(!window.confirm('Permanently delete this prayer request? This cannot be undone.'))return;remove.disabled=true;const {error}=await client.from('prayer_requests').delete().eq('id',item.id);if(error){remove.disabled=false;info.textContent='Unable to delete: '+error.message}else await refresh()});
+ remove.addEventListener('click',async()=>{
+ if(!await confirmPermanentDeletion(item.name))return;
+ remove.disabled=true;remove.textContent='Deleting...';info.textContent='Deleting request...';
+ try{
+  const {data:deleted,error}=await client.from('prayer_requests').delete().eq('id',item.id).select('id');
+  if(error)throw error;
+  if(!deleted?.some(record=>record.id===item.id))throw Error('The server did not delete this request. Check administrator permissions.');
+  await refresh();
+ }catch(error){info.textContent='Unable to delete: '+error.message}
+ finally{remove.disabled=false;remove.textContent='Delete permanently'}
+});
  controls.append(archive,remove);row.appendChild(controls);box.appendChild(row)
  }
  info.textContent=visible.length+(showArchived?' archived request(s)':' active request(s)');
