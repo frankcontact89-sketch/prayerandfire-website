@@ -1,7 +1,9 @@
 (()=>{
 'use strict';
 const q=id=>document.getElementById(id);
-const DAY_LABELS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const labels={pt:{days:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],title:'ATIVIDADE SEMANAL',heading:'Sua semana de estudos',streak:n=>n===1?'1 dia seguido':n+' dias seguidos',active:n=>n===1?'1 dia ativo esta semana':n+' dias ativos esta semana',progress:'Progresso do curso: ',copy:n=>n?'Você estudou em '+n+' '+(n===1?'dia':'dias')+' nesta semana.':'Sua atividade de estudo aparecerá aqui conforme você acessar a Academy.',done:'estudou',inactive:'sem atividade',today:'hoje'},en:{days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],title:'WEEKLY ACTIVITY',heading:'Your study week',streak:n=>n===1?'1 day streak':n+' day streak',active:n=>n===1?'1 active day this week':n+' active days this week',progress:'Course progress: ',copy:n=>n?'You studied on '+n+' '+(n===1?'day':'days')+' this week.':'Your study activity will appear here as you use the Academy.',done:'studied',inactive:'no activity',today:'today'},es:{days:['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],title:'ACTIVIDAD SEMANAL',heading:'Tu semana de estudio',streak:n=>n===1?'1 día seguido':n+' días seguidos',active:n=>n===1?'1 día activo esta semana':n+' días activos esta semana',progress:'Progreso del curso: ',copy:n=>n?'Estudiaste '+n+' '+(n===1?'día':'días')+' esta semana.':'Tu actividad aparecerá aquí cuando estudies en la Academia.',done:'estudió',inactive:'sin actividad',today:'hoy'}};
+let latestRows=[];
+const locale=()=>labels[document.documentElement.lang]||labels.pt;
 
 function localDateString(d=new Date()){
   const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
@@ -55,6 +57,9 @@ function calculateStreak(rows){
 
 function render(rows){
   const card=ensureCard();if(!card)return;
+  latestRows=rows||[];const tr=locale();
+  const heading=card.querySelector('.abba-weekly-head .eyebrow');if(heading)heading.textContent=tr.title;
+  const title=card.querySelector('.abba-weekly-head h2');if(title)title.textContent=tr.heading;
   const active=new Set((rows||[]).map(r=>String(r.activity_date)));
   const today=localDateString();
   const monday=startOfWeek();
@@ -65,16 +70,16 @@ function render(rows){
     if(didStudy)weekCount++;
     const cell=document.createElement('div');
     cell.className='abba-day'+(didStudy?' active':'')+(isToday?' today':'');
-    cell.setAttribute('aria-label',`${DAY_LABELS[i]}: ${didStudy?'estudou':'sem atividade'}${isToday?', hoje':''}`);
-    cell.innerHTML=`<span class="abba-day-mark">${didStudy?'✓':DAY_LABELS[i].slice(0,2)}</span><small>${DAY_LABELS[i]}</small>`;
+    cell.setAttribute('aria-label',`${tr.days[i]}: ${didStudy?tr.done:tr.inactive}${isToday?', '+tr.today:''}`);
+    cell.innerHTML=`<span class="abba-day-mark">${didStudy?'✓':tr.days[i].slice(0,2)}</span><small>${tr.days[i]}</small>`;
     host.appendChild(cell);
   }
   const streak=calculateStreak(rows);
-  q('abbaStreak').textContent=streak===1?'1 dia seguido':`${streak} dias seguidos`;
-  q('abbaActiveCount').textContent=weekCount===1?'1 dia ativo esta semana':`${weekCount} dias ativos esta semana`;
+  q('abbaStreak').textContent=tr.streak(streak);
+  q('abbaActiveCount').textContent=tr.active(weekCount);
   const progress=q('progressLabel')?.textContent?.trim();
-  q('abbaCourseProgress').textContent=progress?`Progresso do curso: ${progress}`:'';
-  q('abbaWeeklyCopy').textContent=weekCount?`Você estudou em ${weekCount} ${weekCount===1?'dia':'dias'} nesta semana.`:'Sua atividade de estudo aparecerá aqui conforme você acessar a Academy.';
+  q('abbaCourseProgress').textContent=progress?tr.progress+progress:'';
+  q('abbaWeeklyCopy').textContent=tr.copy(weekCount);
 }
 
 async function refresh(){
@@ -93,6 +98,7 @@ function wireStudySignals(){
 
 setTimeout(()=>{ensureCard();wireStudySignals();refresh()},900);
 setTimeout(refresh,2200);
+new MutationObserver(()=>{if(q('abbaWeeklyActivity'))render(latestRows)}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh()});
 })();
 
