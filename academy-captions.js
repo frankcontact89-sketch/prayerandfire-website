@@ -1,7 +1,7 @@
 (()=>{
 const el=id=>document.getElementById(id);
 const languages=['pt','en'];
-let selected=languages.includes(localStorage.getItem('abba_caption_lang'))?localStorage.getItem('abba_caption_lang'):'pt';
+let selected=['en','pt'].includes(localStorage.getItem('abba_lang'))?localStorage.getItem('abba_lang'):'pt';
 let lessonId=null;
 const css=document.createElement('style');
 css.textContent='.caption-language-bar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:16px 0 12px;padding:12px 14px;border:1px solid #d9e1eb;border-radius:12px;background:#f8fbff}.caption-language-bar label{font-weight:700;color:#24334d;font-size:14px}.caption-language-bar select{margin-left:auto;max-width:100%;border:1px solid #b9cce4;border-radius:9px;background:white;padding:9px 12px;font:inherit;color:#203650}.caption-language-bar #captionStatus{width:100%;font-size:13px;color:#52617a}@media(max-width:440px){.caption-language-bar select{margin-left:0;width:100%}}';
@@ -13,7 +13,7 @@ function matching(track,lang){
 function setStatus(message){const node=el('captionStatus');if(node)node.textContent=message}
 function applyTracks(){
  const player=el('muxPlayer');
- if(!player||!window.currentLesson&&!currentLesson)return;
+ if(!player||typeof currentLesson==='undefined'||!currentLesson)return;
  let found=false;
  try{
   const tracks=player.textTracks;if(!tracks)return;
@@ -62,6 +62,8 @@ function select(lang){selected=languages.includes(lang)?lang:'pt';const selector
 const selector=el('captionLanguageSelect');
 if(selector){selector.value=selected;selector.addEventListener('change',event=>select(event.target.value))}
 window.abbaSetCaptionLanguage=select;
+function syncAcademyLanguage(){const lang=document.documentElement.lang==='en'?'en':'pt';if(selected!==lang){selected=lang;if(selector)selector.value=lang;localStorage.setItem('abba_caption_lang',lang);refresh();}}
+new MutationObserver(syncAcademyLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});syncAcademyLanguage();
 const player=el('muxPlayer');
 if(player){['loadedmetadata','canplay','emptied'].forEach(evt=>player.addEventListener(evt,()=>setTimeout(applyTracks,50)));try{player.textTracks?.addEventListener('addtrack',()=>setTimeout(applyTracks,100))}catch{}}
 if(typeof renderLessonResources==='function'){
@@ -69,5 +71,5 @@ if(typeof renderLessonResources==='function'){
  renderLessonResources=function(lesson){original(lesson);if(lesson&&selected==='en')updateTranscript()};
 }
 setInterval(()=>{const lesson=typeof currentLesson!=='undefined'?currentLesson:null;if(!lesson||el('lessonView')?.classList.contains('hidden'))return;if(lesson.id!==lessonId){lessonId=lesson.id;setStatus('');setTimeout(refresh,250)}applyTracks()},1400);
-try{db.auth.getSession().then(async({data:{session}})=>{if(!session)return;const {data}=await db.from('abba_student_settings').select('preferred_caption_language').eq('user_id',session.user.id).maybeSingle();if(data&&languages.includes(data.preferred_caption_language)){selected=data.preferred_caption_language;localStorage.setItem('abba_caption_lang',selected);if(selector)selector.value=selected;refresh()}}).catch(()=>{})}catch{}
+// The Academy language is authoritative; do not restore stale caption preferences.
 })();
