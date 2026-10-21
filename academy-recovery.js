@@ -3,10 +3,9 @@ const q=id=>document.getElementById(id);
 let settingsLessonRows=[];
 
 function forcePortuguese(){
-  try{currentLang='pt'}catch{}
-  localStorage.setItem('abba_lang','pt');
-  localStorage.setItem('abba_caption_lang','pt');
-  document.documentElement.lang='pt';
+  // Respect the user's selected language; never override it during recovery.
+  const lang=localStorage.getItem('abba_lang')||'pt';
+  if(typeof applyLanguage==='function')applyLanguage(lang);
 }
 
 function ensureSettingsStyles(){
@@ -110,7 +109,9 @@ async function renderMyNotes(){
 
 function ensureSettingsExtras(){
   const sheet=document.querySelector('#settingsPanel .settings-sheet');
-  if(!sheet||q('abbaLessonSection'))return;
+  // The standard Settings already contains the lesson library and notes.
+  // Do not insert duplicate Portuguese-only sections.
+  return;
   ensureSettingsStyles();
   const signout=q('settingsSignOutBtn');
 
