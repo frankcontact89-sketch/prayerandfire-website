@@ -4,6 +4,9 @@ const q=id=>document.getElementById(id);
 let lessonMap=new Map();
 let totalLessons=48;
 let loading=false;
+const dict={pt:{lesson:'Aula',available:'Disponível',locked:'Bloqueada',notes:'Notas da Aula',notesCount:n=>n===1?'aula com notas':'aulas com notas',empty:tr().empty,done:(n,t)=>`${n} de ${t} aulas`,status:n=>n===1?'1 aula disponível':`${n} aulas disponíveis`,loading:tr().loading,fail:tr().fail,journey:'do curso concluído'},en:{lesson:'Lesson',available:'Available',locked:'Locked',notes:'Lesson notes',notesCount:n=>n===1?'lesson with notes':'lessons with notes',empty:'You have not saved any notes yet.',done:(n,t)=>`${n} of ${t} lessons`,status:n=>n===1?'1 lesson available':`${n} lessons available`,loading:'Loading…',fail:'Unable to load your notes right now.',journey:'of course completed'},es:{lesson:'Clase',available:'Disponible',locked:'Bloqueada',notes:'Notas de la clase',notesCount:n=>n===1?'clase con notas':'clases con notas',empty:'Todavía no has guardado notas.',done:(n,t)=>`${n} de ${t} clases`,status:n=>n===1?'1 clase disponible':`${n} clases disponibles`,loading:'Cargando…',fail:'No se pudieron cargar tus notas.',journey:'del curso completado'}};
+const tr=()=>dict[document.documentElement.lang]||dict.pt;
+let lastData=null;
 
 async function session(){
   try{return (await db.auth.getSession()).data.session||null}catch{return null}
@@ -29,8 +32,8 @@ function renderLessons(rows){
     if(available)row.type='button';
     const num=document.createElement('span');num.className='lesson-index';num.textContent=String(n).padStart(2,'0');
     const info=document.createElement('span');info.className='lesson-simple';
-    const strong=document.createElement('strong');strong.textContent=`Aula ${n}`;
-    const small=document.createElement('small');small.textContent=available?'Disponível':'Bloqueada';
+    const strong=document.createElement('strong');strong.textContent=`${tr().lesson} ${n}`;
+    const small=document.createElement('small');small.textContent=available?tr().available:tr().locked;
     info.append(strong,small);
     const state=document.createElement('span');state.className='lesson-state';state.setAttribute('aria-hidden','true');state.textContent=available?'›':'🔒';
     row.append(num,info,state);
@@ -48,15 +51,15 @@ function renderNotes(notes,lessonRows){
   const byId=new Map((lessonRows||[]).map(l=>[l.id,Number(l.lesson_number)]));
   const clean=(notes||[]).filter(n=>String(n.note_text||'').trim()).map(n=>({...n,lesson_number:byId.get(n.lesson_id)})).filter(n=>Number.isFinite(n.lesson_number));
   clean.sort((a,b)=>a.lesson_number-b.lesson_number);
-  setText('settingsNotesCount',`${clean.length} ${clean.length===1?'aula com notas':'aulas com notas'}`);
+  setText('settingsNotesCount',`${clean.length} ${tr().notesCount(clean.length)}`);
   if(!clean.length){
     const empty=document.createElement('div');empty.className='empty-notes';empty.textContent='Você ainda não salvou notas.';host.appendChild(empty);return;
   }
   clean.forEach(note=>{
     const card=document.createElement('button');card.type='button';card.className='saved-note-card';
     const head=document.createElement('div');head.className='saved-note-head';
-    const title=document.createElement('strong');title.textContent=`Notas da Aula ${note.lesson_number}`;
-    const badge=document.createElement('span');badge.textContent=`Aula ${note.lesson_number}`;
+    const title=document.createElement('strong');title.textContent=`${tr().notes} ${note.lesson_number}`;
+    const badge=document.createElement('span');badge.textContent=`${tr().lesson} ${note.lesson_number}`;
     head.append(title,badge);
     const p=document.createElement('p');p.textContent=String(note.note_text||'').trim();
     card.append(head,p);
@@ -75,7 +78,7 @@ function renderProgress(rows){
   const completed=(rows||[]).filter(r=>r.completed).length;
   const watched=(rows||[]).reduce((sum,r)=>sum+Math.max(0,Number(r.watched_seconds)||0),0);
   const pct=totalLessons?Math.round(completed/totalLessons*100):0;
-  setText('journeyPercent',`${pct}%`);setText('journeyDone',`${completed} de ${totalLessons} aulas`);setText('journeyTime',formatTime(watched));
+  setText('journeyPercent',`${pct}%`);setText('journeyDone',tr().done(completed,totalLessons));setText('journeyTime',formatTime(watched));
   const bar=q('journeyBar');if(bar)bar.style.width=`${pct}%`;
 }
 
@@ -99,8 +102,9 @@ async function refresh(){
     renderLessons(lessonRows);
     renderProgress(progressRes.error?[]:(progressRes.data||[]));
     renderNotes(noteRes.error?[]:(noteRes.data||[]),lessonRows);
+    lastData={lessons:lessonRows,progress:progressRes.error?[]:(progressRes.data||[]),notes:noteRes.error?[]:(noteRes.data||[])};
     const available=lessonRows.filter(l=>l.is_published&&l.mux_playback_id).length;
-    setText('settingsLessonStatus',`${available} ${available===1?'aula disponível':'aulas disponíveis'}`);
+    setText('settingsLessonStatus',tr().status(available));
   }catch(err){
     console.error('ABBA settings',err);
     setText('settingsLessonStatus','');
@@ -109,6 +113,7 @@ async function refresh(){
   }finally{loading=false;}
 }
 
+new MutationObserver(()=>{if(!lastData)return;renderLessons(lastData.lessons);renderProgress(lastData.progress);renderNotes(lastData.notes,lastData.lessons);const count=lastData.lessons.filter(l=>l.is_published&&l.mux_playback_id).length;setText('settingsLessonStatus',tr().status(count));const suffix=q('journeyPercent')?.closest('.journey-card')?.querySelector('small');if(suffix)suffix.textContent=tr().journey;}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 q('settingsBtn')?.addEventListener('click',()=>setTimeout(refresh,30));
 q('saveNoteBtn')?.addEventListener('click',()=>setTimeout(refresh,500));
 setTimeout(()=>{if(!q('portalView')?.classList.contains('hidden'))refresh()},1200);
