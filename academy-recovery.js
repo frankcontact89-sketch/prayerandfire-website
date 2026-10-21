@@ -157,23 +157,8 @@ function wireSettings(){
 }
 
 function forcePortuguesePlayerCaption(){
-  const player=q('muxPlayer');
-  if(!player)return;
-  try{
-    player.setAttribute('default-show-captions','');
-    const tracks=player.textTracks;
-    if(!tracks)return;
-    let firstCaption=null;
-    for(let i=0;i<tracks.length;i++){
-      const tr=tracks[i];
-      if(tr.kind==='subtitles'||tr.kind==='captions'){
-        if(!firstCaption)firstCaption=tr;
-        const code=String(tr.language||tr.srclang||'').toLowerCase();
-        tr.mode=(code==='pt'||code.startsWith('pt-'))?'showing':'disabled';
-      }
-    }
-    if(firstCaption&&![...tracks].some?.(t=>(String(t.language||'').toLowerCase().startsWith('pt')&&t.mode==='showing')))firstCaption.mode='showing';
-  }catch{}
+  // Caption track selection is owned by academy-captions.js.
+  // Do not override the selected Academy language.
 }
 
 async function recoverPortal(){
