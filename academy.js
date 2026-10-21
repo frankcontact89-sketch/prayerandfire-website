@@ -18,7 +18,7 @@ async function loadLanguagePreference(){if(!currentUser){applyLanguage(currentLa
 async function saveLanguagePreference(lang){applyLanguage(lang);if(!currentUser)return;await db.from('abba_student_settings').upsert({user_id:currentUser.id,preferred_language:currentLang,updated_at:new Date().toISOString()},{onConflict:'user_id'})}
 function progressFor(id){return progressRows.find(x=>x.lesson_id===id)}
 function pct(){if(!lessons.length)return 0;return Math.round(progressRows.filter(x=>x.completed).length/(Number(currentCourse?.total_lessons)||40)*100)}
-function renderProgress(){const done=progressRows.filter(x=>x.completed).length,p=pct();$('progressLabel').textContent=p+'%';$('progressCount').textContent=currentLang==='en'?`${done} of ${currentCourse?.total_lessons||40} complete`:currentLang==='es'?`${done} de ${lessons.length||currentCourse?.total_lessons||40} completadas`:`${done} de ${lessons.length||currentCourse?.total_lessons||40} concluídas`;$('progressBar').style.width=p+'%'}
+function renderProgress(){const done=progressRows.filter(x=>x.completed).length,p=pct();$('progressLabel').textContent=p+'%';$('progressCount').textContent=currentLang==='en'?`${done} of ${currentCourse?.total_lessons||40} complete`:currentLang==='es'?`${done} de ${currentCourse?.total_lessons||40} completadas`:`${done} de ${currentCourse?.total_lessons||40} concluídas`;$('progressBar').style.width=p+'%'}
 function moduleNumber(lesson){return Math.ceil(lesson.lesson_number/4)}
 function getNextLesson(){return lessons.find(l=>!progressFor(l.id)?.completed)||null}
 function getResumeLesson(){const inProgress=lessons.find(l=>{const p=progressFor(l.id);return p&&!p.completed&&(p.last_position_seconds||0)>15});return inProgress||getNextLesson()}
