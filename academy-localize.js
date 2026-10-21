@@ -7,8 +7,8 @@ const dictionaries={
  pt:{'settingsProgress .settings-kicker':'MINHA JORNADA','settingsLessons .settings-kicker':'AULAS','settingsNotes .settings-kicker':'MINHAS NOTAS','settingsLessons .settings-section-line strong':'Biblioteca de aulas','settingsLessons .section-copy':'As aulas publicadas ficam disponíveis. As demais permanecem bloqueadas.','settingsNotes .settings-section-line strong':'Notas por aula','settingsNotes .section-copy':'Suas anotações aparecem na aula correta.','captionLanguageBar label':'Legendas','academyInterfaceLanguage #preferredLanguageLabel':'Idioma da academia','academyInterfaceLanguage #languageHelp':'Seu idioma escolhido será salvo para a próxima visita.'}
 };
 const sel=document.getElementById('languageSelect'), caption=document.getElementById('captionLanguageSelect');
-function lang(){return ['en','pt','es'].includes(document.documentElement.lang)?document.documentElement.lang:'pt'}
-function apply(){const l=lang();for(const [key,value] of Object.entries(dictionaries[l])){const ix=key.indexOf(' ');const target=document.querySelector('#'+key.slice(0,ix)+' '+key.slice(ix+1));if(target&&target.textContent!==value)target.textContent=value;}if(sel&&sel.value!==l)sel.value=l;}
+function lang(){return ['en','pt','es','hi','te','de-CH','ne'].includes(document.documentElement.lang)?document.documentElement.lang:'pt'}
+function apply(){const l=lang();for(const [key,value] of Object.entries(dictionaries[l]||dictionaries.en)){const ix=key.indexOf(' ');const target=document.querySelector('#'+key.slice(0,ix)+' '+key.slice(ix+1));if(target&&target.textContent!==value)target.textContent=value;}if(sel&&sel.value!==l)sel.value=l;}
 function syncCaption(l){if(!caption)return;const target=l==='en'?'en':'pt';if(caption.value!==target){caption.value=target;caption.dispatchEvent(new Event('change',{bubbles:true}));}}
 sel?.addEventListener('change',()=>{const l=sel.value;localStorage.setItem('abba_lang',l);syncCaption(l);queueMicrotask(apply)});
 new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
