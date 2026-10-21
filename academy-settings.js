@@ -2,7 +2,7 @@
 'use strict';
 const q=id=>document.getElementById(id);
 let lessonMap=new Map();
-let totalLessons=48;
+let totalLessons=40;
 let loading=false;
 const dict={pt:{lesson:'Aula',available:'Disponível',locked:'Bloqueada',notes:'Notas da Aula',notesCount:n=>n===1?'aula com notas':'aulas com notas',empty:'Você ainda não salvou notas.',done:(n,t)=>`${n} de ${t} aulas`,status:n=>n===1?'1 aula disponível':`${n} aulas disponíveis`,loading:'Carregando…',fail:'Não foi possível carregar suas notas agora.',journey:'do curso concluído'},en:{lesson:'Lesson',available:'Available',locked:'Locked',notes:'Lesson notes',notesCount:n=>n===1?'lesson with notes':'lessons with notes',empty:'You have not saved any notes yet.',done:(n,t)=>`${n} of ${t} lessons`,status:n=>n===1?'1 lesson available':`${n} lessons available`,loading:'Loading…',fail:'Unable to load your notes right now.',journey:'of course completed'},es:{lesson:'Clase',available:'Disponible',locked:'Bloqueada',notes:'Notas de la clase',notesCount:n=>n===1?'clase con notas':'clases con notas',empty:'Todavía no has guardado notas.',done:(n,t)=>`${n} de ${t} clases`,status:n=>n===1?'1 clase disponible':`${n} clases disponibles`,loading:'Cargando…',fail:'No se pudieron cargar tus notas.',journey:'del curso completado'}};
 dict.te={lesson:'పాఠం',available:'అందుబాటులో ఉంది',locked:'లాక్ చేయబడింది',notes:'పాఠం గమనికలు',notesCount:n=>n+' పాఠాల గమనికలు',empty:'మీరు ఇంకా గమనికలు సేవ్ చేయలేదు.',done:(n,t)=>t+' పాఠాలలో '+n+' పూర్తయ్యాయి',status:n=>n+' పాఠాలు అందుబాటులో ఉన్నాయి',loading:'లోడ్ అవుతోంది…',fail:'గమనికలను లోడ్ చేయడం సాధ్యం కాలేదు.',journey:'కోర్సు పూర్తయింది'};
@@ -93,7 +93,7 @@ async function refresh(){
   try{
     const {data:course,error:courseErr}=await db.from('abba_courses').select('id,total_lessons').eq('slug','annual-program').maybeSingle();
     if(courseErr)throw courseErr;
-    totalLessons=Math.max(1,Number(course?.total_lessons)||48);
+    totalLessons=Math.min(40,Math.max(1,Number(course?.total_lessons)||40));
     const courseId=course?.id;
     if(!courseId)throw new Error('Course not found');
     const [lessonRes,progressRes,noteRes]=await Promise.all([
