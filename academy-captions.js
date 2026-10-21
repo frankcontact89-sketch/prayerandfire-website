@@ -62,7 +62,7 @@ function select(lang){selected=languages.includes(lang)?lang:'pt';const selector
 const selector=el('captionLanguageSelect');
 if(selector){selector.value=selected;selector.addEventListener('change',event=>select(event.target.value))}
 window.abbaSetCaptionLanguage=select;
-function syncAcademyLanguage(){const lang=document.documentElement.lang==='en'?'en':'pt';if(selected!==lang){selected=lang;if(selector)selector.value=lang;localStorage.setItem('abba_caption_lang',lang);refresh();}}
+function syncAcademyLanguage(){const lang=(document.documentElement.lang==='en'||localStorage.getItem('abba_lang')==='en')?'en':'pt';if(selected!==lang||selector?.value!==lang){selected=lang;if(selector)selector.value=lang;localStorage.setItem('abba_caption_lang',lang);refresh();}const status=el('captionStatus');if(status&&typeof currentLesson!=='undefined'&&currentLesson&&status.textContent.includes('português')&&lang==='en')status.textContent='English subtitles selected ✓';}
 new MutationObserver(syncAcademyLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});syncAcademyLanguage();
 const player=el('muxPlayer');
 if(player){['loadedmetadata','canplay','emptied'].forEach(evt=>player.addEventListener(evt,()=>setTimeout(applyTracks,50)));try{player.textTracks?.addEventListener('addtrack',()=>setTimeout(applyTracks,100))}catch{}}
@@ -70,6 +70,6 @@ if(typeof renderLessonResources==='function'){
  const original=renderLessonResources;
  renderLessonResources=function(lesson){original(lesson);if(lesson&&selected==='en')updateTranscript()};
 }
-setInterval(()=>{const lesson=typeof currentLesson!=='undefined'?currentLesson:null;if(!lesson||el('lessonView')?.classList.contains('hidden'))return;if(lesson.id!==lessonId){lessonId=lesson.id;setStatus('');setTimeout(refresh,250)}applyTracks()},1400);
+setInterval(()=>{const lesson=typeof currentLesson!=='undefined'?currentLesson:null;if(!lesson||el('lessonView')?.classList.contains('hidden'))return;if(lesson.id!==lessonId){lessonId=lesson.id;setStatus('');setTimeout(refresh,250)}syncAcademyLanguage();applyTracks()},1400);
 // The Academy language is authoritative; do not restore stale caption preferences.
 })();
