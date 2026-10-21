@@ -1,5 +1,5 @@
 (()=>{
-const subtitleOptions=[['pt','Português'],['en','English'],['es','Español'],['hi','हिन्दी'],['ne','नेपाली'],['ja','日本語'],['zh','中文']];
+const subtitleOptions=[['pt','Português'],['en','English']];
 let captionLang='pt',translationTimer=null,translationBusy=false;
 async function session(){try{return (await db.auth.getSession()).data.session}catch{return null}}
 function uiLang(){const l=(document.documentElement.lang||'en').toLowerCase();return ['en','pt','es'].includes(l)?l:'en'}
@@ -14,6 +14,6 @@ function restorePortuguese(){if(typeof currentLesson==='undefined'||!currentLess
 async function requestTranslation(){const s=await session();if(!s||typeof currentLesson==='undefined'||!currentLesson)return null;const r=await fetch(`${SUPABASE_URL}/functions/v1/abba-caption-translations`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${s.access_token}`,'apikey':SUPABASE_KEY},body:JSON.stringify({lesson_id:currentLesson.id,language:captionLang})});let j={};try{j=await r.json()}catch{}if(!r.ok)throw new Error(j.error||'Translation failed');return j}
 async function translateCurrentLesson(force=false){clearTimeout(translationTimer);if(typeof currentLesson==='undefined'||!currentLesson)return;if(captionLang==='pt'){restorePortuguese();return}if(translationBusy&&!force)return;translationBusy=true;saveSource();const st=document.getElementById('captionStatus');if(st)st.textContent=words().preparing;try{const j=await requestTranslation();if(j?.status==='ready'){currentLesson.transcript=j.transcript||'';currentLesson.transcript_cues=Array.isArray(j.transcript_cues)?j.transcript_cues:[];currentLesson.summary=j.summary||'';currentLesson.key_points=Array.isArray(j.key_points)?j.key_points:[];renderLessonResources(currentLesson);if(st)st.textContent=words().ready;const p=document.getElementById('muxPlayer');if(p&&currentLesson.mux_playback_id){let pos=0;try{pos=p.currentTime||0}catch{}p.setAttribute('playback-id',currentLesson.mux_playback_id);setTimeout(()=>{try{p.currentTime=pos}catch{}},700)}return}translationTimer=setTimeout(()=>translateCurrentLesson(),4500)}catch(e){console.warn(e);if(st)st.textContent=words().failed}finally{translationBusy=false}}
 const interfaceSel=document.getElementById('languageSelect');if(interfaceSel)interfaceSel.addEventListener('change',()=>setTimeout(translateSubtitleLabels,150));
-new MutationObserver(()=>{ensureSettings();translateSubtitleLabels();const lv=document.getElementById('lessonView');if(lv&&!lv.classList.contains('hidden'))translateCurrentLesson()}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','lang']});
+new MutationObserver(()=>{ensureSettings();translateSubtitleLabels();}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','lang']});
 setTimeout(ensureSettings,100);setTimeout(loadCaptionPreference,700);setTimeout(ensureSettings,2000);
 })();
