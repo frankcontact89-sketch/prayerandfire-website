@@ -37,7 +37,7 @@ function translatedCues(lesson){
 function updateTranscript(){
  const lesson=typeof currentLesson!=='undefined'?currentLesson:null;
  const host=el('transcriptContent');if(!lesson||!host)return;
- if(selected!=='en')return;
+ if(selected!=='en'||lesson.__abbaTranslatedLanguage==='en')return;
  const cues=translatedCues(lesson);
  const prose=lesson.transcript_en||lesson.english_transcript;
  if(cues){
