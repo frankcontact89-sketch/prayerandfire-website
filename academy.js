@@ -34,24 +34,66 @@ window.abbaTranscriptRow=(c,stamp,play)=>{
  const line=document.createElement('div');line.className='abba-cue-line';
  const row=document.createElement('button');row.type='button';row.className='transcript-row';
  const time=document.createElement('span');time.className='transcript-time';time.textContent=stamp;
- const span=document.createElement('span');span.className='transcript-text';span.textContent=String(c.text||'');
- row.append(time,span);row.onclick=play;
- const more=document.createElement('button');more.type='button';more.className='abba-cue-dots';more.textContent='⋯';
- more.setAttribute('aria-label',currentLang==='en'?'Transcript options':'Opções da transcrição');more.setAttribute('aria-expanded','false');
+ const content=document.createElement('span');content.className='transcript-text';content.textContent=String(c.text||'');
+ row.append(time,content);row.addEventListener('click',play);
+ const dots=document.createElement('button');dots.type='button';dots.className='abba-cue-dots';dots.textContent='⋯';
+ dots.setAttribute('aria-label',currentLang==='en'?'Transcript options':'Opções da transcrição');dots.setAttribute('aria-expanded','false');
  const menu=document.createElement('div');menu.className='abba-cue-menu';menu.hidden=true;
  const copy=document.createElement('button');copy.type='button';copy.textContent=currentLang==='en'?'Copy':'Copiar';
  const add=document.createElement('button');add.type='button';add.textContent=currentLang==='en'?'Add to Notes':'Adicionar às notas';
- menu.append(copy,add);line.append(row,more,menu);
- const close=()=>{menu.hidden=true;more.setAttribute('aria-expanded','false')};
- more.onclick=e=>{e.stopPropagation();const opening=menu.hidden;document.querySelectorAll('.abba-cue-menu').forEach(m=>m.hidden=true);document.querySelectorAll('.abba-cue-dots').forEach(b=>b.setAttribute('aria-expanded','false'));menu.hidden=!opening;more.setAttribute('aria-expanded',String(opening))};
+ menu.append(copy,add);line.append(row,dots,menu);
+ const close=()=>{menu.hidden=true;dots.setAttribute('aria-expanded','false')};
+ const msg=(en,pt)=>document.documentElement.lang==='en'?en:pt;
+ function announce(message){
+   let node=document.getElementById('abbaTranscriptActionStatus');
+   if(!node){node=document.createElement('p');node.id='abbaTranscriptActionStatus';node.setAttribute('role','status');node.className='settings-help';document.getElementById('transcriptContent')?.prepend(node)}
+   node.textContent=message;
+ }
+ dots.addEventListener('click',event=>{
+   event.preventDefault();event.stopPropagation();
+   const open=menu.hidden;
+   document.querySelectorAll('.abba-cue-menu').forEach(m=>m.hidden=true);
+   document.querySelectorAll('.abba-cue-dots').forEach(b=>b.setAttribute('aria-expanded','false'));
+   menu.hidden=!open;dots.setAttribute('aria-expanded',String(open));
+ });
  const excerpt=()=> (stamp?'['+stamp+'] ':'')+String(c.text||'').trim();
- copy.onclick=async e=>{e.stopPropagation();try{await navigator.clipboard.writeText(excerpt())}catch{const el=document.createElement('textarea');el.value=excerpt();el.style.position='fixed';el.style.left='-9999px';document.body.append(el);el.select();document.execCommand('copy');el.remove()}close()};
- add.onclick=e=>{e.stopPropagation();const editor=document.getElementById('lessonNote');if(!editor||!currentLesson)return;editor.value=[editor.value.trim(),excerpt()].filter(Boolean).join(String.fromCharCode(10,10));editor.dispatchEvent(new Event('input',{bubbles:true}));close();switchTab('notes');const status=document.getElementById('noteStatus');if(status)status.textContent=currentLang==='en'?'Added to notes. Press Save note to keep it.':'Adicionado às notas. Pressione Salvar nota para guardar.';editor.focus()};
- document.addEventListener('click',e=>{if(!line.contains(e.target))close()},{signal:window.abbaTranscriptMenuController?.signal});
+ copy.addEventListener('click',async event=>{
+   event.preventDefault();event.stopPropagation();
+   const value=excerpt();
+   // The synchronous fallback works in browsers that restrict the async Clipboard API.
+   let ok=false;
+   try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);ok=true}}catch{}
+   if(!ok){const input=document.createElement('textarea');input.value=value;input.setAttribute('readonly','');input.style.cssText='position:fixed;top:0;left:-9999px;opacity:0';document.body.append(input);input.focus();input.select();try{ok=document.execCommand('copy')}catch{}input.remove()}
+   close();announce(ok?msg('Copied to clipboard.','Copiado para a área de transferência.'):msg('Copy was blocked. Please select the text manually.','Não foi possível copiar. Selecione o texto manualmente.'));
+ });
+ add.addEventListener('click',async event=>{
+   event.preventDefault();event.stopPropagation();close();
+   if(!currentUser||!currentLesson){announce(msg('Please sign in first.','Entre na sua conta primeiro.'));return}
+   const editor=document.getElementById('lessonNote'),status=document.getElementById('noteStatus');
+   if(!editor)return;
+   const lessonId=currentLesson.id,userId=currentUser.id;
+   const previous=editor.value;
+   const newNote=[previous.trim(),excerpt()].filter(Boolean).join(String.fromCharCode(10,10));
+   editor.value=newNote;editor.dispatchEvent(new Event('input',{bubbles:true}));
+   switchTab('notes');
+   if(status)status.textContent=msg('Saving excerpt…','Salvando trecho…');
+   add.disabled=true;
+   try{
+     const {error}=await db.from('abba_lesson_notes').upsert({user_id:userId,lesson_id:lessonId,note_text:newNote,updated_at:new Date().toISOString()},{onConflict:'user_id,lesson_id'});
+     if(error)throw error;
+     if(currentLesson?.id===lessonId&&status)status.textContent=msg('Excerpt saved to your lesson notes ✓','Trecho salvo nas notas da aula ✓');
+   }catch(error){
+     console.error('ABBA transcript note save',error);
+     if(currentLesson?.id===lessonId&&status)status.textContent=msg('Could not save. Please try Save note.','Não foi possível salvar. Tente Salvar nota.');
+   }finally{add.disabled=false}
+ });
  return line;
 };
-window.abbaTranscriptMenuController?.abort();
-window.abbaTranscriptMenuController=new AbortController();
+if(!window.abbaTranscriptMenuHandlersReady){
+ window.abbaTranscriptMenuHandlersReady=true;
+ document.addEventListener('click',e=>{if(!e.target.closest('.abba-cue-line')){document.querySelectorAll('.abba-cue-menu').forEach(m=>m.hidden=true);document.querySelectorAll('.abba-cue-dots').forEach(b=>b.setAttribute('aria-expanded','false'))}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.abba-cue-menu').forEach(m=>m.hidden=true);document.querySelectorAll('.abba-cue-dots').forEach(b=>b.setAttribute('aria-expanded','false'))}});
+}
 function renderLessonResources(l){const transcriptHost=$('transcriptContent');transcriptHost.innerHTML='';const cues=Array.isArray(l.transcript_cues)?l.transcript_cues:[];if(cues.length){const wrap=document.createElement('div');wrap.className='transcript-list';cues.forEach(c=>{const line=window.abbaTranscriptRow(c,fmtCue(c.start),()=>{try{$('muxPlayer').currentTime=Number(c.start)||0;$('muxPlayer').play()}catch{};window.scrollTo({top:0,behavior:'smooth'})});wrap.appendChild(line)});transcriptHost.appendChild(wrap)}else transcriptHost.textContent=l.transcript?.trim()||t('noTranscript');const summaryHost=$('summaryContent');summaryHost.innerHTML='';if(l.summary?.trim()){const p=document.createElement('p');p.className='lesson-summary';p.textContent=l.summary.trim();summaryHost.appendChild(p);const points=Array.isArray(l.key_points)?l.key_points:[];if(points.length){const h=document.createElement('h4');h.textContent=t('keyPoints');const ul=document.createElement('ul');ul.className='key-points';points.forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.appendChild(li)});summaryHost.append(h,ul)}}else summaryHost.textContent=t('noSummary');const host=$('attachmentsContent'),items=Array.isArray(l.attachments)?l.attachments:[];host.innerHTML='';show('attachmentsTab',items.length>0);if(!items.length){host.textContent=t('noAttachments');if(document.querySelector('[data-tab="attachments"]').classList.contains('active'))switchTab('transcript')}else items.forEach(a=>{const link=document.createElement('a');link.className='attachment-item';link.href=a.url||'#';link.target='_blank';link.rel='noopener';link.textContent=a.name||t('openAttachment');host.appendChild(link)});switchTab('transcript')}
 function switchTab(name){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));['transcript','notes','summary','attachments'].forEach(n=>show(n+'Panel',n===name))}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
