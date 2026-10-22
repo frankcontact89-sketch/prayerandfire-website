@@ -41,3 +41,14 @@ button:disabled{cursor:not-allowed;opacity:.66}
  .settings-sheet{padding-bottom:max(28px,env(safe-area-inset-bottom))}
 }
 @media(prefers-reduced-motion:reduce){.primary,.secondary,.module-card{transition:none}}
+
+/* Transcript excerpts can be added to the student's existing lesson notes. */
+.transcript-list .abba-add-transcript-note{
+ display:block;width:max-content;max-width:100%;margin:-4px 8px 12px 72px;
+ border:1px solid #c3d6ee;border-radius:9px;background:#eef6ff;
+ color:#114d98;font:inherit;font-size:12px;font-weight:800;
+ padding:7px 11px;cursor:pointer;text-align:left;
+}
+.transcript-list .abba-add-transcript-note:hover{background:#daeaff}
+.transcript-list .abba-add-transcript-note:focus-visible{outline:3px solid #e3b459;outline-offset:2px}
+@media(max-width:600px){.transcript-list .abba-add-transcript-note{margin-left:57px;font-size:12px}}
