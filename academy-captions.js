@@ -49,11 +49,10 @@ function updateTranscript(){
   host.replaceChildren();
   const wrapper=document.createElement('div');wrapper.className='transcript-list';
   cues.forEach(c=>{
-   const row=document.createElement('button');row.type='button';row.className='transcript-row';
-   const stamp=document.createElement('span');stamp.className='transcript-time';
-   const sec=Math.max(0,Math.floor(Number(c.start)||0));stamp.textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
-   const text=document.createElement('span');text.className='transcript-text';text.textContent=c.text||'';
-   row.append(stamp,text);row.onclick=()=>{const player=el('muxPlayer');if(player){player.currentTime=sec;player.play().catch(()=>{});window.scrollTo({top:0,behavior:'smooth'})}};wrapper.appendChild(row);
+   const sec=Math.max(0,Math.floor(Number(c.start)||0));const stamp=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+   const play=()=>{const player=el('muxPlayer');if(player){player.currentTime=sec;player.play().catch(()=>{});window.scrollTo({top:0,behavior:'smooth'})}};
+   if(window.abbaTranscriptRow)wrapper.appendChild(window.abbaTranscriptRow(c,stamp,play));
+   else {const row=document.createElement('button');row.type='button';row.className='transcript-row';row.textContent=stamp+' '+(c.text||'');row.onclick=play;wrapper.appendChild(row)}
   });host.appendChild(wrapper);
  }else if(typeof prose==='string'&&prose.trim()){host.textContent=prose.trim();}
  else host.textContent='English transcript is not yet available for this lesson.';
