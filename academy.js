@@ -166,3 +166,42 @@ $('resetPasswordBtn').onclick=async()=>{if(!currentUser?.email)return;$('setting
 const muxPlayer=$('muxPlayer');muxPlayer.addEventListener('timeupdate',()=>savePosition(false));muxPlayer.addEventListener('pause',()=>savePosition(true));window.addEventListener('pagehide',()=>savePosition(true));
 applyLanguage(currentLang);
 (async()=>{const {data:{session}}=await db.auth.getSession();if(session?.user){currentUser=session.user;await loadPortal()}})();
+/* ABBA transcript-to-note helper. Uses existing per-lesson notes and save button. */
+(()=>{
+ const host=document.getElementById('transcriptContent');
+ if(!host)return;
+ let busy=false;
+ function enhance(){
+  if(busy)return;busy=true;
+  try{
+   host.querySelectorAll('.transcript-row').forEach(row=>{
+    if(row.dataset.noteReady)return;
+    row.dataset.noteReady='1';
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='abba-add-transcript-note';
+    button.setAttribute('aria-label','Add transcript excerpt to notes');
+    button.textContent=document.documentElement.lang==='en'?'+ Add to Notes':'+ Adicionar às notas';
+    button.addEventListener('click',event=>{
+     event.preventDefault();event.stopPropagation();
+     if(typeof currentLesson==='undefined'||!currentLesson)return;
+     const editor=document.getElementById('lessonNote');if(!editor)return;
+     const stamp=row.querySelector('.transcript-time')?.textContent?.trim()||'';
+     const excerpt=row.querySelector('.transcript-text')?.textContent?.trim()||'';
+     if(!excerpt)return;
+     const quote=(stamp?'['+stamp+'] ':'')+excerpt;
+     editor.value=(editor.value.trim()?editor.value.trimEnd()+'\\n\\n':'')+quote;
+     if(typeof switchTab==='function')switchTab('notes');
+     const status=document.getElementById('noteStatus');
+     if(status)status.textContent=document.documentElement.lang==='en'?'Excerpt added. Select Save note to keep it.':'Trecho adicionado. Toque em Salvar nota para guardar.';
+     editor.focus();editor.setSelectionRange(editor.value.length,editor.value.length);
+    });
+    row.insertAdjacentElement('afterend',button);
+   });
+   host.querySelectorAll('.abba-add-transcript-note').forEach(button=>{button.textContent=document.documentElement.lang==='en'?'+ Add to Notes':'+ Adicionar às notas';});
+  }finally{busy=false}
+ }
+ new MutationObserver(()=>{if(!busy)queueMicrotask(enhance)}).observe(host,{childList:true,subtree:true});
+ new MutationObserver(enhance).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ enhance();
+})();
