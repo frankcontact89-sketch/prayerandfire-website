@@ -166,42 +166,75 @@ $('resetPasswordBtn').onclick=async()=>{if(!currentUser?.email)return;$('setting
 const muxPlayer=$('muxPlayer');muxPlayer.addEventListener('timeupdate',()=>savePosition(false));muxPlayer.addEventListener('pause',()=>savePosition(true));window.addEventListener('pagehide',()=>savePosition(true));
 applyLanguage(currentLang);
 (async()=>{const {data:{session}}=await db.auth.getSession();if(session?.user){currentUser=session.user;await loadPortal()}})();
-/* ABBA transcript-to-note helper. Uses existing per-lesson notes and save button. */
+/* ABBA transcript excerpt menu: Copy / Add to notes, for both language renderers. */
 (()=>{
  const host=document.getElementById('transcriptContent');
  if(!host)return;
- let busy=false;
+ const tr=(en,pt)=>document.documentElement.lang==='en'?en:pt;
+ let updating=false;
+ function closeMenus(except){
+   host.querySelectorAll('.abba-cue-menu').forEach(m=>{if(m!==except)m.hidden=true});
+   host.querySelectorAll('.abba-cue-dots').forEach(b=>{if(!except||b.getAttribute('aria-controls')!==except.id)b.setAttribute('aria-expanded','false')});
+ }
+ function noteFrom(row){
+   if(typeof currentLesson==='undefined'||!currentLesson)return;
+   const editor=document.getElementById('lessonNote');
+   if(!editor)return;
+   const time=row.querySelector('.transcript-time')?.textContent?.trim()||'';
+   const text=row.querySelector('.transcript-text')?.textContent?.trim()||'';
+   if(!text)return;
+   const excerpt=(time?'['+time+'] ':'')+text;
+   editor.value=[editor.value.trim(),excerpt].filter(Boolean).join(String.fromCharCode(10,10));
+   editor.dispatchEvent(new Event('input',{bubbles:true}));
+   if(typeof switchTab==='function')switchTab('notes');
+   const status=document.getElementById('noteStatus');
+   if(status)status.textContent=tr('Added to notes. Click Save note to keep it.','Adicionado às notas. Clique em Salvar nota para guardar.');
+   editor.focus();
+   editor.setSelectionRange(editor.value.length,editor.value.length);
+ }
+ async function copyFrom(row){
+   const time=row.querySelector('.transcript-time')?.textContent?.trim()||'';
+   const text=row.querySelector('.transcript-text')?.textContent?.trim()||'';
+   const excerpt=(time?'['+time+'] ':'')+text;
+   if(!excerpt.trim())return;
+   try{await navigator.clipboard.writeText(excerpt)}
+   catch{
+     const temp=document.createElement('textarea');temp.value=excerpt;temp.style.cssText='position:fixed;left:-9999px';
+     document.body.appendChild(temp);temp.select();try{document.execCommand('copy')}finally{temp.remove()}
+   }
+ }
+ let counter=0;
  function enhance(){
-  if(busy)return;busy=true;
+  if(updating)return;updating=true;
   try{
    host.querySelectorAll('.transcript-row').forEach(row=>{
-    if(row.dataset.noteReady)return;
-    row.dataset.noteReady='1';
-    const button=document.createElement('button');
-    button.type='button';
-    button.className='abba-add-transcript-note';
-    button.setAttribute('aria-label','Add transcript excerpt to notes');
-    button.textContent=document.documentElement.lang==='en'?'+ Add to Notes':'+ Adicionar às notas';
-    button.addEventListener('click',event=>{
-     event.preventDefault();event.stopPropagation();
-     if(typeof currentLesson==='undefined'||!currentLesson)return;
-     const editor=document.getElementById('lessonNote');if(!editor)return;
-     const stamp=row.querySelector('.transcript-time')?.textContent?.trim()||'';
-     const excerpt=row.querySelector('.transcript-text')?.textContent?.trim()||'';
-     if(!excerpt)return;
-     const quote=(stamp?'['+stamp+'] ':'')+excerpt;
-     editor.value=(editor.value.trim()?editor.value.trimEnd()+'\\n\\n':'')+quote;
-     if(typeof switchTab==='function')switchTab('notes');
-     const status=document.getElementById('noteStatus');
-     if(status)status.textContent=document.documentElement.lang==='en'?'Excerpt added. Select Save note to keep it.':'Trecho adicionado. Toque em Salvar nota para guardar.';
-     editor.focus();editor.setSelectionRange(editor.value.length,editor.value.length);
-    });
-    row.insertAdjacentElement('afterend',button);
+     if(row.dataset.abbaMenuReady)return;
+     row.dataset.abbaMenuReady='true';
+     const wrapper=document.createElement('div');wrapper.className='abba-cue-line';
+     row.parentNode.insertBefore(wrapper,row);wrapper.appendChild(row);
+     const button=document.createElement('button');button.type='button';
+     button.className='abba-cue-dots';button.textContent='⋯';
+     button.setAttribute('aria-label',tr('Transcript actions','Opções da transcrição'));
+     button.setAttribute('aria-haspopup','true');button.setAttribute('aria-expanded','false');
+     const menu=document.createElement('div');menu.className='abba-cue-menu';menu.hidden=true;
+     menu.id='abba-cue-menu-'+(++counter);button.setAttribute('aria-controls',menu.id);
+     const copy=document.createElement('button');copy.type='button';copy.className='abba-cue-copy';
+     const add=document.createElement('button');add.type='button';add.className='abba-cue-add';
+     menu.append(copy,add);
+     button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const opening=menu.hidden;closeMenus(menu);menu.hidden=!opening;button.setAttribute('aria-expanded',String(opening))});
+     copy.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();await copyFrom(row);closeMenus();});
+     add.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();noteFrom(row);closeMenus()});
+     wrapper.append(button,menu);
    });
-   host.querySelectorAll('.abba-add-transcript-note').forEach(button=>{const label=document.documentElement.lang==='en'?'+ Add to Notes':'+ Adicionar às notas';if(button.textContent!==label)button.textContent=label;});
-  }finally{busy=false}
+   host.querySelectorAll('.abba-cue-dots').forEach(button=>button.setAttribute('aria-label',tr('Transcript actions','Opções da transcrição')));
+   host.querySelectorAll('.abba-cue-copy').forEach(button=>{const label=tr('Copy','Copiar');if(button.textContent!==label)button.textContent=label});
+   host.querySelectorAll('.abba-cue-add').forEach(button=>{const label=tr('Add to Notes','Adicionar às notas');if(button.textContent!==label)button.textContent=label});
+  }finally{updating=false}
  }
- new MutationObserver(()=>{if(!busy)queueMicrotask(enhance)}).observe(host,{childList:true,subtree:true});
+ const observer=new MutationObserver(()=>{if(!updating)queueMicrotask(enhance)});
+ observer.observe(host,{childList:true,subtree:true});
  new MutationObserver(enhance).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ document.addEventListener('click',e=>{if(!e.target.closest('.abba-cue-line'))closeMenus()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenus()});
  enhance();
 })();
