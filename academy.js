@@ -198,7 +198,7 @@ applyLanguage(currentLang);
     });
     row.insertAdjacentElement('afterend',button);
    });
-   host.querySelectorAll('.abba-add-transcript-note').forEach(button=>{button.textContent=document.documentElement.lang==='en'?'+ Add to Notes':'+ Adicionar às notas';});
+   host.querySelectorAll('.abba-add-transcript-note').forEach(button=>{const label=document.documentElement.lang==='en'?'+ Add to Notes':'+ Adicionar às notas';if(button.textContent!==label)button.textContent=label;});
   }finally{busy=false}
  }
  new MutationObserver(()=>{if(!busy)queueMicrotask(enhance)}).observe(host,{childList:true,subtree:true});
