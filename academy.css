@@ -53,3 +53,17 @@ button:disabled{cursor:not-allowed;opacity:.66}
 .abba-cue-menu[hidden]{display:none!important}
 .abba-cue-menu button{width:100%;border:0;background:#fff;border-radius:8px;text-align:left;color:#142d4c;font:inherit;font-weight:700;padding:11px;cursor:pointer}
 .abba-cue-menu button:hover{background:#eaf3ff}
+
+/* Sequential lesson experience: video first, optional reflection second. */
+.abba-stage-hidden{display:none!important}
+.abba-stage-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;padding:12px 0;border-top:1px solid #d8e2ee}
+.abba-stage-nav button{min-height:46px;min-width:112px}
+.abba-stage-nav span{font-weight:800;color:#506379;white-space:nowrap}
+.abba-followup{border:1px solid #d5e1ed;border-radius:16px;padding:22px;background:#fff;margin:14px 0}
+.abba-followup h2{margin:0 0 8px;font-size:26px;color:#10243b}
+.abba-followup>p{color:#526579}
+.abba-followup audio{width:100%;max-width:640px;margin-bottom:14px}
+.abba-followup .abba-coach{margin:16px 0}
+#abbaSkipCoach{margin-top:14px}
+#abbaFollowupStatus{font-weight:700}
+@media(max-width:600px){.abba-stage-nav button{min-width:100px;padding:10px}.abba-followup{padding:16px}}
