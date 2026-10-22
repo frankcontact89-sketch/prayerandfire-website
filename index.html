@@ -8141,5 +8141,34 @@ initializeSite();
   <script defer src="./translations-hero-fix.js"></script>
   <script defer src="./admin-subscribers.js"></script>
   <script defer src="./prayer-requests.js?v=20261009-deletefix"></script>
-</body>
+<!-- Prayer & Fire Spanish interface localization -->
+<script>
+(function(){
+ const es={"Home":"Inicio","Gallery":"Galería","Contact":"Contacto","Support":"Apoyar","Global Movement":"Movimiento Global","One Movement.":"Un movimiento.","Many Nations.":"Muchas naciones.","Countries Represented":"Países representados","Churches Connected":"Iglesias conectadas","Prayer Vision":"Oración continua","Global Impact":"Impacto global","Transforming lives through prayer and action":"Transformando vidas mediante la oración y la acción","Nepal Relief Initiative":"Iniciativa de ayuda para Nepal","Global Prayer Network":"Red Global de Oración","Nepal":"Nepal","Global":"Global","Support the Mission":"Apoya la misión","Fuel the global prayer movement.":"Impulsa el movimiento global de oración.","One-time giving":"Donación única","Give securely via Stripe.":"Dona de forma segura mediante Stripe.","Give once":"Donar una vez","Monthly support ($8.99)":"Apoyo mensual ($8.99)","Start monthly support":"Comenzar apoyo mensual","Manage monthly support":"Administrar apoyo mensual","Contact Prayer & Fire":"Contacta a Prayer & Fire","Contact us":"Contáctanos","Connect with Prayer & Fire":"Comunícate con Prayer & Fire","Official Email":"Correo oficial","Send message":"Enviar mensaje","Navigation":"Navegación","Resources":"Recursos","Privacy Policy":"Política de privacidad","Terms of Use":"Términos de uso","Who we are":"Quiénes somos","Photos":"Fotos","Videos":"Videos","All":"Todo","Books on Amazon":"Libros en Amazon","P&F Store":"Tienda P&F","Official Prayer & Fire resources, books, apparel and products.":"Recursos, libros, ropa y productos oficiales de Prayer & Fire.","Real photos and videos from Prayer & Fire missions, meetings, prayer gatherings, education, outreach and service across nations.":"Fotos y videos reales de misiones, reuniones, encuentros de oración, educación, ayuda y servicio de Prayer & Fire en las naciones.","Your generosity helps support prayer initiatives, global outreach, faith resources and the Prayer & Fire mission.":"Tu generosidad ayuda a sostener iniciativas de oración, alcance global, recursos de fe y la misión de Prayer & Fire.","Questions, partnerships or ministry support? Reach our team here.":"¿Preguntas, colaboraciones o apoyo ministerial? Comunícate con nuestro equipo.","A global movement impacting nations and new generations through prayer, unity, missions and faith in Christ.":"Un movimiento global que impacta a las naciones y nuevas generaciones mediante la oración, la unidad, las misiones y la fe en Cristo.","Use our official email and social platforms for ministry communication, partnership questions and support.":"Utiliza nuestro correo y redes sociales oficiales para comunicaciones ministeriales, colaboraciones y apoyo.","Send a direct message to the Prayer & Fire team.":"Envía un mensaje directamente al equipo de Prayer & Fire.","More than 45 countries represented and more than 65 churches connected through faith, missions, unity, prayer and global impact.":"Más de 45 países representados y más de 65 iglesias conectadas mediante la fe, las misiones, la unidad, la oración y el impacto global.","Working with local church leaders to coordinate essential supplies and support for families affected by flooding.":"Trabajamos con líderes de iglesias locales para coordinar suministros esenciales y ayuda a las familias afectadas por las inundaciones.","Connecting believers and churches across nations through prayer, intercession, and spiritual encouragement.":"Conectamos creyentes e iglesias de distintas naciones mediante la oración, la intercesión y el ánimo espiritual."};
+ const original=new WeakMap();
+ const normalize=value=>value.replace(/\s+/g,' ').trim();
+ function translate(){
+   const Spanish=document.documentElement.lang==='es';
+   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+   const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+   for(const node of nodes){
+     if(node.parentElement?.closest('script,style,noscript,.abba-announcement'))continue;
+     const initial=original.get(node)??node.nodeValue;
+     if(!original.has(node))original.set(node,initial);
+     const key=normalize(initial);
+     if(!es[key])continue;
+     const leading=initial.match(/^\s*/)?.[0]||'';
+     const trailing=initial.match(/\s*$/)?.[0]||'';
+     const next=Spanish?leading+es[key]+trailing:initial;
+     if(node.nodeValue!==next)node.nodeValue=next;
+   }
+ }
+ let queued=false;
+ const schedule=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;translate()})};
+ const select=document.getElementById('langSelect');
+ select?.addEventListener('change',schedule);
+ new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true});
+ translate();
+})();
+</script></body>
 </html>
