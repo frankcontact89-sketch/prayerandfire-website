@@ -67,8 +67,21 @@ async function scholarshipStatus(){
   const pct=Number(data.approved_percent)||0;
   let detail='';
   if(data.status==='approved'&&[50,80].includes(pct)){
-   const full=(490*(100-pct)/100).toFixed(2),monthly=(49*(100-pct)/100).toFixed(2);
-   detail=currentLang==='en'?' Awarded: '+pct+'% scholarship. Remaining tuition: 
+   const full=(490*(100-pct)/100).toFixed(2);
+   const monthly=(49*(100-pct)/100).toFixed(2);
+   detail=currentLang==='en'
+    ?' Awarded: '+pct+'% scholarship. Remaining tuition: $'+full+' USD or $'+monthly+' USD/month for 10 months. Access remains locked until payment is confirmed.'
+    :' Bolsa concedida: '+pct+'%. Valor restante: US$ '+full+' ou US$ '+monthly+'/mês por 10 meses. O acesso permanece bloqueado até a confirmação do pagamento.';
+  }else if(data.status==='approved'&&pct===100){
+   detail=currentLang==='en'
+    ?' Full scholarship approved. Access will activate after enrollment authorization is completed.'
+    :' Bolsa integral aprovada. O acesso será ativado após a autorização da matrícula.';
+  }else if(data.status==='pending'){
+   detail=currentLang==='en'
+    ?' Requested: '+data.requested_percent+'%. Awaiting administrator review.'
+    :' Solicitado: '+data.requested_percent+'%. Aguardando análise da administração.';
+  }
+  box.textContent=(currentLang==='en'?'Scholarship application: ':'Solicitação de bolsa: ')+statusText+'.'+detail;
   $('scholarshipForm').classList.add('hidden');
  }else{
   button.disabled=false;
