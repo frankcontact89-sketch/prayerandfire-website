@@ -29,7 +29,30 @@ function openLessonById(id,scroll=false){const l=lessons.find(x=>x.id===id);if(l
 async function enrichLessonContent(l){try{const {data:{session}}=await db.auth.getSession();if(!session)return;const r=await fetch(`${SUPABASE_URL}/functions/v1/abba-lesson-content`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`,'apikey':SUPABASE_KEY},body:JSON.stringify({lesson_id:l.id})});if(!r.ok)return;const j=await r.json();Object.assign(l,{transcript:j.transcript??l.transcript,transcript_cues:j.transcript_cues??l.transcript_cues,summary:j.summary??l.summary,key_points:j.key_points??l.key_points});}catch{}}
 async function openLesson(l,scroll=false){currentLesson=l;show('dashboardView',false);show('lessonView',true);$('lessonNumber').textContent=`${t('lessonWord')} ${l.lesson_number}`;$('lessonDuration').textContent=l.duration_minutes?`${l.duration_minutes} ${t('minutes')}`:'';$('lessonTitle').textContent=l.title;$('lessonDescription').textContent=l.description||'';const player=$('muxPlayer');player.setAttribute('playback-id',l.mux_playback_id);const p=progressFor(l.id);setTimeout(()=>{if(p?.last_position_seconds>15&&!p.completed){try{player.currentTime=p.last_position_seconds}catch{}}},700);$('completeBtn').textContent=p?.completed?t('completed'):t('complete');$('completeBtn').disabled=!!p?.completed;$('completeBtn').onclick=()=>markComplete(l.id);const idx=lessons.indexOf(l),next=lessons[idx+1];show('nextBtn',!!next);if(next)$('nextBtn').onclick=()=>openLessonById(next.id,true);renderLessonResources(l);await Promise.all([loadNote(l.id),enrichLessonContent(l)]);renderLessonResources(l);if(scroll)window.scrollTo({top:0,behavior:'smooth'});else window.scrollTo(0,0)}
 function fmtCue(seconds){const s=Math.max(0,Math.floor(Number(seconds)||0)),m=Math.floor(s/60),r=String(s%60).padStart(2,'0');return `${m}:${r}`}
-function renderLessonResources(l){const transcriptHost=$('transcriptContent');transcriptHost.innerHTML='';const cues=Array.isArray(l.transcript_cues)?l.transcript_cues:[];if(cues.length){const wrap=document.createElement('div');wrap.className='transcript-list';cues.forEach(c=>{const row=document.createElement('button');row.className='transcript-row';row.type='button';const time=document.createElement('span');time.className='transcript-time';time.textContent=fmtCue(c.start);const text=document.createElement('span');text.className='transcript-text';text.textContent=c.text||'';row.append(time,text);row.onclick=()=>{try{$('muxPlayer').currentTime=Number(c.start)||0;$('muxPlayer').play()}catch{};window.scrollTo({top:0,behavior:'smooth'})};wrap.appendChild(row)});transcriptHost.appendChild(wrap)}else transcriptHost.textContent=l.transcript?.trim()||t('noTranscript');const summaryHost=$('summaryContent');summaryHost.innerHTML='';if(l.summary?.trim()){const p=document.createElement('p');p.className='lesson-summary';p.textContent=l.summary.trim();summaryHost.appendChild(p);const points=Array.isArray(l.key_points)?l.key_points:[];if(points.length){const h=document.createElement('h4');h.textContent=t('keyPoints');const ul=document.createElement('ul');ul.className='key-points';points.forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.appendChild(li)});summaryHost.append(h,ul)}}else summaryHost.textContent=t('noSummary');const host=$('attachmentsContent'),items=Array.isArray(l.attachments)?l.attachments:[];host.innerHTML='';show('attachmentsTab',items.length>0);if(!items.length){host.textContent=t('noAttachments');if(document.querySelector('[data-tab="attachments"]').classList.contains('active'))switchTab('transcript')}else items.forEach(a=>{const link=document.createElement('a');link.className='attachment-item';link.href=a.url||'#';link.target='_blank';link.rel='noopener';link.textContent=a.name||t('openAttachment');host.appendChild(link)});switchTab('transcript')}
+/* Shared transcript row actions (also used by translated English cues). */
+window.abbaTranscriptRow=(c,stamp,play)=>{
+ const line=document.createElement('div');line.className='abba-cue-line';
+ const row=document.createElement('button');row.type='button';row.className='transcript-row';
+ const time=document.createElement('span');time.className='transcript-time';time.textContent=stamp;
+ const span=document.createElement('span');span.className='transcript-text';span.textContent=String(c.text||'');
+ row.append(time,span);row.onclick=play;
+ const more=document.createElement('button');more.type='button';more.className='abba-cue-dots';more.textContent='⋯';
+ more.setAttribute('aria-label',currentLang==='en'?'Transcript options':'Opções da transcrição');more.setAttribute('aria-expanded','false');
+ const menu=document.createElement('div');menu.className='abba-cue-menu';menu.hidden=true;
+ const copy=document.createElement('button');copy.type='button';copy.textContent=currentLang==='en'?'Copy':'Copiar';
+ const add=document.createElement('button');add.type='button';add.textContent=currentLang==='en'?'Add to Notes':'Adicionar às notas';
+ menu.append(copy,add);line.append(row,more,menu);
+ const close=()=>{menu.hidden=true;more.setAttribute('aria-expanded','false')};
+ more.onclick=e=>{e.stopPropagation();const opening=menu.hidden;document.querySelectorAll('.abba-cue-menu').forEach(m=>m.hidden=true);document.querySelectorAll('.abba-cue-dots').forEach(b=>b.setAttribute('aria-expanded','false'));menu.hidden=!opening;more.setAttribute('aria-expanded',String(opening))};
+ const excerpt=()=> (stamp?'['+stamp+'] ':'')+String(c.text||'').trim();
+ copy.onclick=async e=>{e.stopPropagation();try{await navigator.clipboard.writeText(excerpt())}catch{const el=document.createElement('textarea');el.value=excerpt();el.style.position='fixed';el.style.left='-9999px';document.body.append(el);el.select();document.execCommand('copy');el.remove()}close()};
+ add.onclick=e=>{e.stopPropagation();const editor=document.getElementById('lessonNote');if(!editor||!currentLesson)return;editor.value=[editor.value.trim(),excerpt()].filter(Boolean).join('\\n\\n');editor.dispatchEvent(new Event('input',{bubbles:true}));close();switchTab('notes');const status=document.getElementById('noteStatus');if(status)status.textContent=currentLang==='en'?'Added to notes. Press Save note to keep it.':'Adicionado às notas. Pressione Salvar nota para guardar.';editor.focus()};
+ document.addEventListener('click',e=>{if(!line.contains(e.target))close()},{signal:window.abbaTranscriptMenuController?.signal});
+ return line;
+};
+window.abbaTranscriptMenuController?.abort();
+window.abbaTranscriptMenuController=new AbortController();
+function renderLessonResources(l){const transcriptHost=$('transcriptContent');transcriptHost.innerHTML='';const cues=Array.isArray(l.transcript_cues)?l.transcript_cues:[];if(cues.length){const wrap=document.createElement('div');wrap.className='transcript-list';cues.forEach(c=>{const line=window.abbaTranscriptRow(c,fmtCue(c.start),()=>{try{$('muxPlayer').currentTime=Number(c.start)||0;$('muxPlayer').play()}catch{};window.scrollTo({top:0,behavior:'smooth'})});wrap.appendChild(line)});transcriptHost.appendChild(wrap)}else transcriptHost.textContent=l.transcript?.trim()||t('noTranscript');const summaryHost=$('summaryContent');summaryHost.innerHTML='';if(l.summary?.trim()){const p=document.createElement('p');p.className='lesson-summary';p.textContent=l.summary.trim();summaryHost.appendChild(p);const points=Array.isArray(l.key_points)?l.key_points:[];if(points.length){const h=document.createElement('h4');h.textContent=t('keyPoints');const ul=document.createElement('ul');ul.className='key-points';points.forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.appendChild(li)});summaryHost.append(h,ul)}}else summaryHost.textContent=t('noSummary');const host=$('attachmentsContent'),items=Array.isArray(l.attachments)?l.attachments:[];host.innerHTML='';show('attachmentsTab',items.length>0);if(!items.length){host.textContent=t('noAttachments');if(document.querySelector('[data-tab="attachments"]').classList.contains('active'))switchTab('transcript')}else items.forEach(a=>{const link=document.createElement('a');link.className='attachment-item';link.href=a.url||'#';link.target='_blank';link.rel='noopener';link.textContent=a.name||t('openAttachment');host.appendChild(link)});switchTab('transcript')}
 function switchTab(name){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));['transcript','notes','summary','attachments'].forEach(n=>show(n+'Panel',n===name))}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
 $('backDashboardBtn').onclick=async()=>{await savePosition(true);show('lessonView',false);show('dashboardView',true);currentLesson=null;window.scrollTo({top:0,behavior:'smooth'})};
@@ -166,75 +189,3 @@ $('resetPasswordBtn').onclick=async()=>{if(!currentUser?.email)return;$('setting
 const muxPlayer=$('muxPlayer');muxPlayer.addEventListener('timeupdate',()=>savePosition(false));muxPlayer.addEventListener('pause',()=>savePosition(true));window.addEventListener('pagehide',()=>savePosition(true));
 applyLanguage(currentLang);
 (async()=>{const {data:{session}}=await db.auth.getSession();if(session?.user){currentUser=session.user;await loadPortal()}})();
-/* ABBA transcript excerpt menu: Copy / Add to notes, for both language renderers. */
-(()=>{
- const host=document.getElementById('transcriptContent');
- if(!host)return;
- const tr=(en,pt)=>document.documentElement.lang==='en'?en:pt;
- let updating=false;
- function closeMenus(except){
-   host.querySelectorAll('.abba-cue-menu').forEach(m=>{if(m!==except)m.hidden=true});
-   host.querySelectorAll('.abba-cue-dots').forEach(b=>{if(!except||b.getAttribute('aria-controls')!==except.id)b.setAttribute('aria-expanded','false')});
- }
- function noteFrom(row){
-   if(typeof currentLesson==='undefined'||!currentLesson)return;
-   const editor=document.getElementById('lessonNote');
-   if(!editor)return;
-   const time=row.querySelector('.transcript-time')?.textContent?.trim()||'';
-   const text=row.querySelector('.transcript-text')?.textContent?.trim()||'';
-   if(!text)return;
-   const excerpt=(time?'['+time+'] ':'')+text;
-   editor.value=[editor.value.trim(),excerpt].filter(Boolean).join(String.fromCharCode(10,10));
-   editor.dispatchEvent(new Event('input',{bubbles:true}));
-   if(typeof switchTab==='function')switchTab('notes');
-   const status=document.getElementById('noteStatus');
-   if(status)status.textContent=tr('Added to notes. Click Save note to keep it.','Adicionado às notas. Clique em Salvar nota para guardar.');
-   editor.focus();
-   editor.setSelectionRange(editor.value.length,editor.value.length);
- }
- async function copyFrom(row){
-   const time=row.querySelector('.transcript-time')?.textContent?.trim()||'';
-   const text=row.querySelector('.transcript-text')?.textContent?.trim()||'';
-   const excerpt=(time?'['+time+'] ':'')+text;
-   if(!excerpt.trim())return;
-   try{await navigator.clipboard.writeText(excerpt)}
-   catch{
-     const temp=document.createElement('textarea');temp.value=excerpt;temp.style.cssText='position:fixed;left:-9999px';
-     document.body.appendChild(temp);temp.select();try{document.execCommand('copy')}finally{temp.remove()}
-   }
- }
- let counter=0;
- function enhance(){
-  if(updating)return;updating=true;
-  try{
-   host.querySelectorAll('.transcript-row').forEach(row=>{
-     if(row.dataset.abbaMenuReady)return;
-     row.dataset.abbaMenuReady='true';
-     const wrapper=document.createElement('div');wrapper.className='abba-cue-line';
-     row.parentNode.insertBefore(wrapper,row);wrapper.appendChild(row);
-     const button=document.createElement('button');button.type='button';
-     button.className='abba-cue-dots';button.textContent='⋯';
-     button.setAttribute('aria-label',tr('Transcript actions','Opções da transcrição'));
-     button.setAttribute('aria-haspopup','true');button.setAttribute('aria-expanded','false');
-     const menu=document.createElement('div');menu.className='abba-cue-menu';menu.hidden=true;
-     menu.id='abba-cue-menu-'+(++counter);button.setAttribute('aria-controls',menu.id);
-     const copy=document.createElement('button');copy.type='button';copy.className='abba-cue-copy';
-     const add=document.createElement('button');add.type='button';add.className='abba-cue-add';
-     menu.append(copy,add);
-     button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const opening=menu.hidden;closeMenus(menu);menu.hidden=!opening;button.setAttribute('aria-expanded',String(opening))});
-     copy.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();await copyFrom(row);closeMenus();});
-     add.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();noteFrom(row);closeMenus()});
-     wrapper.append(button,menu);
-   });
-   host.querySelectorAll('.abba-cue-dots').forEach(button=>button.setAttribute('aria-label',tr('Transcript actions','Opções da transcrição')));
-   host.querySelectorAll('.abba-cue-copy').forEach(button=>{const label=tr('Copy','Copiar');if(button.textContent!==label)button.textContent=label});
-   host.querySelectorAll('.abba-cue-add').forEach(button=>{const label=tr('Add to Notes','Adicionar às notas');if(button.textContent!==label)button.textContent=label});
-  }finally{updating=false}
- }
- const observer=new MutationObserver(()=>{if(!updating)queueMicrotask(enhance)});
- observer.observe(host,{childList:true,subtree:true});
- new MutationObserver(enhance).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
- document.addEventListener('click',e=>{if(!e.target.closest('.abba-cue-line'))closeMenus()});
- document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenus()});
- enhance();
-})();
