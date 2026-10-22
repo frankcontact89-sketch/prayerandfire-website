@@ -64,7 +64,173 @@ async function scholarshipStatus(){
   button.disabled=true;button.textContent=currentLang==='en'?'Application submitted':'Solicitação enviada';
   box.classList.remove('hidden');
   const statusText=data.status==='pending'?(currentLang==='en'?'Pending review':'Aguardando análise'):data.status==='approved'?(currentLang==='en'?'Approved':'Aprovada'):(currentLang==='en'?'Not approved':'Não aprovada');
-  box.textContent=(currentLang==='en'?'Scholarship application: ':'Solicitação de bolsa: ')+statusText+'.';
+  const pct=Number(data.approved_percent)||0;
+  let detail='';
+  if(data.status==='approved'&&[50,80].includes(pct)){
+   const full=(490*(100-pct)/100).toFixed(2),monthly=(49*(100-pct)/100).toFixed(2);
+   detail=currentLang==='en'?' Awarded: '+pct+'% scholarship. Remaining tuition: 
+  $('scholarshipForm').classList.add('hidden');
+ }else{
+  button.disabled=false;
+  button.textContent=currentLang==='en'?'Apply for Scholarship':'Solicitar bolsa de estudo';
+ }
+}
+$('applyScholarshipBtn')?.addEventListener('click',()=>{
+ const form=$('scholarshipForm');
+ if(!form||!currentUser)return;
+ $('scholarshipName').value=currentUser.user_metadata?.full_name||'';
+ $('scholarshipCountry').value=currentUser.user_metadata?.country||'';
+ scholarshipLocalize();form.classList.remove('hidden');
+ form.scrollIntoView({block:'start',behavior:'smooth'});
+});
+$('scholarshipForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();
+ if(!currentUser)return;
+ const button=$('submitScholarshipBtn'),status=$('scholarshipSubmitStatus');
+ const full_name=$('scholarshipName').value.trim(),country=$('scholarshipCountry').value.trim(),reason=$('scholarshipReason').value.trim(),requested_percent=Number($('scholarshipPercent').value);
+ if(full_name.length<2||country.length<2||reason.length<30||![50,80,100].includes(requested_percent)){status.textContent=currentLang==='en'?'Please complete all fields and explain your situation (at least 30 characters).':'Preencha todos os campos e explique sua situação (pelo menos 30 caracteres).';return}
+ button.disabled=true;status.textContent=currentLang==='en'?'Submitting...':'Enviando...';
+ const {error}=await db.from('abba_scholarship_applications').insert({user_id:currentUser.id,full_name,country,requested_percent,reason});
+ if(error){button.disabled=false;status.textContent=currentLang==='en'?'Could not submit your application. Please try again.':'Não foi possível enviar sua solicitação. Tente novamente.';console.warn('Scholarship submission failed',error);return}
+ status.textContent=currentLang==='en'?'Application submitted successfully.':'Solicitação enviada com sucesso.';
+ await scholarshipStatus();
+});
+async function loadPortal(){show('authView',false);show('portalView',true);show('signOutBtn',true);show('settingsBtn',true);$('settingsEmail').textContent=currentUser?.email||'';await loadLanguagePreference();const {data:courseData,error:courseErr}=await db.from('abba_courses').select('*').eq('slug','annual-program').single();if(courseErr){$('courseTitle').textContent='ABBA Academy';$('courseDescription').textContent=t('courseUnavailable');return}currentCourse=courseData;$('courseTitle').textContent=currentCourse.title;$('courseDescription').textContent=currentCourse.description||'';const {data:enrollment}=await db.from('abba_enrollments').select('*').eq('course_id',currentCourse.id).eq('user_id',currentUser.id).eq('status','active').maybeSingle();currentEnrollment=enrollment||null;$('courseAccessStatus').textContent=currentEnrollment?t('activeAccess'):t('inactiveAccess');if(!currentEnrollment){show('noEnrollment',true);show('courseArea',false);show('learningDashboard',false);renderLockedPreview();await scholarshipStatus();renderProgress();return}show('noEnrollment',false);show('courseArea',true);const {data:lessonData,error:lessonErr}=await db.from('abba_lessons').select('*').eq('course_id',currentCourse.id).eq('is_published',true).not('mux_playback_id','is',null).order('lesson_number');if(lessonErr){alert(lessonErr.message);return}lessons=(lessonData||[]).filter(l=>Number(l.lesson_number)<=40);await loadProgress();renderLessons();renderProgress();renderDashboard();applyLanguage(currentLang)}
+let signupMode=false;
+function setSignupMode(on){
+ signupMode=!!on;
+ show('signupFields',signupMode);
+ show('backToSignInBtn',signupMode);
+ show('signUpBtn',!signupMode);
+ show('forgotBtn',!signupMode);
+ $('submitBtn').textContent=signupMode?t('createAccount'):t('signIn');
+ $('password').autocomplete=signupMode?'new-password':'current-password';
+ $('fullName').required=signupMode;
+ $('studentCountry').required=signupMode;
+ $('authTitle').textContent=signupMode?t('createAccount'):t('studentPortal');
+ $('authCopy').textContent=signupMode?(currentLang==='en'?'Create your student account to request enrollment.':'Crie sua conta de aluno para solicitar matrícula.'):t('authCopy');
+ $('fullNameLabel').textContent=currentLang==='en'?'Full name':'Nome completo';
+ $('countryLabel').textContent=currentLang==='en'?'Country':'País';
+ $('studentCountry').placeholder=currentLang==='en'?'Country of residence':'País de residência';
+ $('backToSignInBtn').textContent=currentLang==='en'?'I already have an account':'Já tenho conta';
+ setStatus('');
+}
+$('signUpBtn').onclick=()=>setSignupMode(true);
+$('backToSignInBtn').onclick=()=>setSignupMode(false);
+$('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const email=$('email').value.trim(),password=$('password').value;
+ if(signupMode){
+  const fullName=$('fullName').value.trim().replace(/\\s+/g,' ');
+  const country=$('studentCountry').value.trim().replace(/\\s+/g,' ');
+  if(!fullName||!country||!email||password.length<8){setStatus(currentLang==='en'?'Enter your full name, country, email and a password of at least 8 characters.':'Informe nome completo, país, email e uma senha com pelo menos 8 caracteres.',true);return}
+  setStatus(t('creatingAccount'));
+  const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:'https://prayerandfire.org/academy.html',data:{full_name:fullName,country:country}}});
+  if(error){setStatus(error.message,true);return}
+  if(data.session){currentUser=data.user;setStatus('');await loadPortal();}
+  else{setSignupMode(false);setStatus(t('accountCreated'))}
+  return;
+ }
+ if(!email||!password){setStatus(t('enterCredentials'),true);return}
+ setStatus(t('signingIn'));
+ const {data,error}=await db.auth.signInWithPassword({email,password});
+ if(error){setStatus(error.message,true);return}
+ currentUser=data.user;setStatus('');await loadPortal();
+});
+$('forgotBtn').onclick=async()=>{const email=$('email').value.trim();if(!email){setStatus(t('enterEmailFirst'),true);$('email').focus();return}setStatus(t('sendingReset'));const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});if(error){setStatus(error.message,true);return}setStatus(t('checkEmail'))};
+$('togglePassword').onclick=()=>{const input=$('password'),showing=input.type==='text';input.type=showing?'password':'text';$('togglePassword').textContent=showing?t('show'):t('hide')};
+async function signOut(){await savePosition(true);await db.auth.signOut();location.reload()}
+$('signOutBtn').onclick=signOut;$('settingsSignOutBtn').onclick=signOut;
+$('settingsBtn').onclick=()=>{show('settingsPanel',true);$('settingsEmail').textContent=currentUser?.email||'';$('languageSelect').value=currentLang};$('closeSettingsBtn').onclick=()=>show('settingsPanel',false);$('settingsPanel').onclick=e=>{if(e.target===$('settingsPanel'))show('settingsPanel',false)};
+$('languageSelect').onchange=async e=>{await saveLanguagePreference(e.target.value);$('settingsStatus').textContent=t('saved');setTimeout(()=>$('settingsStatus').textContent='',1400)};
+$('resetPasswordBtn').onclick=async()=>{if(!currentUser?.email)return;$('settingsStatus').textContent=t('sendingReset');const {error}=await db.auth.resetPasswordForEmail(currentUser.email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});$('settingsStatus').textContent=error?error.message:t('resetSent')};
+const muxPlayer=$('muxPlayer');muxPlayer.addEventListener('timeupdate',()=>savePosition(false));muxPlayer.addEventListener('pause',()=>savePosition(true));window.addEventListener('pagehide',()=>savePosition(true));
+applyLanguage(currentLang);
+(async()=>{const {data:{session}}=await db.auth.getSession();if(session?.user){currentUser=session.user;await loadPortal()}})();+full+' USD or 
+  $('scholarshipForm').classList.add('hidden');
+ }else{
+  button.disabled=false;
+  button.textContent=currentLang==='en'?'Apply for Scholarship':'Solicitar bolsa de estudo';
+ }
+}
+$('applyScholarshipBtn')?.addEventListener('click',()=>{
+ const form=$('scholarshipForm');
+ if(!form||!currentUser)return;
+ $('scholarshipName').value=currentUser.user_metadata?.full_name||'';
+ $('scholarshipCountry').value=currentUser.user_metadata?.country||'';
+ scholarshipLocalize();form.classList.remove('hidden');
+ form.scrollIntoView({block:'start',behavior:'smooth'});
+});
+$('scholarshipForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();
+ if(!currentUser)return;
+ const button=$('submitScholarshipBtn'),status=$('scholarshipSubmitStatus');
+ const full_name=$('scholarshipName').value.trim(),country=$('scholarshipCountry').value.trim(),reason=$('scholarshipReason').value.trim(),requested_percent=Number($('scholarshipPercent').value);
+ if(full_name.length<2||country.length<2||reason.length<30||![50,80,100].includes(requested_percent)){status.textContent=currentLang==='en'?'Please complete all fields and explain your situation (at least 30 characters).':'Preencha todos os campos e explique sua situação (pelo menos 30 caracteres).';return}
+ button.disabled=true;status.textContent=currentLang==='en'?'Submitting...':'Enviando...';
+ const {error}=await db.from('abba_scholarship_applications').insert({user_id:currentUser.id,full_name,country,requested_percent,reason});
+ if(error){button.disabled=false;status.textContent=currentLang==='en'?'Could not submit your application. Please try again.':'Não foi possível enviar sua solicitação. Tente novamente.';console.warn('Scholarship submission failed',error);return}
+ status.textContent=currentLang==='en'?'Application submitted successfully.':'Solicitação enviada com sucesso.';
+ await scholarshipStatus();
+});
+async function loadPortal(){show('authView',false);show('portalView',true);show('signOutBtn',true);show('settingsBtn',true);$('settingsEmail').textContent=currentUser?.email||'';await loadLanguagePreference();const {data:courseData,error:courseErr}=await db.from('abba_courses').select('*').eq('slug','annual-program').single();if(courseErr){$('courseTitle').textContent='ABBA Academy';$('courseDescription').textContent=t('courseUnavailable');return}currentCourse=courseData;$('courseTitle').textContent=currentCourse.title;$('courseDescription').textContent=currentCourse.description||'';const {data:enrollment}=await db.from('abba_enrollments').select('*').eq('course_id',currentCourse.id).eq('user_id',currentUser.id).eq('status','active').maybeSingle();currentEnrollment=enrollment||null;$('courseAccessStatus').textContent=currentEnrollment?t('activeAccess'):t('inactiveAccess');if(!currentEnrollment){show('noEnrollment',true);show('courseArea',false);show('learningDashboard',false);renderLockedPreview();await scholarshipStatus();renderProgress();return}show('noEnrollment',false);show('courseArea',true);const {data:lessonData,error:lessonErr}=await db.from('abba_lessons').select('*').eq('course_id',currentCourse.id).eq('is_published',true).not('mux_playback_id','is',null).order('lesson_number');if(lessonErr){alert(lessonErr.message);return}lessons=(lessonData||[]).filter(l=>Number(l.lesson_number)<=40);await loadProgress();renderLessons();renderProgress();renderDashboard();applyLanguage(currentLang)}
+let signupMode=false;
+function setSignupMode(on){
+ signupMode=!!on;
+ show('signupFields',signupMode);
+ show('backToSignInBtn',signupMode);
+ show('signUpBtn',!signupMode);
+ show('forgotBtn',!signupMode);
+ $('submitBtn').textContent=signupMode?t('createAccount'):t('signIn');
+ $('password').autocomplete=signupMode?'new-password':'current-password';
+ $('fullName').required=signupMode;
+ $('studentCountry').required=signupMode;
+ $('authTitle').textContent=signupMode?t('createAccount'):t('studentPortal');
+ $('authCopy').textContent=signupMode?(currentLang==='en'?'Create your student account to request enrollment.':'Crie sua conta de aluno para solicitar matrícula.'):t('authCopy');
+ $('fullNameLabel').textContent=currentLang==='en'?'Full name':'Nome completo';
+ $('countryLabel').textContent=currentLang==='en'?'Country':'País';
+ $('studentCountry').placeholder=currentLang==='en'?'Country of residence':'País de residência';
+ $('backToSignInBtn').textContent=currentLang==='en'?'I already have an account':'Já tenho conta';
+ setStatus('');
+}
+$('signUpBtn').onclick=()=>setSignupMode(true);
+$('backToSignInBtn').onclick=()=>setSignupMode(false);
+$('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const email=$('email').value.trim(),password=$('password').value;
+ if(signupMode){
+  const fullName=$('fullName').value.trim().replace(/\\s+/g,' ');
+  const country=$('studentCountry').value.trim().replace(/\\s+/g,' ');
+  if(!fullName||!country||!email||password.length<8){setStatus(currentLang==='en'?'Enter your full name, country, email and a password of at least 8 characters.':'Informe nome completo, país, email e uma senha com pelo menos 8 caracteres.',true);return}
+  setStatus(t('creatingAccount'));
+  const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:'https://prayerandfire.org/academy.html',data:{full_name:fullName,country:country}}});
+  if(error){setStatus(error.message,true);return}
+  if(data.session){currentUser=data.user;setStatus('');await loadPortal();}
+  else{setSignupMode(false);setStatus(t('accountCreated'))}
+  return;
+ }
+ if(!email||!password){setStatus(t('enterCredentials'),true);return}
+ setStatus(t('signingIn'));
+ const {data,error}=await db.auth.signInWithPassword({email,password});
+ if(error){setStatus(error.message,true);return}
+ currentUser=data.user;setStatus('');await loadPortal();
+});
+$('forgotBtn').onclick=async()=>{const email=$('email').value.trim();if(!email){setStatus(t('enterEmailFirst'),true);$('email').focus();return}setStatus(t('sendingReset'));const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});if(error){setStatus(error.message,true);return}setStatus(t('checkEmail'))};
+$('togglePassword').onclick=()=>{const input=$('password'),showing=input.type==='text';input.type=showing?'password':'text';$('togglePassword').textContent=showing?t('show'):t('hide')};
+async function signOut(){await savePosition(true);await db.auth.signOut();location.reload()}
+$('signOutBtn').onclick=signOut;$('settingsSignOutBtn').onclick=signOut;
+$('settingsBtn').onclick=()=>{show('settingsPanel',true);$('settingsEmail').textContent=currentUser?.email||'';$('languageSelect').value=currentLang};$('closeSettingsBtn').onclick=()=>show('settingsPanel',false);$('settingsPanel').onclick=e=>{if(e.target===$('settingsPanel'))show('settingsPanel',false)};
+$('languageSelect').onchange=async e=>{await saveLanguagePreference(e.target.value);$('settingsStatus').textContent=t('saved');setTimeout(()=>$('settingsStatus').textContent='',1400)};
+$('resetPasswordBtn').onclick=async()=>{if(!currentUser?.email)return;$('settingsStatus').textContent=t('sendingReset');const {error}=await db.auth.resetPasswordForEmail(currentUser.email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});$('settingsStatus').textContent=error?error.message:t('resetSent')};
+const muxPlayer=$('muxPlayer');muxPlayer.addEventListener('timeupdate',()=>savePosition(false));muxPlayer.addEventListener('pause',()=>savePosition(true));window.addEventListener('pagehide',()=>savePosition(true));
+applyLanguage(currentLang);
+(async()=>{const {data:{session}}=await db.auth.getSession();if(session?.user){currentUser=session.user;await loadPortal()}})();+monthly+' USD/month for 10 months. Access remains locked until payment is confirmed.':' Bolsa concedida: '+pct+'%. Valor restante: US$ '+full+' ou US$ '+monthly+'/mês durante 10 meses. O acesso continua bloqueado até confirmação do pagamento.';
+  }else if(data.status==='approved'&&pct===100){
+   detail=currentLang==='en'?' Full scholarship approved. Access will activate after enrollment authorization is completed.':' Bolsa integral aprovada. O acesso será ativado após a autorização da matrícula.';
+  }else if(data.status==='pending'){
+   detail=currentLang==='en'?' Requested: '+data.requested_percent+'%. You will receive a decision after review.':' Solicitado: '+data.requested_percent+'%. Aguarde a análise.';
+  }
+  box.textContent=(currentLang==='en'?'Scholarship application: ':'Solicitação de bolsa: ')+statusText+'.'+detail;
   $('scholarshipForm').classList.add('hidden');
  }else{
   button.disabled=false;
