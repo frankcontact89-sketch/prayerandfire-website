@@ -1746,6 +1746,10 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 /* Remove leftover orange accents so statistics match burgundy/gold branding. */
 .heroStats strong,.statCard strong,.statCard h3,.heroStat strong,.metricNumber{color:#efc979!important}
 
+/* Donation access restored on phone and desktop. */
+.topCta.navBtn{display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap;min-height:42px}
+@media(max-width:960px){.headerRight{display:flex!important;align-items:center;gap:9px;order:2}.topCta.navBtn{display:inline-flex!important;padding:9px 13px!important;font-size:13px!important}}
+@media(max-width:640px){.topCta.navBtn{font-size:12px!important;padding:9px 11px!important}.langWrap select{font-size:12px!important}}
 /* Definitive mobile header and statistics fixes */
 .heroStats .stat strong{color:#f0c879!important}
 @media(max-width:960px){
