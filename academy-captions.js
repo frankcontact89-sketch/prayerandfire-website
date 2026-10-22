@@ -15,12 +15,17 @@ function applyTracks(){
  const player=el('muxPlayer');
  if(!player||typeof currentLesson==='undefined'||!currentLesson)return;
  let found=false;
+ // When Academy already draws timed captions, avoid displaying a second native Mux subtitle layer.
+ const lesson=currentLesson;
+ const customCues=selected==='en'
+  ? ['transcript_cues_en','english_transcript_cues','transcript_en_cues'].some(k=>Array.isArray(lesson?.[k])&&lesson[k].length>0)
+  : Array.isArray(lesson?.transcript_cues)&&lesson.transcript_cues.length>0;
  try{
   const tracks=player.textTracks;if(!tracks)return;
   for(let i=0;i<tracks.length;i++){
    const tr=tracks[i];if(!['subtitles','captions'].includes(tr.kind))continue;
    const isMatch=matching(tr,selected);
-   tr.mode=isMatch?'showing':'disabled';
+   tr.mode=customCues?'disabled':(isMatch?'showing':'disabled');
    if(isMatch)found=true;
   }
   if(found)setStatus(selected==='pt'?'Legendas em português ativadas ✓':'English subtitles enabled ✓');
