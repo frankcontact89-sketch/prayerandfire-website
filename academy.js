@@ -49,8 +49,49 @@ function renderLockedPreview(){
  const btn=$('applyScholarshipBtn');if(btn)btn.textContent=currentLang==='en'?'Apply for Scholarship':'Solicitar bolsa de estudo';
  const note=$('scholarshipInfo');if(note)note.textContent=currentLang==='en'?'Scholarship applications will be available here soon. No request has been submitted.':'As solicitações de bolsas estarão disponíveis aqui em breve. Nenhuma solicitação foi enviada.';
 }
-$('applyScholarshipBtn')?.addEventListener('click',()=>{const note=$('scholarshipInfo');if(note){note.classList.remove('hidden');note.scrollIntoView({block:'nearest',behavior:'smooth'})}});
-async function loadPortal(){show('authView',false);show('portalView',true);show('signOutBtn',true);show('settingsBtn',true);$('settingsEmail').textContent=currentUser?.email||'';await loadLanguagePreference();const {data:courseData,error:courseErr}=await db.from('abba_courses').select('*').eq('slug','annual-program').single();if(courseErr){$('courseTitle').textContent='ABBA Academy';$('courseDescription').textContent=t('courseUnavailable');return}currentCourse=courseData;$('courseTitle').textContent=currentCourse.title;$('courseDescription').textContent=currentCourse.description||'';const {data:enrollment}=await db.from('abba_enrollments').select('*').eq('course_id',currentCourse.id).eq('user_id',currentUser.id).eq('status','active').maybeSingle();currentEnrollment=enrollment||null;$('courseAccessStatus').textContent=currentEnrollment?t('activeAccess'):t('inactiveAccess');if(!currentEnrollment){show('noEnrollment',true);show('courseArea',false);show('learningDashboard',false);renderLockedPreview();renderProgress();return}show('noEnrollment',false);show('courseArea',true);const {data:lessonData,error:lessonErr}=await db.from('abba_lessons').select('*').eq('course_id',currentCourse.id).eq('is_published',true).not('mux_playback_id','is',null).order('lesson_number');if(lessonErr){alert(lessonErr.message);return}lessons=(lessonData||[]).filter(l=>Number(l.lesson_number)<=40);await loadProgress();renderLessons();renderProgress();renderDashboard();applyLanguage(currentLang)}
+function scholarshipLocalize(){
+ const en=currentLang==='en';
+ const copy={scholarshipFormTitle:en?'Scholarship application':'Solicitação de bolsa de estudo',scholarshipNameLabel:en?'Full name':'Nome completo',scholarshipCountryLabel:en?'Country':'País',scholarshipPercentLabel:en?'Scholarship requested':'Bolsa solicitada',scholarshipReasonLabel:en?'Why are you requesting financial assistance?':'Por que você está solicitando uma bolsa?',scholarshipConsent:en?'Your application will be reviewed. Submitting it does not unlock the course.':'Sua solicitação será analisada. O envio não libera o acesso ao curso.',submitScholarshipBtn:en?'Submit application':'Enviar solicitação'};
+ Object.entries(copy).forEach(([k,v])=>{const el=$(k);if(el)el.textContent=v});
+}
+async function scholarshipStatus(){
+ if(!currentUser)return;
+ scholarshipLocalize();
+ const {data,error}=await db.from('abba_scholarship_applications').select('status,requested_percent,approved_percent').eq('user_id',currentUser.id).maybeSingle();
+ const box=$('scholarshipInfo'),button=$('applyScholarshipBtn');
+ if(error){console.warn('Scholarship status error',error);return}
+ if(data){
+  button.disabled=true;button.textContent=currentLang==='en'?'Application submitted':'Solicitação enviada';
+  box.classList.remove('hidden');
+  const statusText=data.status==='pending'?(currentLang==='en'?'Pending review':'Aguardando análise'):data.status==='approved'?(currentLang==='en'?'Approved':'Aprovada'):(currentLang==='en'?'Not approved':'Não aprovada');
+  box.textContent=(currentLang==='en'?'Scholarship application: ':'Solicitação de bolsa: ')+statusText+'.';
+  $('scholarshipForm').classList.add('hidden');
+ }else{
+  button.disabled=false;
+  button.textContent=currentLang==='en'?'Apply for Scholarship':'Solicitar bolsa de estudo';
+ }
+}
+$('applyScholarshipBtn')?.addEventListener('click',()=>{
+ const form=$('scholarshipForm');
+ if(!form||!currentUser)return;
+ $('scholarshipName').value=currentUser.user_metadata?.full_name||'';
+ $('scholarshipCountry').value=currentUser.user_metadata?.country||'';
+ scholarshipLocalize();form.classList.remove('hidden');
+ form.scrollIntoView({block:'start',behavior:'smooth'});
+});
+$('scholarshipForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();
+ if(!currentUser)return;
+ const button=$('submitScholarshipBtn'),status=$('scholarshipSubmitStatus');
+ const full_name=$('scholarshipName').value.trim(),country=$('scholarshipCountry').value.trim(),reason=$('scholarshipReason').value.trim(),requested_percent=Number($('scholarshipPercent').value);
+ if(full_name.length<2||country.length<2||reason.length<30||![50,80,100].includes(requested_percent)){status.textContent=currentLang==='en'?'Please complete all fields and explain your situation (at least 30 characters).':'Preencha todos os campos e explique sua situação (pelo menos 30 caracteres).';return}
+ button.disabled=true;status.textContent=currentLang==='en'?'Submitting...':'Enviando...';
+ const {error}=await db.from('abba_scholarship_applications').insert({user_id:currentUser.id,full_name,country,requested_percent,reason});
+ if(error){button.disabled=false;status.textContent=currentLang==='en'?'Could not submit your application. Please try again.':'Não foi possível enviar sua solicitação. Tente novamente.';console.warn('Scholarship submission failed',error);return}
+ status.textContent=currentLang==='en'?'Application submitted successfully.':'Solicitação enviada com sucesso.';
+ await scholarshipStatus();
+});
+async function loadPortal(){show('authView',false);show('portalView',true);show('signOutBtn',true);show('settingsBtn',true);$('settingsEmail').textContent=currentUser?.email||'';await loadLanguagePreference();const {data:courseData,error:courseErr}=await db.from('abba_courses').select('*').eq('slug','annual-program').single();if(courseErr){$('courseTitle').textContent='ABBA Academy';$('courseDescription').textContent=t('courseUnavailable');return}currentCourse=courseData;$('courseTitle').textContent=currentCourse.title;$('courseDescription').textContent=currentCourse.description||'';const {data:enrollment}=await db.from('abba_enrollments').select('*').eq('course_id',currentCourse.id).eq('user_id',currentUser.id).eq('status','active').maybeSingle();currentEnrollment=enrollment||null;$('courseAccessStatus').textContent=currentEnrollment?t('activeAccess'):t('inactiveAccess');if(!currentEnrollment){show('noEnrollment',true);show('courseArea',false);show('learningDashboard',false);renderLockedPreview();await scholarshipStatus();renderProgress();return}show('noEnrollment',false);show('courseArea',true);const {data:lessonData,error:lessonErr}=await db.from('abba_lessons').select('*').eq('course_id',currentCourse.id).eq('is_published',true).not('mux_playback_id','is',null).order('lesson_number');if(lessonErr){alert(lessonErr.message);return}lessons=(lessonData||[]).filter(l=>Number(l.lesson_number)<=40);await loadProgress();renderLessons();renderProgress();renderDashboard();applyLanguage(currentLang)}
 let signupMode=false;
 function setSignupMode(on){
  signupMode=!!on;
