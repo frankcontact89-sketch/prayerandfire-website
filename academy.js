@@ -27,7 +27,31 @@ function renderModules(){const host=$('moduleGrid');host.innerHTML='';const grou
 function renderLessons(){const host=$('lessonList');if(!host)return;host.innerHTML='';$('lessonTotal').textContent=`${lessons.length} ${t('available')}`;lessons.forEach(l=>{const p=progressFor(l.id),b=document.createElement('button');b.className='lesson-btn'+(p?.completed?' done':'');b.dataset.lessonId=l.id;b.innerHTML=`<span class="num">${p?.completed?'✓':l.lesson_number}</span><span><strong>${l.title}</strong><small>${p?.completed?t('completed'):(p?.last_position_seconds>15?t('inProgress'):(l.duration_minutes?l.duration_minutes+' min':t('lessonWord')+' '+l.lesson_number))}</small></span><span class="check">${p?.completed?t('completed'):''}</span>`;b.onclick=()=>openLesson(l,true);host.appendChild(b)})}
 function openLessonById(id,scroll=false){const l=lessons.find(x=>x.id===id);if(l)openLesson(l,scroll)}
 async function enrichLessonContent(l){try{const {data:{session}}=await db.auth.getSession();if(!session)return;const r=await fetch(`${SUPABASE_URL}/functions/v1/abba-lesson-content`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${session.access_token}`,'apikey':SUPABASE_KEY},body:JSON.stringify({lesson_id:l.id})});if(!r.ok)return;const j=await r.json();Object.assign(l,{transcript:j.transcript??l.transcript,transcript_cues:j.transcript_cues??l.transcript_cues,summary:j.summary??l.summary,key_points:j.key_points??l.key_points});}catch{}}
-async function openLesson(l,scroll=false){currentLesson=l;show('dashboardView',false);show('lessonView',true);$('lessonNumber').textContent=`${t('lessonWord')} ${l.lesson_number}`;$('lessonDuration').textContent=l.duration_minutes?`${l.duration_minutes} ${t('minutes')}`:'';$('lessonTitle').textContent=l.title;$('lessonDescription').textContent=l.description||'';const player=$('muxPlayer');player.setAttribute('playback-id',l.mux_playback_id);const p=progressFor(l.id);setTimeout(()=>{if(p?.last_position_seconds>15&&!p.completed){try{player.currentTime=p.last_position_seconds}catch{}}},700);$('completeBtn').textContent=p?.completed?t('completed'):t('complete');$('completeBtn').disabled=!!p?.completed;$('completeBtn').onclick=()=>markComplete(l.id);const idx=lessons.indexOf(l),next=lessons[idx+1];show('nextBtn',!!next);if(next)$('nextBtn').onclick=()=>openLessonById(next.id,true);renderLessonResources(l);await Promise.all([loadNote(l.id),enrichLessonContent(l)]);renderLessonResources(l);if(scroll)window.scrollTo({top:0,behavior:'smooth'});else window.scrollTo(0,0)}
+async function openLesson(l,scroll=false){currentLesson=l;abbaStage=1;show('dashboardView',false);show('lessonView',true);$('lessonNumber').textContent=`${t('lessonWord')} ${l.lesson_number}`;$('lessonDuration').textContent=l.duration_minutes?`${l.duration_minutes} ${t('minutes')}`:'';$('lessonTitle').textContent=l.title;$('lessonDescription').textContent=l.description||'';const player=$('muxPlayer');player.setAttribute('playback-id',l.mux_playback_id);const p=progressFor(l.id);setTimeout(()=>{if(p?.last_position_seconds>15&&!p.completed){try{player.currentTime=p.last_position_seconds}catch{}}},700);$('completeBtn').textContent=p?.completed?t('completed'):t('complete');$('completeBtn').disabled=!!p?.completed;$('completeBtn').onclick=()=>markComplete(l.id);const idx=lessons.indexOf(l),next=lessons[idx+1];show('nextBtn',!!next);if(next)$('nextBtn').onclick=()=>openLessonById(next.id,true);renderLessonResources(l);abbaSetStage(1);await Promise.all([loadNote(l.id),enrichLessonContent(l)]);renderLessonResources(l);if(scroll)window.scrollTo({top:0,behavior:'smooth'});else window.scrollTo(0,0)}
+/* Video and optional follow-up are separate steps of one lesson. */
+let abbaStage=1;
+function abbaStageLabels(){const en=currentLang==='en';return {back:en?'← Back':'← Voltar',next:en?'Next →':'Próximo →',finish:en?'Complete lesson':'Concluir aula',title:en?'After the video':'Após o vídeo',copy:en?'Listen to Aline’s explanation when available, or choose the optional AI conversation.':'Ouça a explicação de Aline quando disponível, ou escolha a conversa opcional com AI.',audio:en?'Aline’s explanation':'Explicação de Aline',skip:en?'Skip AI conversation (optional)':'Pular conversa com AI (opcional)',skipped:en?'AI conversation skipped. You can complete the lesson.':'Conversa com AI pulada. Você pode concluir a aula.'}}
+function abbaSetStage(stage){
+ abbaStage=stage===2?2:1;
+ const en=abbaStageLabels(),follow=$('abbaFollowup');
+ if(!follow)return;
+ show('videoWrap',abbaStage===1);show('abbaFollowup',abbaStage===2);
+ document.querySelectorAll('.lesson-tabs,.tab-panel').forEach(el=>{if(abbaStage===2)el.classList.add('abba-stage-hidden');else el.classList.remove('abba-stage-hidden')});
+ const toolbar=document.querySelector('.lesson-toolbar');if(toolbar)toolbar.classList.toggle('abba-stage-hidden',abbaStage===1);
+ $('abbaStageBack').textContent=en.back;
+ $('abbaStageNext').textContent=abbaStage===1?en.next:en.finish;
+ $('abbaStagePosition').textContent=abbaStage+' / 2';
+ $('abbaFollowupTitle').textContent=en.title;$('abbaFollowupCopy').textContent=en.copy;
+ $('abbaAudioTitle').textContent=en.audio;$('abbaSkipCoach').textContent=en.skip;
+ $('abbaStageBack').onclick=()=>{if(abbaStage===2)abbaSetStage(1);else $('backDashboardBtn').click()};
+ $('abbaStageNext').onclick=async()=>{if(abbaStage===1){try{$('muxPlayer').pause()}catch{};abbaSetStage(2)}else{if(!progressFor(currentLesson.id)?.completed)await markComplete(currentLesson.id);if(progressFor(currentLesson.id)?.completed)$('backDashboardBtn').click()}};
+ const audioUrl=currentLesson?.aline_audio_url||currentLesson?.reflection_audio_url||'';
+ show('abbaAlineAudio',abbaStage===2&&/^https:\/\//.test(audioUrl));
+ if(audioUrl&&/^https:\/\//.test(audioUrl)&&$('abbaAlinePlayer').src!==audioUrl)$('abbaAlinePlayer').src=audioUrl;
+ const coach=document.getElementById('abbaAiCoach');if(coach){coach.classList.toggle('abba-stage-hidden',abbaStage!==2)}
+ if(abbaStage===2)window.dispatchEvent(new Event('abba-followup-open'));
+ $('abbaSkipCoach').onclick=()=>{const coach=document.getElementById('abbaAiCoach');if(coach)coach.classList.add('abba-stage-hidden');$('abbaFollowupStatus').textContent=en.skipped;};
+}
 function fmtCue(seconds){const s=Math.max(0,Math.floor(Number(seconds)||0)),m=Math.floor(s/60),r=String(s%60).padStart(2,'0');return `${m}:${r}`}
 /* Shared transcript row actions (also used by translated English cues). */
 window.abbaTranscriptRow=(c,stamp,play)=>{
