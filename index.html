@@ -8,7 +8,7 @@
     content="width=device-width,initial-scale=1,viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#ff5a1f">
+  <meta name="theme-color" content="#650820">
 
   <title>Prayer & Fire – Global Movement</title>
 
@@ -81,13 +81,13 @@
 <style>
 
 :root{
-  --bg:#040507;
-  --panel:#090b0f;
-  --card:#111318;
-  --text:#fff7ee;
-  --muted:#b9bcc7;
-  --orange:#ff5a1f;
-  --orange2:#ff8a22;
+  --bg:#19040c;
+  --panel:#270713;
+  --card:#350b1b;
+  --text:#fff8ef;
+  --muted:#e0c9cd;
+  --orange:#e8bc68;
+  --orange2:#f5d78a;
   --green:#22c55e;
   --red:#ef4444;
   --border:rgba(255,255,255,.13);
@@ -108,14 +108,14 @@ body{
   background:
     radial-gradient(
       900px 500px at 75% 0%,
-      rgba(255,90,31,.18),
+      rgba(232,188,104,.18),
       transparent 60%
     ),
     linear-gradient(
       180deg,
-      #050608,
-      #090b0f 45%,
-      #040507
+      #19040c,
+      #260713 45%,
+      #140309
     );
 
   color:var(--text);
@@ -169,7 +169,7 @@ img{
   top:0;
   z-index:50;
 
-  background:rgba(4,5,7,.91);
+  background:rgba(40,6,18,.95);
 
   border-bottom:1px solid rgba(255,255,255,.09);
 
@@ -215,13 +215,13 @@ img{
 
   overflow:hidden;
 
-  background:rgba(255,90,31,.12);
+  background:rgba(232,188,104,.12);
 
-  border:1px solid rgba(255,90,31,.38);
+  border:1px solid rgba(232,188,104,.38);
 
   box-shadow:
     0 0 24px
-    rgba(255,90,31,.18);
+    rgba(232,188,104,.18);
 }
 
 .brandLogo img{
@@ -258,7 +258,7 @@ img{
 
   text-transform:uppercase;
 
-  color:#ffb283;
+  color:#edcb86;
 
   font-weight:900;
 }
@@ -382,7 +382,7 @@ img{
     linear-gradient(
       135deg,
       var(--orange),
-      #ff7a1f
+      #c99242
     );
 
   padding:12px 18px;
@@ -425,7 +425,7 @@ img{
   background:
     radial-gradient(
       650px 280px at 22% 0%,
-      rgba(255,90,31,.16),
+      rgba(232,188,104,.16),
       transparent 70%
     );
 }
@@ -462,7 +462,7 @@ img{
 .eyebrow{
   display:inline-flex;
 
-  color:#ff7a1f;
+  color:#c99242;
 
   text-transform:uppercase;
 
@@ -567,7 +567,7 @@ img{
 
   box-shadow:
     0 16px 38px
-    rgba(255,90,31,.28);
+    rgba(232,188,104,.28);
 }
 
 .btn:hover,
@@ -605,7 +605,7 @@ img{
       rgba(4,5,7,.05),
       rgba(4,5,7,.95)
     ),
-    #050608;
+    #19040c;
 
   background-size:cover;
 
@@ -700,7 +700,7 @@ img{
 
   place-items:center;
 
-  border:3px solid #ff8a22;
+  border:3px solid #f5d78a;
 
   font-size:23px;
 }
@@ -825,7 +825,7 @@ img{
 
   box-shadow:
     0 12px 26px
-    rgba(255,90,31,.32);
+    rgba(232,188,104,.32);
 }
 
 
@@ -853,7 +853,7 @@ img{
 .galleryFilter.active{
   border-color:transparent;
   background:linear-gradient(135deg,var(--orange),#ff7b21);
-  box-shadow:0 12px 30px rgba(255,90,31,.22);
+  box-shadow:0 12px 30px rgba(232,188,104,.22);
 }
 
 .galleryGrid{
@@ -884,7 +884,7 @@ img{
 
   cursor:pointer;
 
-  background:#090b0f;
+  background:#260713;
 }
 
 .galleryImage img{
@@ -1124,7 +1124,7 @@ img{
 
   border:
     3px solid
-    rgba(255,90,31,.75);
+    rgba(232,188,104,.75);
 
   background:#07080b;
 }
@@ -1140,7 +1140,7 @@ img{
 }
 
 .leaderRole{
-  color:#ff8a22;
+  color:#f5d78a;
 
   font-weight:950;
 }
@@ -1219,7 +1219,7 @@ textarea.field{
 }
 
 .status{
-  color:#ffb283;
+  color:#edcb86;
 
   font-size:13px;
 }
@@ -1511,7 +1511,7 @@ textarea.field{
   padding:
     36px 22px 20px;
 
-  background:#050608;
+  background:#19040c;
 }
 
 .footerInner{
@@ -1640,7 +1640,7 @@ textarea.field{
         rgba(4,5,7,.65),
         rgba(4,5,7,.98)
       ),
-      #050608;
+      #19040c;
 
     background-size:cover;
     background-position:center;
@@ -1714,6 +1714,15 @@ textarea.field{
 
 }
 
+
+/* Prayer & Fire burgundy and gold brand refresh */
+body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transparent 65%),linear-gradient(180deg,#330819,#1b040c 65%,#130207);color:#fff8ef}
+.topbar{background:rgba(43,5,20,.96);border-bottom-color:rgba(237,203,134,.24)}
+.nav button{color:#fff3e7}
+.brandTitle span{color:#f3cf83}
+.topCta,.primaryBtn,.supportBtn.primaryBtn{background:linear-gradient(135deg,#f5d78a,#c78d39)!important;color:#35101b!important;border-color:#d6a75a!important}
+.topCta:hover,.primaryBtn:hover{filter:brightness(1.08)}
+.nav button:focus-visible,.topCta:focus-visible,a:focus-visible{outline:3px solid #f5d78a;outline-offset:3px}
 </style>
 </head>
 
