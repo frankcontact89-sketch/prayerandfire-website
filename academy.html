@@ -54,6 +54,7 @@ header{background:#590f21!important}
 <p>Register for an ABBA Academy account. <strong>Creating an account does not grant access to lessons yet.</strong></p>
 <div class="notice">Pre-registration open · Classes not yet available · Starts February 2027</div>
 <form id="form"><label for="fullName">Full name<input id="fullName" name="name" autocomplete="name" maxlength="120" required></label>
+<label for="country">Country<input id="country" name="country" autocomplete="country-name" maxlength="80" required></label>
 <label for="email">Email address<input id="email" type="email" name="email" autocomplete="email" autocapitalize="none" required></label>
 <label for="password">Password (minimum 8 characters)<input id="password" type="password" name="new-password" autocomplete="new-password" minlength="8" required></label>
 <label for="confirmPassword">Confirm password<input id="confirmPassword" type="password" name="confirm-password" autocomplete="new-password" minlength="8" required></label><p id="passwordMatchStatus" class="small" role="status"></p><label class="abba-personal-account" for="personalAccount"><input id="personalAccount" type="checkbox" required><span id="personalAccountText">I understand that this account is personal, must not be shared, and that each student needs their own registration.</span></label><button type="submit" id="submit">Create pre-registration account</button><p class="small" id="abbaPrivacy">Registration information is used to manage your ABBA Academy account. <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms</a></p><p id="status" role="status" aria-live="polite"></p></form>
@@ -74,7 +75,7 @@ put(info.querySelector('.eyebrow'),t[0]);put(info.querySelector('h1'),t[1]);put(
 put(form.querySelector('.eyebrow'),t[5]);put(form.querySelector('h2'),t[6]);
 const description=form.querySelector('p');description.textContent=t[7]+' ';const bold=document.createElement('strong');bold.textContent=t[8];description.appendChild(bold);
 put(form.querySelector('.notice'),t[9]);['fullName','email','password'].forEach((id,i)=>put(form.querySelector('label[for="'+id+'"]').firstChild,t[i+10]));
-put(document.querySelector('label[for="confirmPassword"]').firstChild,lang==='pt'?'Confirmar senha':lang==='es'?'Confirmar contraseña':'Confirm password');put(document.getElementById('abbaPrivacy').firstChild,lang==='pt'?'Os dados do cadastro são usados para administrar sua conta na ABBA Academy. ':lang==='es'?'Los datos de registro se utilizan para administrar tu cuenta de ABBA Academy. ':'Registration information is used to manage your ABBA Academy account. ');put(document.getElementById('personalAccountText'),lang==='pt'?'Entendo que esta conta é pessoal, não deve ser compartilhada e cada estudante precisa de sua própria inscrição.':lang==='es'?'Entiendo que esta cuenta es personal, no debe compartirse y cada estudiante necesita su propia inscripción.':'I understand that this account is personal, must not be shared, and that each student needs their own registration.');put(document.getElementById('submit'),t[13]);put(form.querySelector('.small'),t[14]);window.abbaRegistrationMessages={creating:t[15],success:t[16],error:t[17]};
+put(document.querySelector('label[for="country"]').firstChild,lang==='pt'?'País':lang==='es'?'País':'Country');put(document.querySelector('label[for="confirmPassword"]').firstChild,lang==='pt'?'Confirmar senha':lang==='es'?'Confirmar contraseña':'Confirm password');put(document.getElementById('abbaPrivacy').firstChild,lang==='pt'?'Os dados do cadastro são usados para administrar sua conta na ABBA Academy. ':lang==='es'?'Los datos de registro se utilizan para administrar tu cuenta de ABBA Academy. ':'Registration information is used to manage your ABBA Academy account. ');put(document.getElementById('personalAccountText'),lang==='pt'?'Entendo que esta conta é pessoal, não deve ser compartilhada e cada estudante precisa de sua própria inscrição.':lang==='es'?'Entiendo que esta cuenta es personal, no debe compartirse y cada estudiante necesita su propia inscripción.':'I understand that this account is personal, must not be shared, and that each student needs their own registration.');put(document.getElementById('submit'),t[13]);put(form.querySelector('.small'),t[14]);window.abbaRegistrationMessages={creating:t[15],success:t[16],error:t[17]};
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -85,15 +86,16 @@ const form=document.getElementById('form'),status=document.getElementById('statu
 form.addEventListener('submit',async event=>{
  event.preventDefault();
  const fullName=document.getElementById('fullName').value.trim();
+ const country=document.getElementById('country').value.trim();
  const email=document.getElementById('email').value.trim();
  const password=document.getElementById('password').value;
  const confirm=document.getElementById('confirmPassword').value;
  if(password!==confirm){document.getElementById('passwordMatchStatus').textContent=document.documentElement.lang==='pt'?'As senhas não coincidem.':document.documentElement.lang==='es'?'Las contraseñas no coinciden.':'Passwords do not match.';return}
  document.getElementById('passwordMatchStatus').textContent='';
- if(!fullName||password.length<8)return;
+ if(!fullName||!country||password.length<8)return;
  btn.disabled=true;status.textContent=window.abbaRegistrationMessages.creating;
  try{
-   const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:fullName,academy_pre_registration:true,academy_course:'Formación de Liderazgo Ministerial en Teología Profunda',preferred_language:document.documentElement.lang,academy_start:'2027-02',personal_account_agreed:true},emailRedirectTo:'https://prayerandfire.org/academy.html'}});
+   const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:fullName,country,academy_pre_registration:true,academy_course:'Formación de Liderazgo Ministerial en Teología Profunda',preferred_language:document.documentElement.lang,academy_start:'2027-02',personal_account_agreed:true},emailRedirectTo:'https://prayerandfire.org/academy.html'}});
    if(error)throw error;
    await client.auth.signOut().catch(()=>{});
    status.textContent=window.abbaRegistrationMessages.success;
