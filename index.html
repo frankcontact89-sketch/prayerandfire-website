@@ -1771,6 +1771,12 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 /* Crop stray lettering at the bottom of the golden flame icon. */
 .brandLogo{overflow:hidden!important;isolation:isolate}
 .brandLogo img{display:block!important;width:118%!important;height:118%!important;max-width:none!important;object-fit:cover!important;object-position:center 40%!important;padding:0!important;transform:translate(-7.6%,-11%)!important}
+
+/* Clean typographic statistics: no decorative emoji badges. */
+.heroStats .stat{justify-content:center;text-align:center}
+.heroStats .stat>div{min-width:0}
+.heroStats .stat strong{font-size:clamp(30px,5vw,48px);line-height:1.1}
+.heroStats .stat span{display:block;margin-top:8px}
 </style>
 </head>
 
@@ -1937,9 +1943,7 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 
         <div class="stat">
 
-          <div class="statIcon">
-            🌎
-          </div>
+          
 
           <div>
 
@@ -1960,9 +1964,7 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 
         <div class="stat">
 
-          <div class="statIcon">
-            ⛪
-          </div>
+          
 
           <div>
 
@@ -1983,9 +1985,7 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 
         <div class="stat">
 
-          <div class="statIcon">
-            🔥
-          </div>
+          
 
           <div>
 
