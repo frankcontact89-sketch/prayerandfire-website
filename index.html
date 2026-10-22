@@ -1780,6 +1780,17 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 
 /* Hide any cached/decorative badges inside statistics and impact cards. */
 .heroStats .statIcon,.impactCard .impactIcon{display:none!important}
+
+/* ABBA Academy early-registration ticker, immediately below site navigation. */
+.abba-announcement{display:block;position:relative;overflow:hidden;width:100%;background:#390817;border-top:1px solid rgba(232,188,104,.42);border-bottom:1px solid rgba(232,188,104,.42);text-decoration:none;color:#f3cb77;padding:12px 0}
+.abba-announcement:hover{background:#4b0d21}
+.abba-announcement:focus-visible{outline:3px solid #f6d990;outline-offset:-3px}
+.abba-announcement-track{display:flex;align-items:center;width:max-content;animation:abbaTickerSlide 32s linear infinite;will-change:transform}
+.abba-announcement-part{flex:none;display:inline-block;padding-right:64px;font-size:14px;letter-spacing:.09em;font-weight:850;white-space:nowrap}
+@keyframes abbaTickerSlide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.abba-announcement:hover .abba-announcement-track,.abba-announcement:focus-visible .abba-announcement-track{animation-play-state:paused}
+@media(max-width:640px){.abba-announcement{padding:11px 0}.abba-announcement-part{font-size:12px;padding-right:42px}}
+@media(prefers-reduced-motion:reduce){.abba-announcement-track{animation:none;width:auto}.abba-announcement-part{white-space:normal;padding:0 16px}.abba-announcement-part[aria-hidden="true"]{display:none}}
 </style>
 </head>
 
@@ -1909,6 +1920,30 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
   </div>
 
 </header>
+<a class="abba-announcement" href="/academy.html" aria-label="ABBA Academy early registration">
+  <div class="abba-announcement-track">
+    <span class="abba-announcement-part" id="abbaAnnouncementText">✦ ABBA ACADEMY · PRE-REGISTRATION OPEN · ADVANCED THEOLOGY AND MINISTERIAL LEADERSHIP TRAINING · STARTING FEBRUARY 2027 · TAP TO REGISTER ✦</span>
+    <span class="abba-announcement-part" id="abbaAnnouncementRepeat" aria-hidden="true">✦ ABBA ACADEMY · PRE-REGISTRATION OPEN · ADVANCED THEOLOGY AND MINISTERIAL LEADERSHIP TRAINING · STARTING FEBRUARY 2027 · TAP TO REGISTER ✦</span>
+  </div>
+</a>
+<script>
+(function(){
+ const messages={
+  en:'✦ ABBA ACADEMY · PRE-REGISTRATION OPEN · ADVANCED THEOLOGY AND MINISTERIAL LEADERSHIP TRAINING · STARTING FEBRUARY 2027 · TAP TO REGISTER ✦',
+  pt:'✦ ABBA ACADEMY · PRÉ-INSCRIÇÕES ABERTAS · FORMAÇÃO DE LIDERANÇA MINISTERIAL EM TEOLOGIA APROFUNDADA · INÍCIO EM FEVEREIRO DE 2027 · TOQUE PARA SE INSCREVER ✦',
+  es:'✦ ABBA ACADEMY · PREINSCRIPCIONES ABIERTAS · FORMACIÓN DE LIDERAZGO MINISTERIAL EN TEOLOGÍA PROFUNDA · INICIO EN FEBRERO DE 2027 · TOCA PARA INSCRIBIRTE ✦'
+ };
+ function update(){
+  let lang=document.getElementById('langSelect')?.value||document.documentElement.lang||'en';
+  if(!messages[lang])lang='en';
+  document.getElementById('abbaAnnouncementText').textContent=messages[lang];
+  document.getElementById('abbaAnnouncementRepeat').textContent=messages[lang];
+  document.querySelector('.abba-announcement').setAttribute('aria-label',lang==='pt'?'Pré-inscrições ABBA Academy':lang==='es'?'Preinscripciones ABBA Academy':'ABBA Academy pre-registration');
+ }
+ document.getElementById('langSelect')?.addEventListener('change',update);
+ update();
+})();
+</script>
 
 
 <main>
