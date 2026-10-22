@@ -39,8 +39,47 @@ async function markComplete(lessonId){const payload={user_id:currentUser.id,less
 async function savePosition(force=false){if(!currentUser||!currentLesson)return;const player=$('muxPlayer');let seconds=0;try{seconds=Math.floor(player.currentTime||0)}catch{return}if(seconds<1)return;if(!force&&Math.abs(seconds-lastSavedPosition)<15)return;lastSavedPosition=seconds;const existing=progressFor(currentLesson.id);const payload={user_id:currentUser.id,lesson_id:currentLesson.id,completed:!!existing?.completed,watched_seconds:Math.max(existing?.watched_seconds||0,seconds),last_position_seconds:seconds,updated_at:new Date().toISOString()};await db.from('abba_lesson_progress').upsert(payload,{onConflict:'user_id,lesson_id'});const local=progressFor(currentLesson.id);if(local){local.last_position_seconds=seconds;local.watched_seconds=payload.watched_seconds}else progressRows.push({...payload});renderDashboard()}
 async function loadProgress(){const ids=lessons.map(x=>x.id);if(!ids.length){progressRows=[];return}const {data,error}=await db.from('abba_lesson_progress').select('*').in('lesson_id',ids);if(error)throw error;progressRows=data||[]}
 async function loadPortal(){show('authView',false);show('portalView',true);show('signOutBtn',true);show('settingsBtn',true);$('settingsEmail').textContent=currentUser?.email||'';await loadLanguagePreference();const {data:courseData,error:courseErr}=await db.from('abba_courses').select('*').eq('slug','annual-program').single();if(courseErr){$('courseTitle').textContent='ABBA Academy';$('courseDescription').textContent=t('courseUnavailable');return}currentCourse=courseData;$('courseTitle').textContent=currentCourse.title;$('courseDescription').textContent=currentCourse.description||'';const {data:enrollment}=await db.from('abba_enrollments').select('*').eq('course_id',currentCourse.id).eq('user_id',currentUser.id).eq('status','active').maybeSingle();currentEnrollment=enrollment||null;$('courseAccessStatus').textContent=currentEnrollment?t('activeAccess'):t('inactiveAccess');if(!currentEnrollment){show('noEnrollment',true);show('courseArea',false);show('learningDashboard',false);renderProgress();return}show('noEnrollment',false);show('courseArea',true);const {data:lessonData,error:lessonErr}=await db.from('abba_lessons').select('*').eq('course_id',currentCourse.id).eq('is_published',true).not('mux_playback_id','is',null).order('lesson_number');if(lessonErr){alert(lessonErr.message);return}lessons=(lessonData||[]).filter(l=>Number(l.lesson_number)<=40);await loadProgress();renderLessons();renderProgress();renderDashboard();applyLanguage(currentLang)}
-$('authForm').addEventListener('submit',async e=>{e.preventDefault();setStatus(t('signingIn'));const email=$('email').value.trim(),password=$('password').value;if(!email||!password){setStatus(t('enterCredentials'),true);return}const {data,error}=await db.auth.signInWithPassword({email,password});if(error){setStatus(error.message,true);return}currentUser=data.user;setStatus('');await loadPortal()});
-$('signUpBtn').onclick=async()=>{const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<8){setStatus(t('enterEmailPassword'),true);return}setStatus(t('creatingAccount'));const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:'https://prayerandfire.org/academy.html'}});if(error){setStatus(error.message,true);return}if(data.session){currentUser=data.user;setStatus('');await loadPortal()}else setStatus(t('accountCreated'))};
+let signupMode=false;
+function setSignupMode(on){
+ signupMode=!!on;
+ show('signupFields',signupMode);
+ show('backToSignInBtn',signupMode);
+ show('signUpBtn',!signupMode);
+ show('forgotBtn',!signupMode);
+ $('submitBtn').textContent=signupMode?t('createAccount'):t('signIn');
+ $('password').autocomplete=signupMode?'new-password':'current-password';
+ $('fullName').required=signupMode;
+ $('studentCountry').required=signupMode;
+ $('authTitle').textContent=signupMode?t('createAccount'):t('studentPortal');
+ $('authCopy').textContent=signupMode?(currentLang==='en'?'Create your student account to request enrollment.':'Crie sua conta de aluno para solicitar matrícula.'):t('authCopy');
+ $('fullNameLabel').textContent=currentLang==='en'?'Full name':'Nome completo';
+ $('countryLabel').textContent=currentLang==='en'?'Country':'País';
+ $('studentCountry').placeholder=currentLang==='en'?'Country of residence':'País de residência';
+ $('backToSignInBtn').textContent=currentLang==='en'?'I already have an account':'Já tenho conta';
+ setStatus('');
+}
+$('signUpBtn').onclick=()=>setSignupMode(true);
+$('backToSignInBtn').onclick=()=>setSignupMode(false);
+$('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const email=$('email').value.trim(),password=$('password').value;
+ if(signupMode){
+  const fullName=$('fullName').value.trim().replace(/\\s+/g,' ');
+  const country=$('studentCountry').value.trim().replace(/\\s+/g,' ');
+  if(!fullName||!country||!email||password.length<8){setStatus(currentLang==='en'?'Enter your full name, country, email and a password of at least 8 characters.':'Informe nome completo, país, email e uma senha com pelo menos 8 caracteres.',true);return}
+  setStatus(t('creatingAccount'));
+  const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:'https://prayerandfire.org/academy.html',data:{full_name:fullName,country:country}}});
+  if(error){setStatus(error.message,true);return}
+  if(data.session){currentUser=data.user;setStatus('');await loadPortal();}
+  else{setSignupMode(false);setStatus(t('accountCreated'))}
+  return;
+ }
+ if(!email||!password){setStatus(t('enterCredentials'),true);return}
+ setStatus(t('signingIn'));
+ const {data,error}=await db.auth.signInWithPassword({email,password});
+ if(error){setStatus(error.message,true);return}
+ currentUser=data.user;setStatus('');await loadPortal();
+});
 $('forgotBtn').onclick=async()=>{const email=$('email').value.trim();if(!email){setStatus(t('enterEmailFirst'),true);$('email').focus();return}setStatus(t('sendingReset'));const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});if(error){setStatus(error.message,true);return}setStatus(t('checkEmail'))};
 $('togglePassword').onclick=()=>{const input=$('password'),showing=input.type==='text';input.type=showing?'password':'text';$('togglePassword').textContent=showing?t('show'):t('hide')};
 async function signOut(){await savePosition(true);await db.auth.signOut();location.reload()}
