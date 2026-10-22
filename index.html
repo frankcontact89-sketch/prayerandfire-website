@@ -1777,6 +1777,9 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 .heroStats .stat>div{min-width:0}
 .heroStats .stat strong{font-size:clamp(30px,5vw,48px);line-height:1.1}
 .heroStats .stat span{display:block;margin-top:8px}
+
+/* Hide any cached/decorative badges inside statistics and impact cards. */
+.heroStats .statIcon,.impactCard .impactIcon{display:none!important}
 </style>
 </head>
 
@@ -5136,10 +5139,6 @@ async function loadImpact(){
         article.innerHTML = `
 
           <div class="impactBody">
-
-            <div class="impactIcon">
-              ${esc(item.icon || "🔥")}
-            </div>
 
             <h3>
               ${esc(item.title || "")}
