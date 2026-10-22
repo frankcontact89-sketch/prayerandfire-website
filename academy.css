@@ -42,13 +42,14 @@ button:disabled{cursor:not-allowed;opacity:.66}
 }
 @media(prefers-reduced-motion:reduce){.primary,.secondary,.module-card{transition:none}}
 
-/* Transcript excerpts can be added to the student's existing lesson notes. */
-.transcript-list .abba-add-transcript-note{
- display:block;width:max-content;max-width:100%;margin:-4px 8px 12px 72px;
- border:1px solid #c3d6ee;border-radius:9px;background:#eef6ff;
- color:#114d98;font:inherit;font-size:12px;font-weight:800;
- padding:7px 11px;cursor:pointer;text-align:left;
-}
-.transcript-list .abba-add-transcript-note:hover{background:#daeaff}
-.transcript-list .abba-add-transcript-note:focus-visible{outline:3px solid #e3b459;outline-offset:2px}
-@media(max-width:600px){.transcript-list .abba-add-transcript-note{margin-left:57px;font-size:12px}}
+
+/* Compact transcript actions: one three-dot menu next to each cue. */
+.abba-cue-line{display:grid;grid-template-columns:minmax(0,1fr) 42px;align-items:start;position:relative;gap:2px;border-radius:10px}
+.abba-cue-line .transcript-row{min-width:0}
+.abba-cue-dots{border:1px solid #c6d7e8;background:#f2f7ff;color:#153e72;border-radius:10px;min-width:38px;height:38px;cursor:pointer;font-weight:900;font-size:24px;line-height:1;margin-top:5px}
+.abba-cue-dots:hover,.abba-cue-dots[aria-expanded="true"]{background:#dfedff;border-color:#1965b5}
+.abba-cue-dots:focus-visible,.abba-cue-menu button:focus-visible{outline:3px solid #e3b459;outline-offset:2px}
+.abba-cue-menu{position:absolute;right:2px;top:43px;z-index:15;width:190px;background:#fff;box-shadow:0 10px 26px rgba(6,28,54,.19);border:1px solid #b9cadb;border-radius:12px;padding:5px;display:grid;gap:2px}
+.abba-cue-menu[hidden]{display:none!important}
+.abba-cue-menu button{width:100%;border:0;background:#fff;border-radius:8px;text-align:left;color:#142d4c;font:inherit;font-weight:700;padding:11px;cursor:pointer}
+.abba-cue-menu button:hover{background:#eaf3ff}
