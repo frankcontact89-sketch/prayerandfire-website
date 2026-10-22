@@ -37,7 +37,7 @@ function abbaSetStage(stage){
  if(!follow)return;
  show('videoWrap',abbaStage===1);show('abbaFollowup',abbaStage===2);
  document.querySelectorAll('.lesson-tabs,.tab-panel').forEach(el=>{if(abbaStage===2)el.classList.add('abba-stage-hidden');else el.classList.remove('abba-stage-hidden')});
- const toolbar=document.querySelector('.lesson-toolbar');if(toolbar)toolbar.classList.toggle('abba-stage-hidden',abbaStage===1);
+ const toolbar=document.querySelector('.lesson-toolbar');if(toolbar)toolbar.classList.add('abba-stage-hidden');
  $('abbaStageBack').textContent=en.back;
  $('abbaStageNext').textContent=abbaStage===1?en.next:en.finish;
  $('abbaStagePosition').textContent=abbaStage+' / 2';
