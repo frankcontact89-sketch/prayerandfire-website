@@ -1767,6 +1767,20 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
  .nav .liveNav{white-space:nowrap!important}
  .heroStats .stat strong{font-size:clamp(32px,9vw,48px)}
 }
+/* Keep donation action in its own full-width mobile row. */
+@media(max-width:960px){
+ .topbarInner{display:flex!important;flex-wrap:wrap!important;align-items:center!important}
+ .brandLink{flex:1 1 auto!important;order:1}
+ .headerRight{display:flex!important;flex:0 0 auto!important;order:2!important;margin-left:auto!important}
+ .nav{order:3!important;flex:0 0 100%!important;width:100%!important}
+ .topCta.navBtn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:static!important;z-index:2!important}
+}
+@media(max-width:640px){
+ .topbarInner{gap:8px!important}
+ .headerRight{order:3!important;flex:0 0 100%!important;width:100%!important;justify-content:space-between!important;margin:0!important}
+ .nav{order:2!important}
+ .topCta.navBtn{min-width:116px!important;min-height:44px!important}
+}
 </style>
 </head>
 
