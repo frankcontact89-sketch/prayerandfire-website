@@ -91,10 +91,16 @@ form.addEventListener('submit',async event=>{
  if(!fullName||password.length<8)return;
  btn.disabled=true;status.textContent=window.abbaRegistrationMessages.creating;
  try{
-   const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:fullName,academy_pre_registration:true,academy_course:'Formación de Liderazgo Ministerial en Teología Profunda'},emailRedirectTo:'https://prayerandfire.org/academy.html'}});
+   const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:fullName,academy_pre_registration:true,academy_course:'Formación de Liderazgo Ministerial en Teología Profunda',preferred_language:document.documentElement.lang,academy_start:'2027-02'},emailRedirectTo:'https://prayerandfire.org/academy.html'}});
    if(error)throw error;
    await client.auth.signOut().catch(()=>{});
    status.textContent=window.abbaRegistrationMessages.success;
+   const messages={
+    en:'Welcome to ABBA Academy! We received your pre-registration for Advanced Theology and Ministerial Leadership Training. Classes are expected to begin in February 2027. Your registration does not yet grant course access. We will share the next steps.',
+    pt:'Bem-vindo(a) à ABBA Academy! Recebemos sua pré-inscrição para Formação de Liderança Ministerial em Teologia Aprofundada. O início está previsto para fevereiro de 2027. Sua inscrição ainda não libera o acesso às aulas. Informaremos os próximos passos.',
+    es:'¡Bienvenido(a) a ABBA Academy! Recibimos tu preinscripción para Formación de Liderazgo Ministerial en Teología Profunda. El inicio está previsto para febrero de 2027. Tu registro todavía no permite acceder a las clases. Te informaremos de los próximos pasos.'
+   };
+   status.textContent=messages[document.documentElement.lang]||messages.en;
    form.reset();
  }catch(error){status.textContent=window.abbaRegistrationMessages.error+(error.message||'Please try again.')}
  finally{btn.disabled=false}
