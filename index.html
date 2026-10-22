@@ -1746,40 +1746,26 @@ body{background:radial-gradient(900px 600px at 75% 0%,rgba(158,28,67,.32),transp
 /* Remove leftover orange accents so statistics match burgundy/gold branding. */
 .heroStats strong,.statCard strong,.statCard h3,.heroStat strong,.metricNumber{color:#efc979!important}
 
-/* Donation access restored on phone and desktop. */
-.topCta.navBtn{display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap;min-height:42px}
-@media(max-width:960px){.headerRight{display:flex!important;align-items:center;gap:9px;order:2}.topCta.navBtn{display:inline-flex!important;padding:9px 13px!important;font-size:13px!important}}
-@media(max-width:640px){.topCta.navBtn{font-size:12px!important;padding:9px 11px!important}.langWrap select{font-size:12px!important}}
-/* Definitive mobile header and statistics fixes */
+/* Stable responsive header: logo, complete menu, then language and donations. */
 .heroStats .stat strong{color:#f0c879!important}
 @media(max-width:960px){
- .topbarInner{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important}
- .brandLink{flex:1 1 auto;min-width:0}
- .headerRight{order:2;margin-left:auto}
- .nav{order:3;flex:1 1 100%;width:100%;min-width:0;display:flex!important;flex-wrap:wrap!important;justify-content:flex-start!important;gap:4px 14px!important;overflow:visible!important}
- .nav button{white-space:normal!important;max-width:100%;font-size:13px!important;line-height:1.35}
- .topbar{height:auto!important}
+ .topbarInner{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:12px!important;align-items:center!important;padding:14px 18px!important}
+ .brandLink{grid-column:1!important;grid-row:1!important;min-width:0!important;justify-self:start!important}
+ .nav{grid-column:1/-1!important;grid-row:2!important;display:flex!important;flex-wrap:wrap!important;justify-content:flex-start!important;align-items:center!important;gap:7px 20px!important;width:100%!important;min-width:0!important;overflow:visible!important;padding:0!important}
+ .nav button{font-size:14px!important;white-space:nowrap!important;line-height:1.3!important;padding:9px 0!important}
+ .headerRight{grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center!important;gap:10px!important;margin:0!important;justify-self:end!important}
+ .topCta.navBtn{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:43px!important;position:static!important;white-space:nowrap!important;padding:9px 15px!important;font-size:13px!important}
 }
 @media(max-width:640px){
- .topbarInner{padding:12px 14px!important;gap:12px!important}
- .nav{gap:5px 12px!important}
- .nav button{padding:7px 0!important;font-size:12px!important}
- .nav .liveNav{white-space:nowrap!important}
+ .topbarInner{grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;padding:14px 15px!important}
+ .brandLogo{width:42px!important;height:42px!important}
+ .brandTitle strong{font-size:14px!important}
+ .brandTitle span{font-size:9px!important}
+ .nav{grid-row:2!important;gap:4px 14px!important}
+ .nav button{font-size:12px!important;padding:7px 0!important}
+ .headerRight{grid-column:1/-1!important;grid-row:3!important;width:100%!important;justify-content:space-between!important;justify-self:stretch!important}
+ .topCta.navBtn{min-width:115px!important;min-height:43px!important}
  .heroStats .stat strong{font-size:clamp(32px,9vw,48px)}
-}
-/* Keep donation action in its own full-width mobile row. */
-@media(max-width:960px){
- .topbarInner{display:flex!important;flex-wrap:wrap!important;align-items:center!important}
- .brandLink{flex:1 1 auto!important;order:1}
- .headerRight{display:flex!important;flex:0 0 auto!important;order:2!important;margin-left:auto!important}
- .nav{order:3!important;flex:0 0 100%!important;width:100%!important}
- .topCta.navBtn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:static!important;z-index:2!important}
-}
-@media(max-width:640px){
- .topbarInner{gap:8px!important}
- .headerRight{order:3!important;flex:0 0 100%!important;width:100%!important;justify-content:space-between!important;margin:0!important}
- .nav{order:2!important}
- .topCta.navBtn{min-width:116px!important;min-height:44px!important}
 }
 </style>
 </head>
