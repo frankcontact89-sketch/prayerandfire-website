@@ -49,7 +49,8 @@ function abbaSetStage(stage){
  show('abbaAlineAudio',abbaStage===2&&/^https:\/\//.test(audioUrl));
  if(audioUrl&&/^https:\/\//.test(audioUrl)&&$('abbaAlinePlayer').src!==audioUrl)$('abbaAlinePlayer').src=audioUrl;
  const coach=document.getElementById('abbaAiCoach');if(coach){coach.classList.toggle('abba-stage-hidden',abbaStage!==2)}
- if(abbaStage===2)window.dispatchEvent(new Event('abba-followup-open'));
+ $('abbaOpenCoach').textContent=currentLang==='en'?'Start AI conversation (optional)':'Iniciar conversa com AI (opcional)';
+ $('abbaOpenCoach').onclick=()=>{const coach=document.getElementById('abbaAiCoach');if(coach)coach.classList.remove('abba-stage-hidden');window.dispatchEvent(new Event('abba-followup-open'))};
  $('abbaSkipCoach').onclick=()=>{const coach=document.getElementById('abbaAiCoach');if(coach)coach.classList.add('abba-stage-hidden');$('abbaFollowupStatus').textContent=en.skipped;};
 }
 function fmtCue(seconds){const s=Math.max(0,Math.floor(Number(seconds)||0)),m=Math.floor(s/60),r=String(s%60).padStart(2,'0');return `${m}:${r}`}
