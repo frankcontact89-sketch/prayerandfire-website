@@ -94,8 +94,8 @@ Deno.serve(async(req)=>{const origin=req.headers.get('Origin')||'';const cors=co
  if(body.action==='create-upload'){
   const lesson=await readMedia(),name=String(body.name||'Video').trim(),replaceId=String(body.replace_id||'');if(!name||name.length>200)return json({error:'Nombre de video no válido.'},400);
   if(replaceId&&!lessonVideos(lesson).some((v:any)=>v.id===replaceId&&!v.removed_at))return json({error:'Video a reemplazar no encontrado.'},404);
-  const passthrough=JSON.stringify({lesson_id:lesson.id,name,replace_id:replaceId});
-  const r=await fetch('https://api.mux.com/video/v1/uploads',{method:'POST',headers:{Authorization:muxAuth,'Content-Type':'application/json'},body:JSON.stringify({cors_origin:allowedOrigins.has(origin)?origin:'https://prayerandfire.org',new_asset_settings:{playback_policies:['public'],video_quality:'basic',passthrough,inputs:[{generated_subtitles:[{language_code:'auto',name:'Auto captions'}]}]}})});
+  const passthrough=JSON.stringify({lesson_id:lesson.id,replace_id:replaceId});
+  const r=await fetch('https://api.mux.com/video/v1/uploads',{method:'POST',headers:{Authorization:muxAuth,'Content-Type':'application/json'},body:JSON.stringify({cors_origin:allowedOrigins.has(origin)?origin:'https://prayerandfire.org',new_asset_settings:{playback_policies:['public'],video_quality:'basic',passthrough,meta:{title:name},inputs:[{generated_subtitles:[{language_code:'auto',name:'Auto captions'}]}]}})});
   const j=await r.json();if(!r.ok)return json({error:j?.error?.message||'No se pudo preparar la carga de video.'},r.status);return json({upload_id:j.data.id,upload_url:j.data.url});
  }
  if(body.action==='upload-status'){
@@ -108,7 +108,7 @@ Deno.serve(async(req)=>{const origin=req.headers.get('Origin')||'';const cors=co
   if(asset.status==='errored')return json({error:'El proveedor no pudo procesar el video.'},422);if(asset.status!=='ready')return json({ready:false,status:asset.status});
   const playbackId=asset.playback_ids?.[0]?.id;if(!playbackId)return json({error:'El video aún no tiene reproducción disponible.'},409);
   const videos=lessonVideos(lesson);if(videos.some((v:any)=>v.asset_id===asset.id))return json({ready:true,lesson,videos,attachments:lesson.attachments,updated_at:lesson.updated_at});
-  const item={id:crypto.randomUUID(),name:metadata.name||'Video',asset_id:asset.id,playback_id:playbackId,duration_minutes:Math.max(1,Math.ceil(Number(asset.duration||0)/60)),hidden:false,created_at:new Date().toISOString()};
+  const item={id:crypto.randomUUID(),name:asset.meta?.title||metadata.name||'Video',asset_id:asset.id,playback_id:playbackId,duration_minutes:Math.max(1,Math.ceil(Number(asset.duration||0)/60)),hidden:false,created_at:new Date().toISOString()};
   if(metadata.replace_id){const index=videos.findIndex((v:any)=>v.id===metadata.replace_id&&!v.removed_at);if(index<0)return json({error:'El video a reemplazar cambió. Conservamos la carga para revisión.'},409);videos[index].removed_at=new Date().toISOString();videos[index].replaced_by=item.id;videos.splice(index,0,item);}else videos.push(item);
   return json({ready:true,...await saveMedia(lesson,videos,attachmentsOf(lesson.attachments))});
  }
