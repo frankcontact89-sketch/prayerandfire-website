@@ -4,12 +4,12 @@ const ACADEMY_KEY='sb_publishable_jFIuvZYIs1b-6IjqCnDPDw_BDivhFKs';
 const DELIVERY_URL='https://xikmhnulxksadgvzajdk.supabase.co/functions/v1/abba-admin-email';
 const allowedOrigins=new Set(['https://prayerandfire.org','https://www.prayerandfire.org']);
 const escapeHtml=(v:string)=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
-function personalize(text:string,name:string){return text.replace(/\{\{(?:nombre|name|nome)\}\}/g,name);}
+function personalize(text:string,name:string){name=String(name).replace(/[\r\n]+/g,' ').slice(0,120);return text.replace(/\{\{(?:nombre|name|nome)\}\}/g,name);}
 function chooseRecipients(students:any[],ids:unknown,mode:string,content:any){
  if(!Array.isArray(ids)||!ids.length||ids.length>100||!['auto','pt','en'].includes(mode))throw Error('Selecciona entre 1 y 100 estudiantes y un idioma válido.');
  const unique=[...new Set(ids.map(String))],selected=unique.map(id=>students.find(s=>s.id===id));
  if(selected.some(s=>!s||!s.confirmed))throw Error('Algún destinatario no tiene una cuenta de ABBA con correo confirmado. Actualiza la lista.');
- const seen=new Set();return selected.filter(s=>{const email=s.email.toLowerCase();if(seen.has(email))return false;seen.add(email);return true;}).map(s=>{const language=mode==='auto'?s.language:mode,variant=content?.[language];const subject=String(variant?.subject||'').trim(),message=String(variant?.message||'').trim();if(!subject||subject.length>180||/[\r\n]/.test(subject)||!message||message.length>15000)throw Error('Completa asunto y mensaje para '+language.toUpperCase()+'.');return {user_id:s.id,email:s.email,name:s.name,language,subject:personalize(subject,s.name),message:personalize(message,s.name)};});
+ const seen=new Set();return selected.filter(s=>{const email=s.email.toLowerCase();if(seen.has(email))return false;seen.add(email);return true;}).map(s=>{const language=mode==='auto'?s.language:mode,variant=content?.[language];const subject=String(variant?.subject||'').trim(),message=String(variant?.message||'').trim();if(/(?:Escreva aqui as informa[çc][õo]es|Write the course information|Escrib[ea] aqu[ií])/i.test(message))throw Error('Completa las instrucciones del modelo antes de preparar el correo.');if(/\{\{(?!nombre\}\}|name\}\}|nome\}\})[^}]*\}\}/.test(subject+' '+message))throw Error('Hay una etiqueta sin completar. Usa {{nombre}} para el nombre del estudiante.');if(!subject||subject.length>180||/[\r\n]/.test(subject)||!message||message.length>15000)throw Error('Completa asunto y mensaje para '+language.toUpperCase()+'.');return {user_id:s.id,email:s.email,name:s.name,language,subject:personalize(subject,s.name),message:personalize(message,s.name)};});
 }
 Deno.serve(async request=>{
  const origin=request.headers.get('origin')||'',headers={'Access-Control-Allow-Origin':allowedOrigins.has(origin)?origin:'https://prayerandfire.org','Vary':'Origin','Access-Control-Allow-Headers':'authorization,apikey,content-type,x-client-info','Access-Control-Allow-Methods':'POST,OPTIONS','Content-Type':'application/json','Cache-Control':'no-store'};
@@ -60,11 +60,22 @@ Deno.serve(async request=>{
   if(body.action==='prepare'){
    const replyTo=String(body.reply_to||user.email||'').trim().toLowerCase();if(replyTo.length>254||! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(replyTo))return reply({error:'Escribe un correo válido para recibir las respuestas.'},400);
    let recipients;try{recipients=chooseRecipients(await roster(),body.recipient_ids,String(body.language_mode),body.content)}catch(error){return reply({error:error instanceof Error?error.message:'Datos no válidos.'},400)}
-   const {data:campaign,error}=await admin.from('abba_email_campaigns').insert({created_by:user.id,language_mode:body.language_mode,recipient_count:recipients.length,reply_to:replyTo}).select('*').single();if(error)throw error;
+   const {data:campaign,error}=await admin.from('abba_email_campaigns').insert({created_by:user.id,language_mode:body.language_mode,recipient_count:recipients.length,reply_to:replyTo,composition:{content:body.content,recipient_ids:recipients.map(r=>r.user_id),language_mode:body.language_mode,reply_to:replyTo}}).select('*').single();if(error)throw error;
    const {data:saved,error:saveError}=await admin.from('abba_email_recipients').insert(recipients.map(r=>({...r,campaign_id:campaign.id}))).select('id,email,name,language,subject,message,status');if(saveError){await admin.from('abba_email_campaigns').update({status:'failed'}).eq('id',campaign.id);throw saveError;}return reply({campaign,recipients:saved});
   }
   if(['trash','restore'].includes(body.action)){const {data,error}=await admin.from('abba_email_campaigns').update({deleted_at:body.action==='trash'?new Date().toISOString():null,deleted_by:body.action==='trash'?user.id:null}).eq('id',String(body.campaign_id||'')).neq('status','sending').select('id').maybeSingle();if(error)throw error;if(!data)return reply({error:'No se puede modificar este registro mientras se está enviando, o ya no existe.'},409);return reply({ok:true});}
-  if(body.action==='history'){let query=admin.from('abba_email_campaigns').select('*');query=body.trash===true?query.not('deleted_at','is',null):query.is('deleted_at',null);const {data,error}=await query.order('created_at',{ascending:false}).limit(30);if(error)throw error;return reply({campaigns:data||[]});}
+  if(body.action==='resume'){
+   const {data,error}=await admin.from('abba_email_campaigns').select('id,status,deleted_at,composition').eq('id',String(body.campaign_id||'')).maybeSingle();if(error)throw error;if(!data||data.status!=='draft'||data.deleted_at||!data.composition)return reply({error:'Este borrador no puede retomarse. Puedes consultar su mensaje desde los detalles.'},409);return reply({composition:data.composition});
+  }
+  if(body.action==='history'){
+   let query=admin.from('abba_email_campaigns').select('id,status,recipient_count,accepted_count,failed_count,uncertain_count,created_at,completed_at,created_by,expires_at,reply_to,deleted_at,composition');
+   query=body.trash===true||body.folder==='trash'?query.not('deleted_at','is',null):query.is('deleted_at',null);
+   if(body.folder==='drafts')query=query.eq('status','draft');else if(body.folder==='sent')query=query.neq('status','draft');
+   const {data,error}=await query.order('created_at',{ascending:false}).limit(30);if(error)throw error;
+   const ids=(data||[]).map(c=>c.id);let recipients:any[]=[];
+   if(ids.length){const {data:rows,error:summaryError}=await admin.from('abba_email_recipients').select('campaign_id,email,name,language,subject').in('campaign_id',ids);if(summaryError)throw summaryError;recipients=rows||[];}
+   return reply({campaigns:(data||[]).map(c=>{const rows=recipients.filter(r=>r.campaign_id===c.id);return {...c,composition:undefined,can_resume:c.status==='draft'&&!!c.composition,subjects:[...new Set(rows.map(r=>r.subject))],languages:[...new Set(rows.map(r=>r.language))],recipients:rows.map(r=>({name:r.name,email:r.email}))};})});
+  }
   if(body.action==='detail'){const {data,error}=await admin.from('abba_email_recipients').select('id,email,name,language,subject,message,status,error,updated_at').eq('campaign_id',String(body.campaign_id||''));if(error)throw error;return reply({recipients:data||[]});}
   return reply({error:'Acción no válida.'},400);
  }catch(error){console.error('ABBA email operation failed',error instanceof Error?error.message:'Unknown error');return reply({error:'No se pudo completar la operación de correo. Intenta nuevamente o revisa el historial si ya confirmaste un envío.'},500);}
