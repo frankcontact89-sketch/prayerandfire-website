@@ -13,7 +13,19 @@ function render(){
  const state=document.createElement('span');state.className='small';state.textContent=(l.is_published?'Publicada':'Oculta')+' · '+(l.mux_playback_id?'Video disponible':'Sin video')+(l.transcript?' · Transcripción disponible':'');
  b.append(title,document.createElement('br'),state);b.onclick=()=>openLesson(l.id);host.appendChild(b)})
 }
+function hasUnsavedLessonChanges(){
+ if(!current||$('editor').classList.contains('hidden'))return false;
+ const value=id=>$(id).value;
+ const currentPoints=(current.key_points||[]).join('\n');
+ return value('title')!==(current.title||'')||
+ value('description')!==(current.description||'')||
+ value('releaseAt')!==fmtLocal(current.release_at)||
+ value('lessonSummary')!==(current.summary||'')||
+ value('lessonTranscript')!==(current.transcript||'')||
+ value('lessonKeyPoints')!==currentPoints;
+}
 function openLesson(id){
+ if(current?.id!==id&&hasUnsavedLessonChanges()&&!confirm('Hay cambios sin guardar en esta clase. ¿Descartarlos y abrir otra clase?'))return;
  current=lessons.find(x=>x.id===id);if(!current)return;render();show('empty',false);show('editor',true);
  $('heading').textContent='Aula '+current.lesson_number;$('title').value=current.title||'';$('description').value=current.description||'';$('releaseAt').value=fmtLocal(current.release_at);
  $('lessonSummary').value=current.summary||'';$('lessonTranscript').value=current.transcript||'';$('lessonKeyPoints').value=(current.key_points||[]).join('\n');
@@ -45,7 +57,7 @@ async function load(){
 $('retryCourses').onclick=()=>load();
 $('loginForm').onsubmit=async e=>{e.preventDefault();$('loginStatus').textContent='Signing in...';const {data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){$('loginStatus').textContent=error.message;return}session=data.session;$('loginStatus').textContent='';await load()};
 $('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
-$('courseSelect').onchange=()=>load();
+$('courseSelect').onchange=()=>{if(hasUnsavedLessonChanges()&&!confirm('Hay cambios sin guardar en esta clase. ¿Descartarlos y cambiar de curso?')){$('courseSelect').value=activeCourse?.id||'';return;}load();};
 $('saveCourse').onclick=async()=>{if(!activeCourse)return;const button=$('saveCourse');button.disabled=true;try{const out=await api({action:'update-course',course_id:activeCourse.id,title:$('courseTitleInput').value,description:$('courseDescriptionInput').value});Object.assign(activeCourse,out.course);$('courseSelect').selectedOptions[0].textContent=activeCourse.title;$('courseEditStatus').textContent='Curso guardado.'}catch(e){$('courseEditStatus').textContent=e.message}finally{button.disabled=false}};
 async function changeLesson(patch,button){if(!current)return;const target=current;button.disabled=true;try{const out=await api({action:'update-lesson',lesson_id:target.id,expected_updated_at:target.updated_at,...patch});Object.assign(target,out.lesson);render();if(current?.id===target.id){$('lessonVisibility').textContent=target.is_published?'Publicada':'Oculta';$('publishLesson').disabled=target.is_published;$('hideLesson').disabled=!target.is_published;$('lessonEditStatus').textContent='Cambios guardados.'}}catch(e){$('lessonEditStatus').textContent=e.message}finally{button.disabled=false;if(current?.id===target.id){$('publishLesson').disabled=target.is_published;$('hideLesson').disabled=!target.is_published}}}
 $('saveMeta').onclick=()=>changeLesson({title:$('title').value,description:$('description').value,release_at:$('releaseAt').value?new Date($('releaseAt').value).toISOString():null,summary:$('lessonSummary').value,transcript:$('lessonTranscript').value,key_points:$('lessonKeyPoints').value.split('\n').map(s=>s.trim()).filter(Boolean)},$('saveMeta'));
