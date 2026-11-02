@@ -33,12 +33,12 @@ function renderLessons(){
     const heading=document.createElement('strong');heading.textContent=l.title||words.unit+' '+l.lesson_number;
     const subtitle=document.createElement('span');subtitle.className='abba-learning-subtitle';subtitle.textContent=words.unit+' '+l.lesson_number;
     const badges=document.createElement('span');badges.className='abba-learning-tags';
-    const labels=[videos.length?(videos.length+' '+(videos.length===1?words.video:words.videos)):(l.transcript?words.reading:words.soon)];
+    const hasReading=Boolean(l.transcript?.trim()||l.summary?.trim()||resources.length);const hasContent=videos.length>0||hasReading;const labels=[videos.length?(videos.length+' '+(videos.length===1?words.video:words.videos)):(hasReading?words.reading:words.soon)];
     if(duration)labels.push(duration+' '+words.minutes);
     if(resources.length)labels.push(resources.length+' '+words.material);
     for(const label of labels){const tag=document.createElement('span');tag.className='abba-learning-tag';tag.textContent=label;badges.appendChild(tag)}
-    const state=document.createElement('span');state.className='abba-learning-state';state.textContent=progress?.completed?words.completed:(progress?.last_position_seconds>15?words.inProgress:(videos.length?words.ready:words.soon));
-    content.append(subtitle,heading,badges);btn.append(leading,content,state);btn.onclick=()=>openLesson(l,true);host.appendChild(btn);
+    const state=document.createElement('span');state.className='abba-learning-state';state.textContent=progress?.completed?words.completed:(progress?.last_position_seconds>15?words.inProgress:(hasContent?words.ready:words.soon));
+    content.append(subtitle,heading,badges);btn.append(leading,content,state);btn.setAttribute('aria-label',heading.textContent+' — '+state.textContent);btn.onclick=()=>openLesson(l,true);host.appendChild(btn);
   }
 }
 function openLessonById(id,scroll=false){const l=lessons.find(x=>x.id===id);if(l)openLesson(l,scroll)}
