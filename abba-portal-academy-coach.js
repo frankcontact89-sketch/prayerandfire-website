@@ -29,7 +29,7 @@ function renderCompleted(){const host=ensureHost();host.innerHTML=`<div class="a
 function renderError(){const host=ensureHost();host.classList.remove('hidden');host.innerHTML=`<div class="abba-coach-head"><div class="abba-coach-icon">AI</div><div><h2>${c('title')}</h2><p>${c('error')}</p></div></div><button id="abbaCoachRetry" class="secondary">${c('retry')}</button>`;q('abbaCoachRetry').onclick=()=>{state.started=false;renderGate()}}
 function escapeHtml(v=''){return String(v).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
 const player=q('muxPlayer');
-player?.addEventListener('ended',()=>{if(isPilot()&&currentLesson?.mux_playback_id)completedVideoLessons.add(currentLesson.id)});
-q('nextBtn')?.addEventListener('click',e=>{if(!isPilot()||!completedVideoLessons.has(currentLesson.id)||state.started)return;e.preventDefault();e.stopImmediatePropagation();coachRequested=true;renderGate();},true);
+player?.addEventListener('ended',()=>{if(isPilot()&&currentLesson?.mux_playback_id&&window.abbaIsFinalVideo?.())completedVideoLessons.add(currentLesson.id)});
+q('nextBtn')?.addEventListener('click',e=>{if(!isPilot()||!window.abbaIsFinalVideo?.()||!completedVideoLessons.has(currentLesson.id)||state.started)return;e.preventDefault();e.stopImmediatePropagation();coachRequested=true;renderGate();},true);
 const lessonTitle=q('lessonTitle');if(lessonTitle){new MutationObserver(()=>{coachRequested=false;ensureHost().classList.add('hidden');reset()}).observe(lessonTitle,{childList:true,characterData:true,subtree:true})}
 })();
