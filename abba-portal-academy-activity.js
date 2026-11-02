@@ -104,4 +104,4 @@ if(!document.querySelector('script[data-abba-resources]')){
 }
 
 
-if(!document.querySelector('script[data-abba-ai-coach]')){const script=document.createElement('script');script.src='abba-portal-academy-coach.js?v=20261101aftervideos';script.dataset.abbaAiCoach='1';document.body.appendChild(script)}
+if(!document.querySelector('script[data-abba-ai-coach]')){const script=document.createElement('script');script.src='abba-portal-academy-coach.js?v=20261102lastvideo';script.dataset.abbaAiCoach='1';document.body.appendChild(script)}
