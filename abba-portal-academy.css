@@ -8,3 +8,17 @@ body:has(#portalView:not(.hidden)){padding-bottom:90px}#academyBottomNav{positio
 /* Keep previous-video navigation out of view until another video exists. */
 #previousVideoBtn[hidden]{display:none!important}
 #lessonVideoStatus:empty{display:none}
+
+/* ABBA Academy course activity outline */
+#lessonList{display:grid;gap:11px;padding:12px 0}
+.abba-learning-item{appearance:none;width:100%;display:flex;align-items:flex-start;text-align:left;gap:14px;padding:18px 15px;background:#fff;border:1px solid #d9e2ed;border-radius:15px;color:#13263d;cursor:pointer;box-shadow:0 2px 9px rgba(9,27,48,.045);font:inherit}
+.abba-learning-item:focus-visible{outline:3px solid #1d67ce;outline-offset:2px}
+.abba-learning-icon{flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:#eaf2fd;color:#1764c2;display:grid;place-items:center;font-weight:800}
+.abba-learning-item.is-done .abba-learning-icon{background:#e6f7ed;color:#23764d}
+.abba-learning-main{display:grid;gap:8px;flex:1;min-width:0}
+.abba-learning-main strong{font-size:16px;line-height:1.4;overflow-wrap:anywhere}
+.abba-learning-subtitle{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.07em;color:#607289}
+.abba-learning-tags{display:flex;flex-wrap:wrap;gap:6px}
+.abba-learning-tag{padding:4px 9px;border-radius:20px;border:1px solid #d6e1ed;background:#f6f9fc;font-size:12px;color:#415c7b}
+.abba-learning-state{flex-shrink:0;font-size:11px;font-weight:750;color:#225da7;max-width:80px;text-align:right}
+@media(max-width:420px){.abba-learning-item{gap:10px;padding:15px 11px}.abba-learning-icon{flex-basis:34px;width:34px;height:34px}.abba-learning-state{max-width:65px;font-size:10px}}
