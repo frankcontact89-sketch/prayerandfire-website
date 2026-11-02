@@ -99,7 +99,7 @@ async function refresh(){
     if(courseErr)throw courseErr;
     totalLessons=Math.max(1,Number(course?.total_lessons)||40);
     const courseId=course?.id;
-    if(!courseId)throw new Error('Course not found');
+    if(!courseId){const notices={en:'No private course access for this account. Sign in with your authorized student test account to view lessons and notes.',pt:'Esta conta não tem acesso ao curso privado. Entre com sua conta autorizada de estudante de teste para ver aulas e notas.',es:'Esta cuenta no tiene acceso al curso privado. Ingresa con tu cuenta autorizada de estudiante de prueba para ver clases y notas.'};const notice=notices[document.documentElement.lang]||notices.en;setText('settingsLessonStatus',notice);const host=q('settingsLessonList');if(host)host.replaceChildren();const notes=q('settingsNotesList');if(notes){notes.replaceChildren();const msg=document.createElement('p');msg.textContent=notice;notes.appendChild(msg)}loading=false;return;}
     const [lessonRes,progressRes,noteRes]=await Promise.all([
       db.from('abba_lessons').select('id,lesson_number,is_published,mux_playback_id').eq('course_id',courseId).lte('lesson_number',totalLessons).order('lesson_number'),
       db.from('abba_lesson_progress').select('lesson_id,completed,watched_seconds').eq('user_id',s.user.id),
@@ -116,7 +116,7 @@ async function refresh(){
     console.error('ABBA settings',err);
     setText('settingsLessonStatus','');
     const host=q('settingsLessonList');if(host&&!host.children.length)renderLessons([]);
-    const notes=q('settingsNotesList');if(notes&&!notes.children.length){const e=document.createElement('div');e.className='empty-notes';e.textContent='Não foi possível carregar suas notas agora.';notes.appendChild(e);}
+    const notes=q('settingsNotesList');if(notes&&!notes.children.length){const e=document.createElement('div');e.className='empty-notes';e.textContent=({en:'Unable to load notes right now.',pt:'Não foi possível carregar suas notas agora.',es:'No se pudieron cargar las notas en este momento.'}[document.documentElement.lang]||'Unable to load notes right now.');notes.appendChild(e);}
   }finally{loading=false;}
 }
 
