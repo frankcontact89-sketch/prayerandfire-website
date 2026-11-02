@@ -71,7 +71,7 @@ async function persistVideoProgress(done=false){
  if(!v||!lesson||!user)return;
  let seconds=0;try{seconds=Math.max(0,Math.floor(Number($('muxPlayer').currentTime)||0))}catch{}
  const payload={user_id:user.id,lesson_id:lesson.id,video_id:v.id,last_position_seconds:seconds,completed:done||playedVideoIds.has(v.id),updated_at:new Date().toISOString()};
- if(!done&&!payload.completed&&seconds<1)return;const {error}=await db.from('abba_video_progress').upsert(payload,{onConflict:'user_id,lesson_id,video_id'});
+ if(!done&&!payload.completed&&seconds<1)return;const {data:previous,error:readError}=await db.from('abba_video_progress').select('completed,last_position_seconds').eq('user_id',user.id).eq('lesson_id',lesson.id).eq('video_id',v.id).maybeSingle();if(readError){console.warn('Video progress read failed',readError.message);return}payload.completed=payload.completed||Boolean(previous?.completed);if(payload.completed&&seconds<1)payload.last_position_seconds=Number(previous?.last_position_seconds)||0;const {error}=await db.from('abba_video_progress').upsert(payload,{onConflict:'user_id,lesson_id,video_id'});
  if(error)console.warn('Video progress save failed',error.message);
 }
 function lessonVideoItems(l){
