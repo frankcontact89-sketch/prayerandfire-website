@@ -129,9 +129,9 @@ $('languageSelect').onchange=async e=>{await saveLanguagePreference(e.target.val
 $('resetPasswordBtn').onclick=async()=>{
  const btn=$('resetPasswordBtn'),feedback=$('passwordResetStatus');
  const messages={
-  en:{sending:'Sending password reset instructions…',success:'Check your inbox (and spam folder). We sent a password-reset link to your account email. Open it to choose a new password.',missing:'Please sign in to request a password reset.',failure:'Could not send the reset email. Please try again.'},
-  pt:{sending:'Enviando instruções para redefinir sua senha…',success:'Confira sua caixa de entrada (e o spam). Enviamos um link de redefinição ao e-mail da sua conta. Abra-o para escolher uma nova senha.',missing:'Entre na sua conta para solicitar a redefinição.',failure:'Não foi possível enviar o e-mail. Tente novamente.'},
-  es:{sending:'Enviando instrucciones para restablecer tu contraseña…',success:'Revisa tu correo (y spam). Enviamos un enlace de recuperación a la dirección de tu cuenta. Ábrelo para crear una contraseña nueva.',missing:'Inicia sesión para solicitar el restablecimiento.',failure:'No se pudo enviar el correo. Inténtalo otra vez.'}
+  en:{sending:'Sending password reset instructions…',success:'Check your inbox (and spam folder). We sent a password-reset link to your account email. Open it to choose a new password.',missing:'Please sign in to request a password reset.',failure:'Could not send the reset email. Please try again.',rateLimit:'Too many authentication emails were requested. Supabase has temporarily stopped sending emails for this project. Please try later; repeated taps will not help.'},
+  pt:{sending:'Enviando instruções para redefinir sua senha…',success:'Confira sua caixa de entrada (e o spam). Enviamos um link de redefinição ao e-mail da sua conta. Abra-o para escolher uma nova senha.',missing:'Entre na sua conta para solicitar a redefinição.',failure:'Não foi possível enviar o e-mail. Tente novamente.',rateLimit:'O limite de e-mails de autenticação do Supabase foi atingido. O envio está temporariamente bloqueado neste projeto. Tente mais tarde e evite repetir o pedido.'},
+  es:{sending:'Enviando instrucciones para restablecer tu contraseña…',success:'Revisa tu correo (y spam). Enviamos un enlace de recuperación a la dirección de tu cuenta. Ábrelo para crear una contraseña nueva.',missing:'Inicia sesión para solicitar el restablecimiento.',failure:'No se pudo enviar el correo. Inténtalo otra vez.',rateLimit:'Se alcanzó el límite de correos de autenticación de Supabase. El envío está temporalmente bloqueado para este proyecto. Inténtalo más tarde; pulsar repetidamente no lo solucionará.'}
  };
  const m=messages[currentLang]||messages.en;
  feedback.hidden=false;feedback.style.color='#254b72';
@@ -143,7 +143,7 @@ $('resetPasswordBtn').onclick=async()=>{
   if(error)throw error;
   feedback.textContent=m.success;feedback.style.color='#1b624e';
  }catch(error){
-  feedback.textContent=m.failure+' '+(error?.message||'');feedback.style.color='#a32d2d';
+  const limited=error?.status===429||error?.code==='over_email_send_rate_limit'||/rate limit|too many requests/i.test(error?.message||'');feedback.textContent=limited?m.rateLimit:(m.failure+' '+(error?.message||''));feedback.style.color='#a32d2d';
  }finally{btn.disabled=false}
  feedback.scrollIntoView({block:'nearest',behavior:'smooth'});
 };
