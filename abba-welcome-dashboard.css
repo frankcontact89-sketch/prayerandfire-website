@@ -106,3 +106,12 @@ body:has(#abbaWelcome:not(.hidden)) .settings-sheet .settings-kicker{color:#9b6d
 body:has(#abbaWelcome:not(.hidden)) .settings-sheet #courseAccessStatus{color:#77541f}
 body:has(#abbaWelcome:not(.hidden)) .settings-sheet button:focus-visible{outline:3px solid #d1a155}
 @media(max-width:650px){#abbaWelcome .aw-art-logo{aspect-ratio:3/2;min-height:0}}
+
+/* Official ABBA Academy palette for sign-out controls on the student welcome profile. */
+body:has(#abbaWelcome:not(.hidden)) #settingsPanel .settings-signout{
+ background:linear-gradient(115deg,#0b2341,#193656)!important;
+ color:#f4dfb6!important;
+ border:1px solid #c69b59!important;
+ box-shadow:0 4px 12px rgba(5,24,49,.12);
+}
+body:has(#abbaWelcome:not(.hidden)) #settingsPanel .settings-signout:hover{filter:brightness(1.08)}
