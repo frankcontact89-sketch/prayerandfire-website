@@ -26,3 +26,10 @@ body:has(#authView:not(.hidden)) .auth-card .eyebrow{color:#9b6b26}
 body:has(#authView:not(.hidden)) #submitBtn{background:#10294a;border:1px solid #c49b59;color:#f4dfb3}
 body:has(#authView:not(.hidden)) #signUpBtn{background:#f6ecda;color:#6a491d}
 body:has(#authView:not(.hidden)) .auth-links button{color:#966a30}
+
+/* Sharp 1200px official ABBA logo: display full slogan, never crop or upscale blurry original. */
+body:has(#form) .intro img.academy-registration-logo{
+ content:url('/abba-academy-official-logo.svg?v=20261103sharp1200');
+ width:100%;height:auto;max-width:100%;aspect-ratio:16/9;object-fit:contain;
+ border-color:#c79b55;background:#05152d;
+}
