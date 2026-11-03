@@ -1,4 +1,22 @@
 # ABBA Academy — producción de correos de autenticación
+
+## Proveedor existente confirmado: Brevo (2026-11-03)
+La auditoría del proyecto Supabase `ministry-websites` encontró la Edge Function `abba-admin-email` que utiliza el API de Brevo para comunicaciones administrativas de ABBA Academy. El proyecto separado `prayer-fire` también utiliza Brevo para listas de suscriptores. Por tanto, **no es necesario contratar Resend** si la cuenta Brevo existente dispone de envío transaccional SMTP, remitente verificado y cuota suficiente.
+
+Importante: la clave **BREVO_API_KEY** usada por Edge Functions para la API REST **no sirve como contraseña SMTP**. Debe crearse una **SMTP key** específica en la misma cuenta de Brevo, desde Settings → SMTP & API → SMTP. No copiarla en GitHub ni mensajes.
+
+Datos SMTP oficiales de Brevo (confirmar en cuenta):
+- Host: `smtp-relay.brevo.com`
+- Puerto: `587` (STARTTLS) o `465` (SSL/TLS)
+- Usuario: el `SMTP login` exacto indicado por Brevo (a veces dirección @smtp-brevo.com)
+- Contraseña: **SMTP key**, no API key ni contraseña normal
+- Remitente: una dirección validada en Brevo, preferiblemente un subdominio de autenticación separado
+- Supabase: Authentication → Emails → SMTP Settings del proyecto `ministry-websites`
+
+No se pudo verificar mediante el conector si **custom SMTP** ya está habilitado en Supabase Auth, ni obtener los secretos SMTP. **No se ha activado** desde este trabajo. La función administrativa de Brevo no demuestra que el sistema de correos de Supabase Auth use el mismo proveedor.
+
+Documentación: https://developers.brevo.com/docs/supabase-smtp-integration
+
 Estado al 3 de noviembre de 2026: **plantillas preparadas, SMTP externo NO activado ni probado**.
 
 ## Contexto y alcance
