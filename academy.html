@@ -83,7 +83,7 @@ put(document.querySelector('label[for="country"]').firstChild,lang==='pt'?'País
 <script>
 (function(){
 'use strict';
-const client=supabase.createClient('https://yecywtxbuhfukergbwfc.supabase.co','sb_publishable_jFIuvZYIs1b-6IjqCnDPDw_BDivhFKs');
+const client=supabase.createClient('https://yecywtxbuhfukergbwfc.supabase.co','sb_publishable_jFIuvZYIs1b-6IjqCnDPDw_BDivhFKs',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
 const form=document.getElementById('form'),status=document.getElementById('status'),btn=document.getElementById('submit');
 form.addEventListener('submit',async event=>{
  event.preventDefault();
@@ -99,14 +99,15 @@ form.addEventListener('submit',async event=>{
  try{
    const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:fullName,country,academy_pre_registration:true,academy_course:'Formación de Liderazgo Ministerial en Teología Profunda',preferred_language:document.documentElement.lang,academy_start:'2027-02',personal_account_agreed:true},emailRedirectTo:'https://prayerandfire.org/academy.html'}});
    if(error)throw error;
-   await client.auth.signOut().catch(()=>{});
    status.textContent=window.abbaRegistrationMessages.success;
    const messages={
     en:'Welcome to ABBA Academy! We received your pre-registration for Advanced Theology and Ministerial Leadership Training. Classes are expected to begin in February 2027. Your registration does not yet grant course access. We will share the next steps.',
     pt:'Bem-vindo(a) à ABBA Academy! Recebemos sua pré-inscrição para Formação de Liderança Ministerial em Teologia Aprofundada. O início está previsto para fevereiro de 2027. Sua inscrição ainda não libera o acesso às aulas. Informaremos os próximos passos.',
     es:'¡Bienvenido(a) a ABBA Academy! Recibimos tu preinscripción para Formación de Liderazgo Ministerial en Teología Profunda. El inicio está previsto para febrero de 2027. Tu registro todavía no permite acceder a las clases. Te informaremos de los próximos pasos.'
    };
-   status.textContent=messages[document.documentElement.lang]||messages.en;
+   const lang=document.documentElement.lang;
+   const verification={en:'Please check your email inbox (and spam folder) for an account confirmation link. If you already registered, use Sign in instead.',pt:'Confira sua caixa de entrada (e a pasta de spam) para encontrar o link de confirmação da conta. Se você já se cadastrou, use Entrar.',es:'Revisa tu correo electrónico (y la carpeta de spam) para encontrar el enlace de confirmación de tu cuenta. Si ya te registraste, utiliza Iniciar sesión.'};
+   status.textContent=(messages[lang]||messages.en)+(data.session?'':' '+(verification[lang]||verification.en));
    form.reset();
  }catch(error){status.textContent=window.abbaRegistrationMessages.error+(error.message||'Please try again.')}
  finally{btn.disabled=false}
