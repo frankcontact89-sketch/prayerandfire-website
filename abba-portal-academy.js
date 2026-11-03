@@ -126,7 +126,27 @@ async function signOut(){await savePosition(true);await db.auth.signOut();locati
 $('signOutBtn').onclick=signOut;$('switchStudentAccountBtn').onclick=signOut;$('settingsSignOutBtn').onclick=signOut;
 $('settingsBtn').onclick=()=>{show('settingsPanel',true);$('settingsEmail').textContent=currentUser?.email||'';$('languageSelect').value=currentLang;if(window.abbaWelcomeDashboard?.active){const statuses={en:'Pre-registered · Classes expected February 2027',pt:'Pré-inscrito(a) · Início previsto em fevereiro de 2027',es:'Preinscrito · Inicio previsto en febrero de 2027'};$('courseAccessStatus').textContent=statuses[currentLang]||statuses.en}};$('closeSettingsBtn').onclick=()=>{show('settingsPanel',false);if(academyTab==='profile')openAcademyTab('home')};$('settingsPanel').onclick=e=>{if(e.target===$('settingsPanel'))show('settingsPanel',false)};
 $('languageSelect').onchange=async e=>{await saveLanguagePreference(e.target.value);if(window.abbaWelcomeDashboard?.active)window.abbaWelcomeDashboard.render(currentUser,currentLang);$('settingsStatus').textContent=t('saved');setTimeout(()=>$('settingsStatus').textContent='',1400)};
-$('resetPasswordBtn').onclick=async()=>{if(!currentUser?.email)return;$('settingsStatus').textContent=t('sendingReset');const {error}=await db.auth.resetPasswordForEmail(currentUser.email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});$('settingsStatus').textContent=error?error.message:t('resetSent')};
+$('resetPasswordBtn').onclick=async()=>{
+ const btn=$('resetPasswordBtn'),feedback=$('passwordResetStatus');
+ const messages={
+  en:{sending:'Sending password reset instructions…',success:'Check your inbox (and spam folder). We sent a password-reset link to your account email. Open it to choose a new password.',missing:'Please sign in to request a password reset.',failure:'Could not send the reset email. Please try again.'},
+  pt:{sending:'Enviando instruções para redefinir sua senha…',success:'Confira sua caixa de entrada (e o spam). Enviamos um link de redefinição ao e-mail da sua conta. Abra-o para escolher uma nova senha.',missing:'Entre na sua conta para solicitar a redefinição.',failure:'Não foi possível enviar o e-mail. Tente novamente.'},
+  es:{sending:'Enviando instrucciones para restablecer tu contraseña…',success:'Revisa tu correo (y spam). Enviamos un enlace de recuperación a la dirección de tu cuenta. Ábrelo para crear una contraseña nueva.',missing:'Inicia sesión para solicitar el restablecimiento.',failure:'No se pudo enviar el correo. Inténtalo otra vez.'}
+ };
+ const m=messages[currentLang]||messages.en;
+ feedback.hidden=false;feedback.style.color='#254b72';
+ if(!currentUser?.email){feedback.textContent=m.missing;return}
+ if(btn.disabled)return;
+ btn.disabled=true;feedback.textContent=m.sending;
+ try{
+  const {error}=await db.auth.resetPasswordForEmail(currentUser.email,{redirectTo:'https://prayerandfire.org/academy-reset.html'});
+  if(error)throw error;
+  feedback.textContent=m.success;feedback.style.color='#1b624e';
+ }catch(error){
+  feedback.textContent=m.failure+' '+(error?.message||'');feedback.style.color='#a32d2d';
+ }finally{btn.disabled=false}
+ feedback.scrollIntoView({block:'nearest',behavior:'smooth'});
+};
 $('previousVideoBtn').onclick=async()=>{if(lessonVideoIndex>0){await persistVideoProgress();await savePosition(true);storeVideoBookmark();lessonVideoIndex--;lastSavedPosition=0;renderVideoStep();storeVideoBookmark()}};let lastVideoCloudSaveAt=0;const muxPlayer=$('muxPlayer');muxPlayer.addEventListener('ended',()=>{const v=lessonVideoQueue[lessonVideoIndex];if(v){playedVideoIds.add(v.id);storeVideoBookmark();void persistVideoProgress(true);renderVideoStep();if(currentLesson&&!progressFor(currentLesson.id)?.completed&&lessonVideoQueue.every(item=>playedVideoIds.has(item.id)))$('completeBtn').disabled=false}});muxPlayer.addEventListener('timeupdate',()=>{savePosition(false);const now=Date.now();if(now-lastVideoCloudSaveAt>=20000&&Number(muxPlayer.currentTime||0)>1){lastVideoCloudSaveAt=now;storeVideoBookmark();void persistVideoProgress()}});muxPlayer.addEventListener('pause',()=>{storeVideoBookmark();void persistVideoProgress();savePosition(true)});window.addEventListener('pagehide',()=>{storeVideoBookmark();void persistVideoProgress();savePosition(true)});
 
 const NAV_WORDS={en:{home:'Home',learn:'Learn',explore:'Explore',profile:'Profile',heading:'Explore programs',copy:'Currently, ABBA Academy offers one program. More will appear only when officially announced.',open:'View program'},pt:{home:'Início',learn:'Aprender',explore:'Explorar',profile:'Perfil',heading:'Explorar programas',copy:'Atualmente, a ABBA Academy oferece um programa. Outros serão exibidos somente quando anunciados oficialmente.',open:'Ver programa'},es:{home:'Inicio',learn:'Aprender',explore:'Explorar',profile:'Perfil',heading:'Explorar programas',copy:'Por ahora, ABBA Academy ofrece un solo programa. Los demás aparecerán únicamente cuando sean anunciados oficialmente.',open:'Ver programa'}};
