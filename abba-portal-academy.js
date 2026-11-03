@@ -82,7 +82,7 @@ function lessonVideoItems(l){
 }
 function renderVideoStep(){
   const v=lessonVideoQueue[lessonVideoIndex],player=$('muxPlayer'),has=!!v;
-  if(has){player.setAttribute('playback-id',v.id);show('videoWrap',true);$('previewVideoNotice')?.remove()}
+  if(has){if(player.getAttribute('playback-id')!==v.id)player.setAttribute('playback-id',v.id);show('videoWrap',true);$('previewVideoNotice')?.remove()}
   else{player.removeAttribute('playback-id');show('videoWrap',false);let n=$('previewVideoNotice');if(!n){n=document.createElement('p');n.id='previewVideoNotice';n.style.cssText='padding:18px;border-radius:12px;background:#e8eef5;color:#14283e;font-weight:600';$('videoWrap').after(n)}n.textContent=currentLang==='en'?'Video coming soon — lesson preview available.':currentLang==='es'?'Video próximamente — vista previa de la lección disponible.':'Vídeo em breve — prévia da aula disponível.'}
   const status=$('lessonVideoStatus');if(status)status.textContent=has?(currentLang==='pt'?'Vídeo':currentLang==='es'?'Video':'Video')+' '+(lessonVideoIndex+1)+' / '+lessonVideoQueue.length+(v.title?' · '+v.title:''):'';
   const nextControl=$('nextBtn');if(nextControl&&has&&lessonVideoIndex<lessonVideoQueue.length-1){nextControl.disabled=!playedVideoIds.has(v.id);nextControl.title=nextControl.disabled?(currentLang==='es'?'Termina el video antes de continuar':currentLang==='pt'?'Termine o vídeo antes de continuar':'Finish this video to continue'):''}else if(nextControl){nextControl.disabled=false;nextControl.title=''}const prev=$('previousVideoBtn');if(prev){prev.hidden=lessonVideoIndex===0;prev.textContent=currentLang==='pt'?'← Vídeo anterior':currentLang==='es'?'← Video anterior':'← Previous video'}
