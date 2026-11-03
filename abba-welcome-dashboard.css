@@ -115,3 +115,8 @@ body:has(#abbaWelcome:not(.hidden)) #settingsPanel .settings-signout{
  box-shadow:0 4px 12px rgba(5,24,49,.12);
 }
 body:has(#abbaWelcome:not(.hidden)) #settingsPanel .settings-signout:hover{filter:brightness(1.08)}
+
+/* Preserve the whole approved 16:9 logo and its readable lower slogan. */
+#abbaWelcome .aw-art-logo{aspect-ratio:16/9!important;min-height:0!important}
+#abbaWelcome .aw-art-logo .aw-official-logo{object-fit:contain!important;aspect-ratio:16/9}
+@media(max-width:650px){#abbaWelcome .aw-art-logo{aspect-ratio:16/9!important}}
