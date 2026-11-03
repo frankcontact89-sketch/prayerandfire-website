@@ -120,3 +120,8 @@ body:has(#abbaWelcome:not(.hidden)) #settingsPanel .settings-signout:hover{filte
 #abbaWelcome .aw-art-logo{aspect-ratio:16/9!important;min-height:0!important}
 #abbaWelcome .aw-art-logo .aw-official-logo{object-fit:contain!important;aspect-ratio:16/9}
 @media(max-width:650px){#abbaWelcome .aw-art-logo{aspect-ratio:16/9!important}}
+
+/* Password recovery feedback is adjacent to its action instead of below the sign-out button. */
+#settingsPanel .password-reset-feedback{display:block;background:#f7f4ec;border:1px solid #d9bf8c;color:#254b72;border-radius:12px;padding:13px 15px;margin:12px 0 4px;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+#settingsPanel .password-reset-feedback[hidden]{display:none!important}
+#settingsPanel #resetPasswordBtn:disabled{opacity:.6;cursor:progress}
