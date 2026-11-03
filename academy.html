@@ -109,7 +109,21 @@ form.addEventListener('submit',async event=>{
    const verification={en:'Please check your inbox (and spam folder) for an account confirmation link. After confirmation, your student portal will open. If you already registered, use Sign in instead.',pt:'Confira sua caixa de entrada (e a pasta de spam) para confirmar a conta. Depois da confirmação, o portal do aluno será aberto. Se já se cadastrou, use Entrar.',es:'Revisa tu correo electrónico (y la carpeta de spam) para confirmar tu cuenta. Después se abrirá el portal del estudiante. Si ya te registraste, utiliza Iniciar sesión.'};
    status.textContent=(messages[lang]||messages.en)+(data.session?'':' '+(verification[lang]||verification.en));
    form.reset();
- }catch(error){status.textContent=window.abbaRegistrationMessages.error+(error.message||'Please try again.')}
+ }catch(error){
+ const lang=document.documentElement.lang;
+ const limited=error?.status===429||error?.code==='over_email_send_rate_limit'||/rate limit|too many requests/i.test(error?.message||'');
+ const unauthorized=error?.code==='email_address_not_authorized'||/email address not authorized/i.test(error?.message||'');
+ const notice=limited?{
+ en:'Registration email delivery has temporarily reached its limit. Please try again later. Do not repeatedly submit the form.',
+ pt:'O envio de e-mails de cadastro atingiu temporariamente o limite. Tente novamente mais tarde. Evite enviar o formulário repetidamente.',
+ es:'Se alcanzó temporalmente el límite de correos de registro. Inténtalo más tarde y evita enviar varias veces el formulario.'
+ }:unauthorized?{
+ en:'Email delivery is not yet configured for public registration. Please contact ABBA Academy support.',
+ pt:'O envio de e-mails ainda não está configurado para inscrições públicas. Entre em contato com o suporte da ABBA Academy.',
+ es:'El correo todavía no está configurado para inscripciones públicas. Contacta al soporte de ABBA Academy.'
+ }:null;
+ status.textContent=notice?(notice[lang]||notice.en):window.abbaRegistrationMessages.error+(error?.message||'Please try again.');
+}
  finally{btn.disabled=false}
 });
 })();
