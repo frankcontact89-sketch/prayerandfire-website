@@ -65,3 +65,12 @@ body:has(#abbaWelcome:not(.hidden)) .topbar>span{font-family:Georgia,serif;font-
 body:has(#abbaWelcome:not(.hidden)) .topbar .icon-btn{background:#142f53;color:#fff;border-color:#7286a2}
 body:has(#abbaWelcome:not(.hidden)) .topbar .ghost{background:#fff;color:#183759;border-color:#c3cddd}
 @media(max-width:420px){body:has(#abbaWelcome:not(.hidden)) .topbar{gap:6px;padding-left:10px;padding-right:10px}body:has(#abbaWelcome:not(.hidden)) .topbar>span{letter-spacing:.07em;font-size:17px}body:has(#abbaWelcome:not(.hidden)) .topbar .brand{font-size:12px}}
+
+/* Keep pre-registrants in account mode rather than showing unfinished course metrics. */
+body:has(#abbaWelcome:not(.hidden)) #settingsProgress,
+body:has(#abbaWelcome:not(.hidden)) #settingsLessons,
+body:has(#abbaWelcome:not(.hidden)) #settingsNotes{display:none!important}
+body:has(#settingsPanel:not(.hidden)) #academyBottomNav{display:none!important}
+body:has(#settingsPanel:not(.hidden)){overflow:hidden}
+body:has(#abbaWelcome:not(.hidden)) #settingsPanel{z-index:100;background:rgba(5,20,41,.68)}
+body:has(#abbaWelcome:not(.hidden)) .settings-sheet{background:#f8fbfe}
