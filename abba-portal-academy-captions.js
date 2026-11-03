@@ -1,7 +1,7 @@
 (()=>{
 const el=id=>document.getElementById(id);
 const languages=['pt','en'];
-let selected=languages.includes(localStorage.getItem('abba_caption_lang'))?localStorage.getItem('abba_caption_lang'):'pt';
+let selected=languages.includes(localStorage.getItem('abba_caption_lang'))?localStorage.getItem('abba_caption_lang'):(localStorage.getItem('abba_lang')==='pt'?'pt':'en');
 let lessonId=null;
 const css=document.createElement('style');
 css.textContent='.caption-language-bar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:16px 0 12px;padding:12px 14px;border:1px solid #d9e1eb;border-radius:12px;background:#f8fbff}.caption-language-bar label{font-weight:700;color:#24334d;font-size:14px}.caption-language-bar select{margin-left:auto;max-width:100%;border:1px solid #b9cce4;border-radius:9px;background:white;padding:9px 12px;font:inherit;color:#203650}.caption-language-bar #captionStatus{width:100%;font-size:13px;color:#52617a}@media(max-width:440px){.caption-language-bar select{margin-left:0;width:100%}}';
