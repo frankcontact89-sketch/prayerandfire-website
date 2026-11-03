@@ -1,0 +1,20 @@
+/* Official ABBA Academy scholarship branding, scoped to the scholarship page. */
+:root{color-scheme:light}
+body{background:#f5f7fb;color:#142945}
+header{background:linear-gradient(110deg,#06172f,#102d50 75%,#1c3b60);color:#e7c385;border-bottom:2px solid #c99b55;box-shadow:0 4px 13px #071d3820}
+header a{color:#e7c385}
+main{max-width:720px}
+h1{font-family:Georgia,'Times New Roman',serif;color:#0d2649}
+h2,h3{color:#173356}
+p,.small{color:#506078}
+section{border-color:#d8c9af;box-shadow:0 8px 24px #1029460d;background:#fff}
+label{color:#1b3150}
+input,select,textarea{border-color:#b9c7d6;color:#142b48;background:white}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #c79a4d;outline-offset:2px}
+button{background:linear-gradient(115deg,#0a2443,#214064);border:1px solid #c79a54;color:#f7e5c4}
+button:disabled{opacity:.55}
+#signOut{background:#f5ead7!important;color:#705024!important;border:1px solid #c69f65!important}
+a{color:#926522}
+.scholarship-summary{background:#f9f5ed;border-color:#dec89f;color:#183254}
+.scholarship-summary .price-total{border-color:#d9c39e}
+@media(max-width:520px){header{padding:15px 18px}main{margin:24px auto;padding:0 15px}section{padding:20px}h1{font-size:clamp(29px,7vw,38px)}}
