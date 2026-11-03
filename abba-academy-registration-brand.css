@@ -1,0 +1,28 @@
+/* ABBA Academy official navy and gold, limited to registration and portal login. */
+body:has(#form){background:#f5f6f9;color:#10213d}
+body:has(#form) header{background:#071a34!important;border-bottom:2px solid #c4954f;color:#f6dfb2}
+body:has(#form) header a{color:#e8c58c}
+body:has(#form) header strong{color:#e8c58c}
+body:has(#form) section{border-color:#dbc9a9;box-shadow:0 12px 32px rgba(7,24,47,.09)}
+body:has(#form) .intro{background:linear-gradient(145deg,#06162d,#17385e)!important;background-image:linear-gradient(145deg,#06162d,#17385e)!important;color:#fff}
+body:has(#form) .intro p{color:#e2eaf3}
+body:has(#form) .eyebrow{color:#c79955!important}
+body:has(#form) h2{color:#0e2848}
+body:has(#form) p{color:#475b73}
+body:has(#form) .intro .date{color:#f3d49a;border-color:#c89c58!important;background:#bd893725}
+body:has(#form) .notice{background:#f7eedf;border-color:#d9ba83;color:#60441c}
+body:has(#form) input{color:#17314d;border-color:#c8d0d9}
+body:has(#form) button#submit{background:linear-gradient(115deg,#f3d89a,#d6aa63 52%,#b57e2e);color:#091d39;border:1px solid #b78539;text-shadow:none;box-shadow:0 4px 12px rgba(110,77,28,.14)}
+body:has(#form) .abba-personal-account{color:#243a56}
+body:has(#form) .abba-personal-account input{accent-color:#a77936}
+body:has(#form) .abba-visibility{color:#9a6b2b}
+body:has(#form) .abba-visibility:hover{background:#f7edda}
+body:has(#form) a{color:#94671c}
+body:has(#form) .intro .academy-registration-logo{display:block;width:min(100%,460px);border-radius:13px;margin:0 auto 22px;border:1px solid #9d7848;aspect-ratio:3/2;object-fit:cover;background:#06172d}
+body:has(#authView:not(.hidden)) .topbar{background:#091c38;border-bottom:2px solid #c39756}
+body:has(#authView:not(.hidden)) .topbar .brand,body:has(#authView:not(.hidden)) .topbar>span{color:#e5bf7c}
+body:has(#authView:not(.hidden)) .auth-card{border-color:#dac39c}
+body:has(#authView:not(.hidden)) .auth-card .eyebrow{color:#9b6b26}
+body:has(#authView:not(.hidden)) #submitBtn{background:#10294a;border:1px solid #c49b59;color:#f4dfb3}
+body:has(#authView:not(.hidden)) #signUpBtn{background:#f6ecda;color:#6a491d}
+body:has(#authView:not(.hidden)) .auth-links button{color:#966a30}
