@@ -1,0 +1,59 @@
+/* ABBA Academy pre-registration dashboard: isolated from lessons and administration */
+#abbaWelcome.hidden,#abbaWelcome .hidden{display:none!important}
+body:has(#abbaWelcome:not(.hidden)){background:#f3f6fa}
+#abbaWelcome{max-width:1040px;margin:0 auto;padding:12px 0 30px;color:#10213f;font-family:Arial,Helvetica,sans-serif}
+#abbaWelcome *{box-sizing:border-box}
+#abbaWelcome .aw-heading{text-align:center;padding:27px 14px 22px}
+#abbaWelcome .aw-emblem{font-family:Georgia,serif;font-weight:700;color:#516b91;letter-spacing:.22em;font-size:12px}
+#abbaWelcome .aw-emblem span{font-size:16px;color:#173257;letter-spacing:.24em;padding:0 12px}
+#abbaWelcome .aw-heading h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(28px,4.8vw,42px);line-height:1.16;color:#0d2347;margin:20px 0 9px;letter-spacing:-.015em}
+#abbaWelcome .aw-heading p{font-size:clamp(14px,2vw,17px);line-height:1.5;color:#4c5d73;margin:0 auto;max-width:600px}
+#abbaWelcome .aw-heading-rule{width:85px;height:3px;border-radius:3px;background:linear-gradient(90deg,#d9e2ef,#61779b,#d9e2ef);margin:22px auto 0}
+#abbaWelcome .aw-summary{display:grid;grid-template-columns:1fr 1fr;background:white;border:1px solid #dce3ec;border-radius:18px;box-shadow:0 6px 22px #1b365514;margin-bottom:18px;overflow:hidden}
+#abbaWelcome .aw-summary-item{display:flex;align-items:center;gap:17px;padding:22px}
+#abbaWelcome .aw-summary-item+ .aw-summary-item{border-left:1px solid #dae1ec}
+#abbaWelcome .aw-summary-item>div:last-child,#abbaWelcome .aw-program-bottom>div{display:flex;flex-direction:column;gap:9px}
+#abbaWelcome .aw-summary-item span,#abbaWelcome .aw-program-bottom span{font-size:14px;color:#45546a}
+#abbaWelcome .aw-summary-item strong{font-size:17px;color:#112749}
+#abbaWelcome .aw-icon{display:grid;place-items:center;flex:none;width:52px;height:52px;border-radius:50%;background:#edf2f8;color:#102b51;font-size:28px;font-weight:700}
+#abbaWelcome .aw-pill{display:inline-block!important;align-self:flex-start;background:#e1e8f2;color:#102c55!important;border:1px solid #d5dfee;border-radius:10px;font-size:14px!important;padding:8px 13px;font-weight:800}
+#abbaWelcome .aw-pill-muted{background:#f0f2f6!important;color:#5c6474!important}
+#abbaWelcome .aw-notice{display:flex;align-items:center;gap:20px;border-radius:17px;background:linear-gradient(112deg,#dbeafa,#eff5fd 75%,#d9e8f9);color:#0f305c;border:1px solid #d5e4f6;padding:22px 24px;margin-bottom:20px}
+#abbaWelcome .aw-notice strong{font-size:clamp(15px,2.3vw,19px);line-height:1.35}
+#abbaWelcome .aw-notice-icon{display:grid;place-items:center;flex:none;border:2px solid #244b79;border-radius:50%;width:39px;height:39px;font-size:25px;font-family:Georgia,serif}
+#abbaWelcome .aw-program{overflow:hidden;background:white;border:1px solid #dce3ed;border-radius:19px;box-shadow:0 6px 24px #0a294714;margin-bottom:20px}
+#abbaWelcome .aw-program-main{display:grid;grid-template-columns:minmax(160px,32%) 1fr;gap:28px;padding:24px}
+#abbaWelcome .aw-art{min-height:222px;border-radius:17px;background:radial-gradient(ellipse at 75% 25%,#597b9b,#142c48 60%,#0b1a2b 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;box-shadow:inset 0 0 40px #06152685;color:#eaf2fc}
+#abbaWelcome .aw-art::before,#abbaWelcome .aw-art::after{content:'';position:absolute;inset:20px;border:1px solid #c5d5e54a;border-radius:50%;transform:scale(1.5)}
+#abbaWelcome .aw-art::after{transform:scale(.9)}
+#abbaWelcome .aw-book{font-size:76px;filter:drop-shadow(0 8px 8px #030f2080);position:relative;z-index:1}
+#abbaWelcome .aw-art-small{font-size:9px;letter-spacing:.24em;font-weight:800;z-index:1;padding-top:10px}
+#abbaWelcome .aw-program-meta{min-width:0;align-self:center}
+#abbaWelcome .aw-overline{font-size:11px!important;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#7c8da5}
+#abbaWelcome .aw-program h2,#abbaWelcome .aw-secondary h2{font-family:Georgia,'Times New Roman',serif;font-size:clamp(24px,3.5vw,35px);line-height:1.17;letter-spacing:-.015em;margin:12px 0 21px;color:#102449}
+#abbaWelcome .aw-bullet{display:flex;align-items:center;gap:11px;font-size:16px;color:#35495f;margin:10px 0}
+#abbaWelcome .aw-bullet>span:first-child{display:grid;place-items:center;width:26px;height:26px;font-size:21px;color:#223e68}
+#abbaWelcome .aw-program-bottom{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #dae2ec;margin:0 24px;padding:19px 3px 24px}
+#abbaWelcome .aw-program-bottom>div+div{padding-left:24px;border-left:1px solid #d4dce9}
+#abbaWelcome .aw-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:21px}
+#abbaWelcome .aw-action{appearance:none;border:1px solid #d4dde8;border-radius:15px;background:#fff;display:flex;align-items:center;gap:13px;padding:17px 19px;color:#172d50;text-align:left;text-decoration:none;box-shadow:0 5px 14px #0c254212;cursor:pointer;font:inherit;min-height:66px}
+#abbaWelcome .aw-action strong{font-size:15px;line-height:1.3;flex:1}
+#abbaWelcome .aw-action>span:first-child{font-size:24px;line-height:1}
+#abbaWelcome .aw-action>span:last-child{font-size:26px;font-weight:400}
+#abbaWelcome .aw-action-primary{background:linear-gradient(120deg,#243e65,#0e2343);color:#fff}
+#abbaWelcome .aw-action:focus-visible,#abbaWelcome .aw-return:focus-visible{outline:3px solid #2779d4;outline-offset:2px}
+#abbaWelcome .aw-next,#abbaWelcome .aw-secondary{border:1px solid #dbe2ed;background:linear-gradient(120deg,#fff,#f5f8fc);padding:25px 28px;border-radius:19px;box-shadow:0 5px 20px #0b27400f}
+#abbaWelcome .aw-next h2{font-family:Georgia,'Times New Roman',serif;font-size:28px;color:#0d2446;margin:0 0 16px}
+#abbaWelcome .aw-next ol{list-style:none;margin:0;padding:0;counter-reset:steps}
+#abbaWelcome .aw-next li{counter-increment:steps;display:flex;align-items:center;gap:14px;min-height:49px;font-size:15px;line-height:1.4}
+#abbaWelcome .aw-next li::before{content:counter(steps);width:33px;height:33px;border-radius:50%;background:#dce6f2;display:grid;place-items:center;flex-shrink:0;color:#17345a;font-weight:800}
+#abbaWelcome .aw-next>p{font-size:12px;color:#667790;margin:14px 0 0}
+#abbaWelcome .aw-secondary{min-height:360px;margin-top:12px}
+#abbaWelcome .aw-secondary h2{font-size:31px}
+#abbaWelcome .aw-secondary>p{line-height:1.6;color:#465971}
+#abbaWelcome .aw-secondary-detail{margin-top:25px;padding:20px;background:#eef3fa;border:1px solid #dce6f3;border-radius:15px}
+#abbaWelcome .aw-secondary-detail h3{color:#132f55}
+#abbaWelcome .aw-secondary-detail p{color:#536783}
+#abbaWelcome .aw-return{appearance:none;padding:10px 16px;border:1px solid #b9cbe2;border-radius:12px;background:white;color:#17395e;cursor:pointer;font:inherit}
+@media(max-width:650px){#abbaWelcome{padding:8px 1px 24px}#abbaWelcome .aw-heading{padding:22px 8px 21px}#abbaWelcome .aw-summary-item{padding:16px 12px;gap:9px}#abbaWelcome .aw-icon{width:39px;height:39px;font-size:22px}#abbaWelcome .aw-summary-item span,#abbaWelcome .aw-program-bottom span{font-size:12px}#abbaWelcome .aw-summary-item strong{font-size:14px}#abbaWelcome .aw-pill{padding:6px 9px;font-size:12px!important}#abbaWelcome .aw-notice{padding:17px;gap:12px}#abbaWelcome .aw-program-main{grid-template-columns:1fr;gap:16px;padding:16px}#abbaWelcome .aw-art{min-height:165px}#abbaWelcome .aw-book{font-size:62px}#abbaWelcome .aw-program h2{font-size:27px;margin:8px 0 14px}#abbaWelcome .aw-program-bottom{margin:0 16px;padding:16px 0}#abbaWelcome .aw-program-bottom>div+div{padding-left:10px}#abbaWelcome .aw-actions{gap:10px}#abbaWelcome .aw-action{min-height:63px;padding:12px 10px;gap:7px}#abbaWelcome .aw-action strong{font-size:13px}#abbaWelcome .aw-action>span:first-child{font-size:20px}#abbaWelcome .aw-next,#abbaWelcome .aw-secondary{padding:20px 18px}#abbaWelcome .aw-next h2{font-size:25px}}
+@media(max-width:360px){#abbaWelcome .aw-summary{grid-template-columns:1fr}#abbaWelcome .aw-summary-item+.aw-summary-item{border-left:0;border-top:1px solid #dae1ec}#abbaWelcome .aw-program-bottom{gap:7px}}
