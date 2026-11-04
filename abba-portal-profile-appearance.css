@@ -1,0 +1,49 @@
+/* ABBA student identity & appearance settings (scoped to academy portal). */
+.abba-avatar-editor{display:flex;align-items:center;gap:16px;margin-top:14px}
+.abba-avatar-preview,.abba-header-avatar{position:relative;display:grid;place-items:center;flex:0 0 auto;width:80px;height:80px;border-radius:50%;background:linear-gradient(140deg,#102b4b,#284b71);border:2px solid #d1ae70;color:#e8cc92;overflow:hidden;cursor:pointer;font:700 32px Georgia,serif}
+.abba-avatar-preview img,.abba-header-avatar img{width:100%;height:100%;object-fit:cover}
+.abba-avatar-preview img[hidden],.abba-header-avatar img[hidden]{display:none}
+.abba-avatar-actions{min-width:0}.abba-avatar-btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.abba-profile-btn{border:1px solid #c49e65;background:#142d50;color:#f7ead1;border-radius:10px;padding:10px 12px;font:700 14px Arial,sans-serif;cursor:pointer}
+.abba-profile-btn.secondary{background:transparent;color:#3a4b63;border-color:#bec9d7}
+.abba-profile-btn:disabled{opacity:.55;cursor:default}.abba-avatar-actions small{display:block;font-size:12px;color:#64738a}
+.abba-appearance-label{margin-top:25px}
+.abba-mode-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 0}
+.abba-mode-options button{min-width:0;padding:12px 5px;border:1px solid #ced7e3;background:#f7fafc;color:#193755;border-radius:12px;font:700 12px/1.4 Arial,sans-serif;cursor:pointer}
+.abba-mode-options button.is-selected{background:#142e52;color:#f9e3b4;border-color:#c8a46d}
+.abba-profile-btn:focus-visible,.abba-avatar-preview:focus-visible,.abba-header-avatar:focus-visible,.abba-mode-options button:focus-visible{outline:3px solid #bb904c;outline-offset:2px}
+.abba-header-avatar{width:68px;height:68px;margin:0 auto 10px;font-size:25px;box-shadow:0 8px 20px #091b3850}
+@media(max-width:420px){.abba-avatar-editor{align-items:flex-start;gap:11px}.abba-avatar-preview{height:68px;width:68px}.abba-mode-options button{font-size:11px}.abba-profile-btn{font-size:12px;padding:9px 10px}}
+/* Theme all student surfaces; no impact on administrative academy pages. */
+html[data-abba-theme=dark]{color-scheme:dark}
+html[data-abba-theme=dark] body{background:#091728!important;color:#edf3fb!important}
+html[data-abba-theme=dark] .topbar{background:#0c203c!important;border-color:#273f60!important;color:#f4e4c9!important}
+html[data-abba-theme=dark] .topbar .brand,html[data-abba-theme=dark] .topbar>span{color:#f4e3bd!important}
+html[data-abba-theme=dark] .shell,html[data-abba-theme=dark] .settings-panel{color:#ecf0f8}
+html[data-abba-theme=dark] :is(.card,.lesson-list,.lesson-view,.module-card,.auth-card,.settings-sheet,.settings-section,.settings-row,.settings-action,.settings-lesson-row,.saved-note-card,.journey-card,.abba-learning-item){background:#13253e!important;color:#f0f4fc!important;border-color:#334762!important}
+html[data-abba-theme=dark] :is(.hero,.progress-card,.continue-card,.upnext-card){background:#142944!important;color:#f5f7fc!important;border-color:#344964!important}
+html[data-abba-theme=dark] :is(h1,h2,h3,h4,strong,label,.settings-kicker,.settings-head,#courseTitle,#courseDescription,.settings-section-line){color:#f2f5fc!important}
+html[data-abba-theme=dark] :is(p,small,.status,.settings-help,.abba-learning-subtitle,.abba-learning-tag,.journey-meta,.settings-row small){color:#b9c9da!important}
+html[data-abba-theme=dark] :is(input,select,textarea){background:#182d48!important;border-color:#526683!important;color:#f2f7fd!important}
+html[data-abba-theme=dark] :is(.ghost,.secondary,.icon-btn,.settings-signout){background:#213a5b!important;color:#f4e2be!important;border-color:#5c6d83!important}
+html[data-abba-theme=dark] :is(.primary,.abba-profile-btn){background:#b79053!important;color:#081d35!important}
+html[data-abba-theme=dark] .settings-panel{background:#050c17c7!important}
+html[data-abba-theme=dark] .abba-profile-btn.secondary{background:#253a58!important;color:#f5e2bd!important}
+html[data-abba-theme=dark] .abba-mode-options button{background:#213855;color:#dce8f8;border-color:#4c6585}
+html[data-abba-theme=dark] .abba-mode-options button.is-selected{background:#c8a66a;color:#0b1f35;border-color:#e7ce95}
+html[data-abba-theme=dark] #academyBottomNav{background:#11253f!important;border-color:#435875!important}
+html[data-abba-theme=dark] #academyBottomNav button{color:#c6d5e8!important;background:transparent!important}
+html[data-abba-theme=dark] #academyBottomNav button[aria-current=page]{background:#314b68!important;color:#f9ddb0!important}
+html[data-abba-theme=dark] #abbaWelcome{color:#f1f5fa}
+html[data-abba-theme=dark] #abbaWelcome .aw-heading h1,html[data-abba-theme=dark] #abbaWelcome .aw-heading p{color:#eaf0fa!important}
+html[data-abba-theme=dark] #abbaWelcome :is(.aw-summary,.aw-program,.aw-next,.aw-secondary,.aw-action:not(.aw-action-primary)){background:#152941!important;color:#f0f4fa!important;border-color:#455773!important}
+html[data-abba-theme=dark] #abbaWelcome :is(.aw-summary-item span,.aw-summary-item strong,.aw-program h2,.aw-program-meta,.aw-program-bottom span,.aw-next h2,.aw-next li,.aw-secondary h2,.aw-secondary>p,.aw-bullet,.aw-action strong){color:#ecf2fa!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-notice{background:#213c5b!important;border-color:#60738e!important;color:#f7e2bb!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-notice strong{color:#f4e3c4!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-secondary-detail{background:#233953!important;border-color:#4b617d!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-pill{background:#27415e!important;color:#f2d9a8!important;border-color:#58708f!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-program-bottom,html[data-abba-theme=dark] #abbaWelcome .aw-program-bottom>div+div,html[data-abba-theme=dark] #abbaWelcome .aw-summary-item+.aw-summary-item{border-color:#415873!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-action-primary{background:#25476a!important;color:#f4deb5!important;border-color:#d0ad71!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-action-primary strong{color:#f4deb5!important}
+html[data-abba-theme=dark] #abbaWelcome .aw-overline{color:#d9b876!important}
+html[data-abba-theme=dark] .settings-panel .password-reset-feedback{background:#2b3950!important;color:#f0d6a6!important;border-color:#90764d!important}
