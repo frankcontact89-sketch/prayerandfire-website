@@ -1,0 +1,24 @@
+/* Clear, mobile-first message workflow. Existing admin controls are preserved. */
+#emailPanel .abba-mail-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0}
+#emailPanel .abba-mail-flow span{padding:12px 8px;border-radius:10px;background:#f5eadb;border:1px solid #ddc9ad;text-align:center;font-size:13px;font-weight:800;color:#71441b}
+#emailPanel .abba-mail-step{border:1px solid #e1d8d0;background:#fffdfb;border-radius:15px;margin:16px 0;padding:16px}
+#emailPanel .abba-mail-step h3{margin:0 0 8px;font-size:20px;color:#4c1630}
+#emailPanel .abba-mail-step p{line-height:1.55}
+#emailPanel .abba-mail-step input,#emailPanel .abba-mail-step select,#emailPanel .abba-mail-step textarea{background:#fff}
+#emailPanel #emailLanguageHint{background:#f3ede4;border-radius:10px;padding:10px 12px;margin:12px 0;color:#65411e}
+#emailPanel #emailPreview{border:2px solid #c6a36e;border-radius:15px;padding:18px;margin:24px 0;background:#fffaf2}
+#emailPanel #emailPreview h3{color:#573112}
+#emailPanel #emailPrepare,#emailPanel #emailSend{min-height:47px}
+#emailPanel .emailVariants .hidden{display:none!important}
+#emailPanel #emailRecipients{max-height:360px;overflow:auto;border:1px solid #e6d6cb;border-radius:12px}
+#emailPanel .emailRecipient{margin:0;padding:13px;border-bottom:1px solid #e4d9d1}
+#emailPanel .emailRecipient:last-child{border-bottom:0}
+#emailPanel .emailHistoryItem{overflow-wrap:anywhere}
+@media(max-width:650px){
+ #emailPanel .abba-mail-flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #emailPanel .abba-mail-step{padding:12px}
+ #emailPanel .abba-mail-step .studentControls>*{max-width:100%;width:100%}
+ #emailPanel #emailPrepare,#emailPanel #emailSend{width:100%}
+ #emailPanel .emailVariants{grid-template-columns:1fr}
+ #emailPanel #emailPreview{padding:12px}
+}
