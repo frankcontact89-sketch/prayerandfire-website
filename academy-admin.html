@@ -70,4 +70,4 @@ for(const id of ['abbaMonthlyPrice','abbaExampleSlider','abbaDuration'])el(id).a
 const sections=['registrationPanel','scholarshipPanel','courseArea','emailPanel'];function switchTab(id){sections.forEach(section=>el(section).classList.toggle('sectionHidden',section!==id));document.querySelectorAll('[data-academy-tab]').forEach(button=>{const active=button.dataset.academyTab===id;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active))})}document.querySelectorAll('[data-academy-tab]').forEach(button=>button.addEventListener('click',()=>switchTab(button.dataset.academyTab)));el('overviewRefresh').addEventListener('click',()=>{page=1;load()});switchTab(location.hash==='#courses'?'courseArea':'registrationPanel');const observer=new MutationObserver(()=>{if(!el('adminView').classList.contains('hidden')&&el('statStudents').textContent==='—')load()});observer.observe(el('adminView'),{attributes:true,attributeFilter:['class']});
 updatePaging();
 })();
-</script><script src="academy-admin-email.js?v=20261103stepnav3"></script></body></html>
+</script><script src="academy-admin-email.js?v=20261104welcome"></script></body></html>
