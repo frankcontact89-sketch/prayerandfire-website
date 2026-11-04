@@ -108,5 +108,7 @@ db.auth.onAuthStateChange((event,session)=>{
  if(event==='SIGNED_IN'||event==='INITIAL_SESSION'){if(session?.user)queueMicrotask(()=>{void refresh()})}
 });
 document.addEventListener('DOMContentLoaded',()=>{install();void refresh()});
+const welcome=window.abbaWelcomeDashboard;
+if(welcome?.show){const prior=welcome.show;welcome.show=function(...args){prior.apply(welcome,args);setupHeaderAvatar();void refresh()}}
 window.abbaProfileSettings={refresh,applyTheme};
 })();
