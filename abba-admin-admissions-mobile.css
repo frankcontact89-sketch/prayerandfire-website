@@ -1,0 +1,25 @@
+/* Pre-registration review is administrative only: accessible mobile cards. */
+#registrationPanel #registrationResults td:nth-child(8){font-weight:800;color:#86602c}
+#registrationPanel #registrationResults td:last-child{white-space:normal;min-width:290px}
+#registrationPanel #registrationResults td:last-child button{margin:3px;padding:10px 12px}
+#registrationPanel #registrationResults td:last-child button:disabled{opacity:.47;cursor:not-allowed}
+#registrationPanel #registrationResults td:last-child button:not(:disabled):focus-visible{outline:3px solid #b38a4e;outline-offset:2px}
+@media(max-width:700px){
+ #registrationPanel #registrationResults{overflow:visible!important}
+ #registrationPanel .abba-admin-student-table,#registrationPanel .abba-admin-student-table tbody{display:block;width:100%}
+ #registrationPanel .abba-admin-student-table thead{display:none}
+ #registrationPanel .abba-admin-student-table tr{display:block;border:1px solid #d9c6a6;border-radius:14px;padding:12px;margin:13px 0;background:#fff;box-shadow:0 3px 12px rgba(20,35,52,.05)}
+ #registrationPanel .abba-admin-student-table td{display:grid;grid-template-columns:minmax(98px,38%) minmax(0,1fr);gap:10px;align-items:start;white-space:normal;overflow-wrap:anywhere;font-size:14px;padding:10px 6px;border-bottom:1px solid #eee7df}
+ #registrationPanel .abba-admin-student-table td::before{color:#697687;font-size:12px;font-weight:700}
+ #registrationPanel .abba-admin-student-table td:nth-child(1)::before{content:'Nombre'}
+ #registrationPanel .abba-admin-student-table td:nth-child(2)::before{content:'Correo'}
+ #registrationPanel .abba-admin-student-table td:nth-child(3)::before{content:'País'}
+ #registrationPanel .abba-admin-student-table td:nth-child(4)::before{content:'Idioma'}
+ #registrationPanel .abba-admin-student-table td:nth-child(5)::before{content:'Registro'}
+ #registrationPanel .abba-admin-student-table td:nth-child(6)::before{content:'Correo confirmado'}
+ #registrationPanel .abba-admin-student-table td:nth-child(7)::before{content:'Última sesión'}
+ #registrationPanel .abba-admin-student-table td:nth-child(8)::before{content:'Admisión'}
+ #registrationPanel .abba-admin-student-table td:nth-child(9){display:flex;flex-wrap:wrap;gap:6px;border:0;padding-bottom:0;min-width:0}
+ #registrationPanel .abba-admin-student-table td:nth-child(9)::before{content:'Acciones';display:block;width:100%}
+ #registrationPanel .abba-admin-student-table td:nth-child(9) button{flex:1 1 140px;white-space:normal;min-height:44px}
+}
