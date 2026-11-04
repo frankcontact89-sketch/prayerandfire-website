@@ -1,0 +1,13 @@
+/* ABBA Academy official colors on the password reset screen. */
+body{background:#f5f7fb;color:#122b49}
+.topbar{background:linear-gradient(100deg,#071a33,#16385c);border-bottom:3px solid #c69a54;color:#e9c584}
+.topbar .brand,.topbar>span{color:#e9c584}
+.auth-card{border-color:#dec9a4;box-shadow:0 12px 28px rgba(8,30,56,.08);max-width:580px}
+.auth-card h1{color:#091f3f}
+.auth-card .eyebrow{color:#9d7332;letter-spacing:3px}
+#resetForm input{border-color:#b7c6d8;min-height:53px;color:#102a4a}
+#resetForm input:focus-visible,#resetForm button:focus-visible{outline:3px solid #c79b55;outline-offset:2px}
+#toggleNew{color:#856021!important;top:11px!important}
+#resetForm button.primary{background:linear-gradient(110deg,#0b2242,#1d4067);border:1px solid #bd9354;color:#f6dba9;border-radius:10px;min-height:50px;padding:12px 20px}
+#resetForm button.primary:disabled{opacity:.55;cursor:wait}
+@media(max-width:600px){.auth-card{margin:5vh auto}.auth-card h1{font-size:clamp(35px,8vw,54px)}}
