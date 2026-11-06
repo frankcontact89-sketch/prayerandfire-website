@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'abba-portal-academy.js'
+      - 'abba-welcome-dashboard.js'
       - '.github/workflows/validate-abba-embedded.yml'
   workflow_dispatch:
 permissions:
@@ -16,7 +17,9 @@ jobs:
         with:
           node-version: '22'
       - name: Verify JavaScript syntax
-        run: node --check abba-portal-academy.js
+        run: |
+          node --check abba-portal-academy.js
+          node --check abba-welcome-dashboard.js
       - name: Verify embedded mode and enrollment controls
         run: |
           node <<'NODE'
@@ -30,6 +33,8 @@ jobs:
           assert(js.includes("isPrivatePreview=false"));
           assert(js.includes("if(isPrayerFireApp)return;location.href='https://prayerandfire.org/academy.html'"), 'Embedded mode must never redirect to enrollment page');
           assert(js.includes('const enrollmentText='), 'Embedded enrollment copy required');
+          const welcome=fs.readFileSync('abba-welcome-dashboard.js','utf8');
+          assert(welcome.includes("scholarshipAction.style.display=appMode?'none':''"),'Scholarship link must be suppressed in app');
           assert(!js.includes("francorv8959@gmail.com"),'Do not use hardcoded email to bypass enrollment');
           console.log('Embedded ABBA checks passed');
           NODE
