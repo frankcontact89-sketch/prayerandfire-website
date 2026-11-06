@@ -1,0 +1,33 @@
+name: Validate embedded ABBA student portal
+on:
+  pull_request:
+    paths:
+      - 'abba-portal-academy.js'
+      - '.github/workflows/validate-abba-embedded.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify JavaScript syntax
+        run: node --check abba-portal-academy.js
+      - name: Verify embedded mode and enrollment controls
+        run: |
+          node <<'NODE'
+          const assert=require('node:assert/strict');
+          const fs=require('node:fs');
+          const js=fs.readFileSync('abba-portal-academy.js','utf8');
+          assert(js.includes("get('embedded')==='prayer-fire'"));
+          assert(js.includes("new Date(enrollment.expires_at).getTime()>Date.now()"));
+          assert(js.includes("type:'prayer-fire:abba-back'"));
+          assert(js.includes("['enrollmentBtn','signUpBtn']"));
+          assert(js.includes("isPrivatePreview=false"));
+          assert(!js.includes("francorv8959@gmail.com"),'Do not use hardcoded email to bypass enrollment');
+          console.log('Embedded ABBA checks passed');
+          NODE
