@@ -49,6 +49,11 @@ function render(user,language){
  $('awSecondaryText').textContent=localized(tab==='learn'?'learnText':'exploreText');
  $('awSecondaryInfo').textContent=localized('note');
  $('awAccess').textContent=localized('locked');
+  // Keep scholarship enrollment on the public website, outside the iOS app.
+  const appMode=new URLSearchParams(window.location.search).get('embedded')==='prayer-fire';
+  const scholarshipAction=$('awScholarship');
+  if(scholarshipAction){scholarshipAction.hidden=appMode;scholarshipAction.style.display=appMode?'none':''}
+
 }
 function navigate(next='home'){
  if(!active)return;
