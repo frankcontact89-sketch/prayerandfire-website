@@ -28,6 +28,8 @@ jobs:
           assert(js.includes("type:'prayer-fire:abba-back'"));
           assert(js.includes("['enrollmentBtn','signUpBtn']"));
           assert(js.includes("isPrivatePreview=false"));
+          assert(js.includes("if(isPrayerFireApp)return;location.href='https://prayerandfire.org/academy.html'"), 'Embedded mode must never redirect to enrollment page');
+          assert(js.includes('const enrollmentText='), 'Embedded enrollment copy required');
           assert(!js.includes("francorv8959@gmail.com"),'Do not use hardcoded email to bypass enrollment');
           console.log('Embedded ABBA checks passed');
           NODE
